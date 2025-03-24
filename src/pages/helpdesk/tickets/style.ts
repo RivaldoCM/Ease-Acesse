@@ -198,3 +198,10 @@ export const ChatLog = styled.aside`
 export const FinishTicketStyle = styled.div`
 
 `;
+
+export const FilterTicket = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+`;

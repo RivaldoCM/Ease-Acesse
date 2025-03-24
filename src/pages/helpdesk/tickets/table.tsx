@@ -19,6 +19,8 @@ import { useResponse } from '../../../hooks/useResponse';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { updateTicket } from '../../../services/apiManageONU/updateTicket';
 import { ITickets } from '../../../interfaces/ITickets';
+import { FilterTicket } from './style';
+import { List, ListItem, ListItemDecorator, Radio, RadioGroup } from '@mui/joy';
 
 type Order = 'asc' | 'desc';
 export interface Data {
@@ -241,9 +243,10 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                 {
                     display: 'flex',
                     alignItems: 'center',
+                    height: '56px',
                     py: 1,
-                    pl: { sm: 2 },
-                    pr: { xs: 1, sm: 1 },
+                    pr: 1,
+                    pb: 1,
                     borderTopLeftRadius: 'var(--unstable_actionRadius)',
                     borderTopRightRadius: 'var(--unstable_actionRadius)',
                 },
@@ -253,60 +256,89 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             ]}
         >
             {numSelected > 0 ? (
-                <Typography sx={{ flex: '1 1 100%' }} component="div">
+                <FilterTicket>
+                    {/*A PRIMEIRA DIV É SÓ PRA FAZER O ESPAÇAMENTO*/}
+                    <div></div>
+                    <div>
+                        {
+                            /*
+                            user.rule === destinationDepartmentId && (
+                                <Tooltip title="Encerrar ticket" sx={{mr: 1}}>
+                                    <IconButton size="sm" variant="soft" >
+                                        <CheckCircleOutlinedIcon color="success" />
+                                    </IconButton>
+                                </Tooltip>
+                            )
+                            */
+                        }
+                        {
+                            isOpened && user.rule === destinationDepartmentId && (
+                                <Tooltip title="Apropriar-se" sx={{mr: 1}}>
+                                    <IconButton size="sm" color="primary" variant="soft" onClick={handleAppropriate}>
+                                        <PushPinOutlinedIcon color="primary" />
+                                    </IconButton>
+                                </Tooltip>
+                            )
+                        }
+                        {
+                            isOpened && user.rule === originDepartmentId && (
+                                <Tooltip title="Editar" sx={{mr: 1}}>
+                                    <IconButton size="sm" color="primary" variant="soft" onClick={props.onOpenEditTicket}>
+                                        <EditOutlinedIcon color="secondary" />
+                                    </IconButton>
+                                </Tooltip>
+                            )
+                        }
+                        <Tooltip title="Vizualizar ticket">
+                            <IconButton size="sm" color="primary" variant="soft" onClick={props.onOpenViewTicket}>
+                                <VisibilityOutlinedIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
                     
-                </Typography>
+                </FilterTicket>
             ) : (
-                <Typography
-                    level="body-lg"
-                    sx={{ flex: '1 1 100%' }}
-                    id="tableTitle"
-                    component="div"
-                >
-                    Tickets
-                </Typography>
-            )}
-            {numSelected > 0 ? (
-                <React.Fragment>
-                    {
-                        /*
-                        user.rule === destinationDepartmentId && (
-                            <Tooltip title="Encerrar ticket" sx={{mr: 1}}>
-                                <IconButton size="sm" variant="soft" >
-                                    <CheckCircleOutlinedIcon color="success" />
-                                </IconButton>
-                            </Tooltip>
-                        )
-                        */
-                    }
-                    {
-                        isOpened && user.rule === destinationDepartmentId && (
-                            <Tooltip title="Apropriar-se" sx={{mr: 1}}>
-                                <IconButton size="sm" color="primary" variant="soft" onClick={handleAppropriate}>
-                                    <PushPinOutlinedIcon color="primary" />
-                                </IconButton>
-                            </Tooltip>
-                        )
-                    }
-                    {
-                        isOpened && user.rule === originDepartmentId && (
-                            <Tooltip title="Editar" sx={{mr: 1}}>
-                                <IconButton size="sm" color="primary" variant="soft" onClick={props.onOpenEditTicket}>
-                                    <EditOutlinedIcon color="secondary" />
-                                </IconButton>
-                            </Tooltip>
-                        )
-                    }
-                    <Tooltip title="Vizualizar ticket">
-                        <IconButton size="sm" color="primary" variant="soft" onClick={props.onOpenViewTicket}>
-                            <VisibilityOutlinedIcon />
-                        </IconButton>
-                    </Tooltip>
-                </React.Fragment>
-            ) : (
-                <Tooltip title="Filter list">
-                    <SearchInput placeholder='Busque aqui'/>
-                </Tooltip>
+                <FilterTicket>
+                    <div>
+                        <RadioGroup name="people" defaultValue='0'>
+                            <List
+                                sx={{
+                                    minWidth: 140,
+                                    flexDirection: 'row',
+                                    '--ListItem-radius': '8px',
+                                    '--ListItemDecorator-size': '32px',
+                                }}
+                            >
+                                {['Em aberto', 'Finalizados'].map((item, index) => (
+                                <ListItem variant="outlined" key={item} sx={{ boxShadow: 'sm', ml: 1 }}>
+                                    <Radio
+                                        overlay
+                                        value={index}
+                                        label={item}
+                                        sx={{ flexGrow: 1, flexDirection: 'row-reverse' }}
+                                        slotProps={{
+                                            action: ({ checked }) => ({
+                                            sx: (theme) => ({
+                                                ...(checked && {
+                                                    inset: -1,
+                                                    border: '2px solid',
+                                                    borderColor: theme.vars.palette.primary[500],
+                                                }),
+                                            }),
+                                            }),
+                                        }}
+                                    />
+                                </ListItem>
+                                ))}
+                            </List>
+                        </RadioGroup>
+                    </div>
+                    <div>
+                        <Tooltip title="Filter list">
+                            <SearchInput placeholder='Busque aqui'/>
+                        </Tooltip>
+                    </div>
+                </FilterTicket>
             )}
         </Box>
     );
