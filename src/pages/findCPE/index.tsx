@@ -9,6 +9,7 @@ import { useLoading } from "../../hooks/useLoading";
 import { ICities } from "../../interfaces/ICities";
 import { findCPE } from "../../services/apiManageONU/findCPE";
 import { useAuth } from "../../hooks/useAuth";
+import { Container } from "./style";
 
 export function FindCPE(){
     const { user } = useAuth(); 
@@ -79,7 +80,7 @@ export function FindCPE(){
     }
 
     return(
-        <>
+        <Container>
         <Form className="flex" onSubmit={handleSubmit}>
                 <div className="controller flex">
                     <Autocomplete
@@ -122,7 +123,6 @@ export function FindCPE(){
                         sx={{width: '250px'}}
                         value={macAddress}
                         onChange={handleMacChange}
-
                     />
                 </div>
                 {isLoading ?
@@ -138,6 +138,23 @@ export function FindCPE(){
                     </Button>
                 }
             </Form>
-        </>
+            {
+                cpes.length > 0 ?
+                <div className="flex cpe">
+                    <ul className="list-cpes">
+                        {cpes.map((cpe: any, index) => {
+                            return(
+                                <li key={index}>
+                                    <p>mac: {cpe.mac}</p>
+                                    <p>IP:{cpe.ip}</p>
+                                </li>
+                            )
+                        })}
+                    </ul>
+                </div>
+                :
+                null
+            }
+        </Container>
     )
 }
