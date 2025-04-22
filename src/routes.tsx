@@ -37,7 +37,7 @@ import { Tickets } from "./pages/helpdesk/tickets";
 import { Dashboard } from "./pages/helpdesk/dashboard";
 import { ClientLocationByFiberNetwork } from "./pages/telecom/ClientLocationByFiberNetwork/mobile";
 import ClientFiberNetworkData from "./pages/telecom/ClientLocationByFiberNetwork/desktop";
-import { FindCPE } from "./pages/findRouters";
+import { FindCPE } from "./pages/findCPE";
 
 const PrivateRoute: React.FC<{element: ReactElement}> = ({ element }: {element: ReactElement}) => {
     return isLogged() ? element : <Navigate to='/login' />;
