@@ -145,8 +145,9 @@ export function FindCPE(){
                         {cpes.map((cpe: any, index) => {
                             return(
                                 <li key={index}>
-                                    <p>mac: {cpe.mac}</p>
-                                    <p>IP:{cpe.ip}</p>
+                                    <p>MAC: {cpe.mac}</p>
+                                    <p>IP: {cpe.ip}</p>
+                                    <a rel="stylesheet" href={`https://${cpe.ip}:8085`} target="_blank">abrir</a>
                                 </li>
                             )
                         })}
