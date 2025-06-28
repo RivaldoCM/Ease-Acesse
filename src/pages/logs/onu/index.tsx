@@ -3,7 +3,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { getOnuLogs } from '../../../services/apiManageONU/getOnuLogs';
 import { FilterOptions } from './filterOptions';
 
-import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
@@ -12,11 +11,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { ResponsiveTable } from './style';
+import { ResponsiveTable, TableInsideTable } from './style';
 import { TablePagination } from '@mui/material';
 import { useResponse } from '../../../hooks/useResponse';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -51,11 +49,7 @@ function Row(props: IOnuLogsProps) {
                     {row.User.name}
                 </TableCell>
                 <TableCell align="center">{row.Cities.name}</TableCell>
-                <TableCell align="center">{row.Olts.name}</TableCell>
-                <TableCell align="center">{row.slot}</TableCell>
-                <TableCell align="center">{row.pon}</TableCell>
                 <TableCell align="center">{row.serial_onu}</TableCell>
-                <TableCell align="center">{row.cpf}</TableCell>
                 <TableCell align="center">{row.pppoe}</TableCell>
                 <TableCell align="center">{row.rx_olt}</TableCell>
                 <TableCell align="center">{row.rx_onu}</TableCell>
@@ -72,13 +66,28 @@ function Row(props: IOnuLogsProps) {
                     </TableCell>
             </TableRow>
             <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                Histórico
-                            </Typography>
-                        </Box>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={11}>
+                    <Collapse in={open}unmountOnExit>
+                        <TableInsideTable>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>OLT</th>
+                                        <th>Placa</th>
+                                        <th>Pon</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            {row.Olts.name}
+                                        </td>
+                                        <td>{row.slot}</td>
+                                        <td>{row.pon}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </TableInsideTable>
                     </Collapse>
                 </TableCell>
             </TableRow>
@@ -142,11 +151,7 @@ export function LogsOnu() {
                                 <TableCell align="center">Data</TableCell>
                                 <TableCell align="center">Tecnico</TableCell>
                                 <TableCell align="center" sx={{width: 150}}>Cidade</TableCell>
-                                <TableCell align="center">OLT</TableCell>
-                                <TableCell align="center">Placa</TableCell>
-                                <TableCell align="center">Pon</TableCell>
                                 <TableCell align="center">Serial</TableCell>
-                                <TableCell align="center">CPF</TableCell>
                                 <TableCell align="center">PPPoE</TableCell>
                                 <TableCell align="center">Sinal recebido pela OLT(dBM)</TableCell>
                                 <TableCell align="center">Sinal recebido pela ONU(dBM)</TableCell>
@@ -161,7 +166,7 @@ export function LogsOnu() {
                     </Table>
                 </ResponsiveTable>
                 <TablePagination
-                    rowsPerPageOptions={[10, 15, 25]}
+                    rowsPerPageOptions={[10, 15, 25, 50]}
                     component="div"
                     count={onu.length}
                     rowsPerPage={rowsPerPage}
