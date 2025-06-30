@@ -46,17 +46,17 @@ function Row(props: IOnuLogsProps) {
     const handleUpdateConnection = async (row: any) => {
         console.log(row)
         const peopleData = await getPeopleId(row.cpf);
-        if(peopleData && peopleData.success){
+        if(peopleData){
             setClientData({
                 ...clientData,
                 name: peopleData.name,
                 peopleId: peopleData.id,
-            })
+            });
         } else {
             return;
         }
 
-        const connectionData = await getConnectionId(row.cpf, peopleData.id, row.pppoe)
+        const connectionData = await getConnectionId(row.cpf, peopleData.id, row.pppoe);
         if(connectionData && connectionData.success){
             setClientData({
                 ...clientData,
@@ -67,8 +67,8 @@ function Row(props: IOnuLogsProps) {
             return;
         }
 
-        //const olt = await getOlt({})
-
+        const olt = await getOlt({id: row.Olts.id, vlans: false});
+        console.log(olt)
         /*
         const update = await updateConnection({
             onuId: 0,
@@ -183,7 +183,6 @@ export function LogsOnu() {
             if(data){
                 if(data.success){
                     data.responses.response && setOnu(data.responses.response);
-
                     setPage(0);
                 } else {
                     setOnu([]);
@@ -195,7 +194,7 @@ export function LogsOnu() {
         };
         getData();
     }, [filterParams]);
-    console.log(onu)
+
     const visibleRows = useMemo(() => 
         stableSort(onu).slice(
             page * rowsPerPage,
