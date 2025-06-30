@@ -19,6 +19,10 @@ import { TablePagination } from '@mui/material';
 import { useResponse } from '../../../hooks/useResponse';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { getPeopleId } from '../../../services/apiVoalle/getPeopleId';
+import { getConnectionId } from '../../../services/apiManageONU/getConnectionId';
+import { updateConnection } from '../../../services/apiVoalle/updateConnection';
+import { getOlt } from '../../../services/apiManageONU/getOlt';
 
 function stableSort<T>(array: readonly T[]) {
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
@@ -30,7 +34,55 @@ function stableSort<T>(array: readonly T[]) {
 
 function Row(props: IOnuLogsProps) {
     const { row } = props;
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [clientData, setClientData] = useState<any>({
+        name: '',
+        peopleId: 0,
+        contractId: 0,
+        connectionId: 0,
+        pppoePassword: '',
+    });
+
+    const handleUpdateConnection = async (row: any) => {
+        console.log(row)
+        const peopleData = await getPeopleId(row.cpf);
+        if(peopleData && peopleData.success){
+            setClientData({
+                ...clientData,
+                name: peopleData.name,
+                peopleId: peopleData.id,
+            })
+        } else {
+            return;
+        }
+
+        const connectionData = await getConnectionId(row.cpf, peopleData.id, row.pppoe)
+        if(connectionData && connectionData.success){
+            setClientData({
+                ...clientData,
+                connectionId: connectionData.id,
+                password: connectionData.password
+            });
+        } else {
+            return;
+        }
+
+        //const olt = await getOlt({})
+
+        /*
+        const update = await updateConnection({
+            onuId: 0,
+            connectionId: connectionData.id,
+            pppoeUser: row.pppoe,
+            pppoePassword: connectionData.password,
+            slot: row.slot,
+            pon: row.pon,
+            serialNumber: row.serialNumber,
+            modelOlt: 'teste',
+            accessPointId: 0,
+        });
+        */
+    }
 
     return (
         <React.Fragment>
@@ -60,14 +112,14 @@ function Row(props: IOnuLogsProps) {
                                 <CheckCircleOutlineIcon color='success'/> 
                                 : 
                                 <HighlightOffIcon color='error'/>
-                            : 
+                            :
                         <></>
                     }
-                    </TableCell>
+                </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={11}>
-                    <Collapse in={open}unmountOnExit>
+                    <Collapse in={open} unmountOnExit>
                         <TableInsideTable>
                             <table>
                                 <thead>
@@ -88,6 +140,28 @@ function Row(props: IOnuLogsProps) {
                                 </tbody>
                             </table>
                         </TableInsideTable>
+                        <TableInsideTable>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>id pessoas completo</th>
+                                        <th>ID da conexão</th>
+                                        <th>ID do contrato</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            {row.Olts.name}
+                                        </td>
+                                        <td>{row.slot}</td>
+                                        <td>{row.pon}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </TableInsideTable>
+                        <button onClick={() => handleUpdateConnection(row)}>ATUALIZAR CLIENTE</button>
+
                     </Collapse>
                 </TableCell>
             </TableRow>
