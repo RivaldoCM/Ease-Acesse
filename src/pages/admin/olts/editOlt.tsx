@@ -75,7 +75,6 @@ export function EditOlt(){
                 ESTÁ RECEBENDO DOIS OBJETOS NO RETORNO DA API
                 OS DADOS DA OLT E AS SUAUS VLANS
             */
-
             if (olt.success && olt.responses.response) {
                 setForm({
                     ...form,

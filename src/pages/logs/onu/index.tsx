@@ -23,6 +23,7 @@ import { getPeopleId } from '../../../services/apiVoalle/getPeopleId';
 import { getConnectionId } from '../../../services/apiManageONU/getConnectionId';
 import { updateConnection } from '../../../services/apiVoalle/updateConnection';
 import { getOlt } from '../../../services/apiManageONU/getOlt';
+import { getOnuInfo } from '../../../services/apiManageONU/getOnuInfo';
 
 function stableSort<T>(array: readonly T[]) {
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
@@ -44,7 +45,6 @@ function Row(props: IOnuLogsProps) {
     });
 
     const handleUpdateConnection = async (row: any) => {
-        console.log(row)
         const peopleData = await getPeopleId(row.cpf);
         if(peopleData){
             setClientData({
@@ -60,28 +60,26 @@ function Row(props: IOnuLogsProps) {
         if(connectionData && connectionData.success){
             setClientData({
                 ...clientData,
-                connectionId: connectionData.id,
-                password: connectionData.password
+                connectionId: connectionData.responses.response.connectionId,
+                contractId: connectionData.responses.response.contractId,
+                password: connectionData.responses.response.password
             });
         } else {
             return;
         }
 
-        const olt = await getOlt({id: row.Olts.id, vlans: false});
-        console.log(olt)
-        /*
+        const onu = await getOnuInfo({oltId: row.Olts.id, serialNumber: row.serial_onu});
         const update = await updateConnection({
-            onuId: 0,
-            connectionId: connectionData.id,
+            onuId: onu.success && onu.responses.response.id,
+            connectionId: connectionData.responses.response.connectionId,
             pppoeUser: row.pppoe,
-            pppoePassword: connectionData.password,
+            pppoePassword: connectionData.responses.response.password,
             slot: row.slot,
             pon: row.pon,
-            serialNumber: row.serialNumber,
-            modelOlt: 'teste',
-            accessPointId: 0,
+            serialNumber: row.serial_onu,
+            modelOlt: onu.success && onu.responses.response.modelOlt,
+            accessPointId: row.Olts.voalle_id,
         });
-        */
     }
 
     return (

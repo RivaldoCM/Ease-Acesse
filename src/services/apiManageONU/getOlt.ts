@@ -15,7 +15,6 @@ export async function getOlt({id, host, vlans}: {id?: number | null, host?: stri
             returnVlans: vlans
         }
     }).then((response) => {
-        console.log(response.data);
         return response.data;
     }).catch(() => {
         return null;

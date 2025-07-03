@@ -4,7 +4,7 @@ import { getToken } from "./getToken";
 import { IUpdateConnectionProps } from "../../interfaces/IUpdateConnectionProps.js";
 
 export async function updateConnection(props: IUpdateConnectionProps){
-    console.log('aq')
+
     let modelOLTVoalle: number = 0;
     if(props.modelOlt === 'ZTE'){
         modelOLTVoalle = 7;
@@ -13,7 +13,8 @@ export async function updateConnection(props: IUpdateConnectionProps){
     } else {
         modelOLTVoalle = 6;
     }
-
+    console.log(props)
+    /*
     const response = await axios({
         headers: {
             'Authorization': "Bearer " + await getToken()
@@ -52,6 +53,7 @@ export async function updateConnection(props: IUpdateConnectionProps){
         console.log(err)
         return false;
     });
+    */
 
-    return response;
+    //return response;
 }
