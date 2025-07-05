@@ -25,15 +25,11 @@ export const Cards = styled.div`
     width: 100%;
     line-height: 30px;
 
-    @media (max-width: 822px){
-        grid-template-columns: repeat(auto-fit, 300px);
-    }
-
     @media (max-width: 620px){
         grid-template-columns: repeat(auto-fit, 400px);
     }
 
-    @media (max-width: 499px){
+    @media (max-width: 420px){
         grid-template-columns: repeat(auto-fit, 90vw);
     }
 `;
@@ -48,10 +44,6 @@ export const CardController = styled.div`
 
     @media (max-width: 899px){
         line-height: 28px;
-    }
-
-    @media (max-width: 499px){
-        width: 100%;
     }
 `;
 
@@ -195,7 +187,9 @@ export const OffCard = styled.div<IOffCard>`
 
 export const FormAddMassive = styled.form`
     flex-direction: column;
-    width: 464px;
+    width: 100%;
+    max-width: 464px;
+    margin: 0 1rem;
     height: auto;
     padding: 1rem 1rem 0 1rem;
     text-align: left;

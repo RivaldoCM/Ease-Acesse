@@ -10,4 +10,7 @@ export type IClientMassive = {
     address?: string;
     lat?: string;
     lng?: string;
+    User:{
+        name: string
+    }
 }

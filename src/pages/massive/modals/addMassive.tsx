@@ -205,14 +205,14 @@ export function AddMassive(props: any){
                             <MenuItem value="Queda">Queda</MenuItem>
                         </Select>
                     </FormControl>
-                    <div className="flex">
-                        <FormControl fullWidth variant="outlined" sx={{ mt: 2, mr:1 }}>
+                    <div className="flex wrap">
+                        <FormControl variant="outlined" sx={{ mt: 1, mr: 1 }}>
                             <InputLabel>Horario de falha</InputLabel>
                             <OutlinedInput
                                 required
                                 label="Horario de falha"
                                 name="failureTime"
-                                type='text'
+                                type="text"
                                 value={form.failureTime}
                                 endAdornment={
                                     <InputAdornment position="end">
@@ -234,7 +234,7 @@ export function AddMassive(props: any){
                                 )
                             }
                         </FormControl>
-                        <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
+                        <FormControl variant="outlined" sx={{ mt: 1 }}>
                             <InputLabel>Previsão de retorno</InputLabel>
                             <OutlinedInput
                                 label="Previsão de retorno"

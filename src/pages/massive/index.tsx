@@ -185,6 +185,7 @@ export function Massive(){
                                                                                     </p>
                                                                                     : ''
                                                                                 }
+                                                                                <p>Adicionado por: {client.User.name}</p>
                                                                             </div>
                                                                         )
                                                                     })}
