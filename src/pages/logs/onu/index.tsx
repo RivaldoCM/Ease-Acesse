@@ -47,39 +47,35 @@ function Row(props: IOnuLogsProps) {
     const handleUpdateConnection = async (row: any) => {
         const peopleData = await getPeopleId(row.cpf);
         if(peopleData){
-            setClientData({
-                ...clientData,
-                name: peopleData.name,
-                peopleId: peopleData.id,
-            });
-        } else {
-            return;
-        }
+            const connectionData = await getConnectionId(row.cpf, peopleData.id, row.pppoe);
+            if(connectionData && connectionData.success){
+                setClientData({
+                    ...clientData,
+                    name: peopleData.name,
+                    peopleId: peopleData.id,
+                    connectionId: connectionData.responses.response.connectionId,
+                    contractId: connectionData.responses.response.contractId,
+                    pppoePassword: connectionData.responses.response.password
+                });
+            } else {
+                return;
+            }
 
-        const connectionData = await getConnectionId(row.cpf, peopleData.id, row.pppoe);
-        if(connectionData && connectionData.success){
-            setClientData({
-                ...clientData,
+            const onu = await getOnuInfo({oltId: row.Olts.id, serialNumber: row.serial_onu});
+            const update = await updateConnection({
+                onuId: onu.success && onu.responses.response.id,
                 connectionId: connectionData.responses.response.connectionId,
-                contractId: connectionData.responses.response.contractId,
-                password: connectionData.responses.response.password
+                pppoeUser: row.pppoe,
+                pppoePassword: connectionData.responses.response.password,
+                slot: row.slot,
+                pon: row.pon,
+                serialNumber: row.serial_onu,
+                modelOlt: onu.success && onu.responses.response.modelOlt,
+                accessPointId: row.Olts.voalle_id,
             });
         } else {
             return;
         }
-
-        const onu = await getOnuInfo({oltId: row.Olts.id, serialNumber: row.serial_onu});
-        const update = await updateConnection({
-            onuId: onu.success && onu.responses.response.id,
-            connectionId: connectionData.responses.response.connectionId,
-            pppoeUser: row.pppoe,
-            pppoePassword: connectionData.responses.response.password,
-            slot: row.slot,
-            pon: row.pon,
-            serialNumber: row.serial_onu,
-            modelOlt: onu.success && onu.responses.response.modelOlt,
-            accessPointId: row.Olts.voalle_id,
-        });
     }
 
     return (
@@ -117,7 +113,7 @@ function Row(props: IOnuLogsProps) {
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={11}>
-                    <Collapse in={open} unmountOnExit>
+                    <Collapse in={open}>
                         <TableInsideTable>
                             <table>
                                 <thead>
@@ -142,24 +138,23 @@ function Row(props: IOnuLogsProps) {
                             <table>
                                 <thead>
                                     <tr>
+                                        <th>Nome</th>
                                         <th>id pessoas completo</th>
-                                        <th>ID da conexão</th>
                                         <th>ID do contrato</th>
+                                        <th>ID da conexão</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>
-                                            {row.Olts.name}
-                                        </td>
-                                        <td>{row.slot}</td>
-                                        <td>{row.pon}</td>
+                                        <td>{clientData.name}</td>
+                                        <td>{clientData.peopleId}</td>
+                                        <td>{clientData.contractId}</td>
+                                        <td>{clientData.connectionId}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </TableInsideTable>
                         <button onClick={() => handleUpdateConnection(row)}>ATUALIZAR CLIENTE</button>
-
                     </Collapse>
                 </TableCell>
             </TableRow>
