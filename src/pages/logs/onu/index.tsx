@@ -22,7 +22,6 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { getPeopleId } from '../../../services/apiVoalle/getPeopleId';
 import { getConnectionId } from '../../../services/apiManageONU/getConnectionId';
 import { updateConnection } from '../../../services/apiVoalle/updateConnection';
-import { getOlt } from '../../../services/apiManageONU/getOlt';
 import { getOnuInfo } from '../../../services/apiManageONU/getOnuInfo';
 
 function stableSort<T>(array: readonly T[]) {
@@ -47,6 +46,11 @@ function Row(props: IOnuLogsProps) {
     const handleUpdateConnection = async (row: any) => {
         const peopleData = await getPeopleId(row.cpf);
         if(peopleData){
+            setClientData({
+                ...clientData,
+                name: peopleData.name,
+                peopleId: peopleData.id,
+            });
             const connectionData = await getConnectionId(row.cpf, peopleData.id, row.pppoe);
             if(connectionData && connectionData.success){
                 setClientData({
@@ -134,26 +138,30 @@ function Row(props: IOnuLogsProps) {
                                 </tbody>
                             </table>
                         </TableInsideTable>
-                        <TableInsideTable>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Nome</th>
-                                        <th>id pessoas completo</th>
-                                        <th>ID do contrato</th>
-                                        <th>ID da conexão</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{clientData.name}</td>
-                                        <td>{clientData.peopleId}</td>
-                                        <td>{clientData.contractId}</td>
-                                        <td>{clientData.connectionId}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </TableInsideTable>
+                        {
+                            row.is_updated && !row.is_updated && (
+                                <TableInsideTable>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Nome</th>
+                                                <th>id pessoas completo</th>
+                                                <th>ID do contrato</th>
+                                                <th>ID da conexão</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{clientData.name}</td>
+                                                <td>{clientData.peopleId}</td>
+                                                <td>{clientData.contractId}</td>
+                                                <td>{clientData.connectionId}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </TableInsideTable>
+                            )
+                        }
                         <button onClick={() => handleUpdateConnection(row)}>ATUALIZAR CLIENTE</button>
                     </Collapse>
                 </TableCell>

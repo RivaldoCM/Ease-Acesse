@@ -13,8 +13,7 @@ export async function updateConnection(props: IUpdateConnectionProps){
     } else {
         modelOLTVoalle = 6;
     }
-    console.log(props)
-    /*
+    
     const response = await axios({
         headers: {
             'Authorization': "Bearer " + await getToken()
@@ -46,14 +45,11 @@ export async function updateConnection(props: IUpdateConnectionProps){
             "complement": "",
             "isIPoE": false
         }
-    }).then((res) => {
-        console.log(res)
+    }).then(() => {
         return true;
-    }).catch((err) => {
-        console.log(err)
+    }).catch(() => {
         return false;
     });
-    */
 
-    //return response;
+    return response;
 }

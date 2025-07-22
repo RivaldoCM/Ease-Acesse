@@ -155,7 +155,9 @@ export function Massive(){
                                             <Card className="flex" offCardOpen={showOffCard.includes(index)}>
                                                 <div className="header flex">
                                                     <h2>{massive.type} - {dayjs(massive.failure_date).add(3, "hour").format('HH:mm') + 'h'}</h2>
-                                                    <p>{massive.Cities.name}</p>
+                                                    {massive.Cities && (
+                                                        <p>{massive.Cities.name}</p>
+                                                    )}
                                                     <IconMassivePeople>
                                                         <IconButton
                                                             className="off-card-button" 

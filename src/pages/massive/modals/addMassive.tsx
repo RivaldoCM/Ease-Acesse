@@ -172,7 +172,6 @@ export function AddMassive(props: any){
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    required
                                     label="Cidade"
                                     InputProps={{
                                         ...params.InputProps,
@@ -203,6 +202,7 @@ export function AddMassive(props: any){
                             <MenuItem value="Manutenção">Manutenção</MenuItem>
                             <MenuItem value="Troca de Poste">Troca de Poste</MenuItem>
                             <MenuItem value="Queda">Queda</MenuItem>
+                            <MenuItem value="Falha geral">Falha geral</MenuItem>
                         </Select>
                     </FormControl>
                     <div className="flex wrap">

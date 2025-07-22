@@ -38,7 +38,7 @@ export function EditMassive(props: LocalEditMassive){
     const [form, setForm] = useState<IAddMassive>({
         user: user?.uid,
         massiveId: props.massive.id,
-        cityId: props.massive.Cities.id,
+        cityId: props.massive.Cities ? props.massive.Cities.id : null,
         forecastReturn:  props.massive.forecast_return ? dayjs(props.massive.forecast_return).add(3, 'hour').format('DD/MM/YY - HH:mm') + 'h': '',
         failureTime: dayjs(props.massive.failure_date).add(3, 'hour').format('DD/MM/YY - HH:mm') + 'h',
         forecastDateToISO: null,
@@ -108,7 +108,7 @@ export function EditMassive(props: LocalEditMassive){
             }
         }
     };
-      
+
     return(
         <Modal
             className="flex"
@@ -146,6 +146,7 @@ export function EditMassive(props: LocalEditMassive){
                         <MenuItem value="Manutenção">Manutenção</MenuItem>
                         <MenuItem value="Troca de Poste">Troca de Poste</MenuItem>
                         <MenuItem value="Queda">Queda</MenuItem>
+                        <MenuItem value="Falha geral">Falha geral</MenuItem>
                     </Select>
                 </FormControl>
                 <div className="flex">
