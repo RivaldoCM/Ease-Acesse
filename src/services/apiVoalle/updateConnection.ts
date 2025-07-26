@@ -4,7 +4,6 @@ import { getToken } from "./getToken";
 import { IUpdateConnectionProps } from "../../interfaces/IUpdateConnectionProps.js";
 
 export async function updateConnection(props: IUpdateConnectionProps){
-
     let modelOLTVoalle: number = 0;
     if(props.modelOlt === 'ZTE'){
         modelOLTVoalle = 7;

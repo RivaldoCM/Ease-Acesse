@@ -15,7 +15,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ResponsiveTable, TableInsideTable } from './style';
-import { TablePagination } from '@mui/material';
+import { CircularProgress, TablePagination } from '@mui/material';
 import { useResponse } from '../../../hooks/useResponse';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -23,6 +23,8 @@ import { getPeopleId } from '../../../services/apiVoalle/getPeopleId';
 import { getConnectionId } from '../../../services/apiManageONU/getConnectionId';
 import { updateConnection } from '../../../services/apiVoalle/updateConnection';
 import { getOnuInfo } from '../../../services/apiManageONU/getOnuInfo';
+import { updateLogsOnu } from '../../../services/apiManageONU/updateLogOnu';
+import { useLoading } from '../../../hooks/useLoading';
 
 function stableSort<T>(array: readonly T[]) {
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
@@ -34,16 +36,19 @@ function stableSort<T>(array: readonly T[]) {
 
 function Row(props: IOnuLogsProps) {
     const { row } = props;
+    const { isLoading, startLoading, stopLoading } = useLoading();
+
     const [open, setOpen] = useState(false);
     const [clientData, setClientData] = useState<any>({
         name: '',
-        peopleId: 0,
-        contractId: 0,
-        connectionId: 0,
+        peopleId: null,
+        contractId: null,
+        connectionId: null,
         pppoePassword: '',
     });
 
     const handleUpdateConnection = async (row: any) => {
+        startLoading();
         const peopleData = await getPeopleId(row.cpf);
         if(peopleData){
             setClientData({
@@ -51,7 +56,9 @@ function Row(props: IOnuLogsProps) {
                 name: peopleData.name,
                 peopleId: peopleData.id,
             });
+
             const connectionData = await getConnectionId(row.cpf, peopleData.id, row.pppoe);
+
             if(connectionData && connectionData.success){
                 setClientData({
                     ...clientData,
@@ -62,6 +69,7 @@ function Row(props: IOnuLogsProps) {
                     pppoePassword: connectionData.responses.response.password
                 });
             } else {
+                stopLoading();
                 return;
             }
 
@@ -77,7 +85,12 @@ function Row(props: IOnuLogsProps) {
                 modelOlt: onu.success && onu.responses.response.modelOlt,
                 accessPointId: row.Olts.voalle_id,
             });
+
+            if(update){
+                await updateLogsOnu({id: row.id, isUpdated: true})
+            }
         } else {
+            stopLoading();
             return;
         }
     }
@@ -139,7 +152,7 @@ function Row(props: IOnuLogsProps) {
                             </table>
                         </TableInsideTable>
                         {
-                            row.is_updated && !row.is_updated && (
+                            !row.is_updated && (
                                 <TableInsideTable>
                                     <table>
                                         <thead>
@@ -152,10 +165,58 @@ function Row(props: IOnuLogsProps) {
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>{clientData.name}</td>
-                                                <td>{clientData.peopleId}</td>
-                                                <td>{clientData.contractId}</td>
-                                                <td>{clientData.connectionId}</td>
+                                                <td>
+                                                    {
+                                                        (isLoading && !clientData.name? 
+                                                            <CircularProgress className="MUI-CircularProgress" color="primary"/> 
+                                                        :
+                                                            (!clientData.name ? 
+                                                                <HighlightOffIcon/> 
+                                                            : 
+                                                                clientData.name
+                                                            )
+                                                        )
+                                                    }
+                                                </td>
+                                                <td>
+                                                    {
+                                                        (isLoading && !clientData.peopleId? 
+                                                            <CircularProgress className="MUI-CircularProgress" color="primary"/> 
+                                                        :
+                                                            (!clientData.peopleId ? 
+                                                                <HighlightOffIcon/> 
+                                                            : 
+                                                                clientData.peopleId
+                                                            )
+                                                        )
+                                                    }
+                                                </td>
+                                                <td>
+                                                    {
+                                                        (isLoading && !clientData.contractId? 
+                                                            <CircularProgress color="primary" size={30}/> 
+                                                        :
+                                                            (!clientData.contractId ? 
+                                                                <HighlightOffIcon/> 
+                                                            : 
+                                                                clientData.contractId
+                                                            )
+                                                        )
+                                                    }
+                                                </td>
+                                                <td>
+                                                    {
+                                                        (isLoading && !clientData.connectionId? 
+                                                            <CircularProgress color="primary" size={20} /> 
+                                                        :
+                                                            (!clientData.connectionId ? 
+                                                                <HighlightOffIcon/> 
+                                                            : 
+                                                                clientData.connectionId
+                                                            )
+                                                        )
+                                                    }
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

@@ -17,7 +17,8 @@ export async function getConnectionId(cpf: string, peopleId: number, pppoe: stri
     .then(response => {
         return response.data;
     })
-    .catch(() => {
+    .catch((err) => {
+        console.log(err)
         return null;
     });
     return connectionId;
