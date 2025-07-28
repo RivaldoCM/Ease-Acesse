@@ -14,7 +14,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { ResponsiveTable, TableInsideTable } from './style';
+import { ResponsiveTable, TableInsideTable, WrapRow } from './style';
 import { CircularProgress, TablePagination } from '@mui/material';
 import { useResponse } from '../../../hooks/useResponse';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -25,6 +25,7 @@ import { updateConnection } from '../../../services/apiVoalle/updateConnection';
 import { getOnuInfo } from '../../../services/apiManageONU/getOnuInfo';
 import { updateLogsOnu } from '../../../services/apiManageONU/updateLogOnu';
 import { useLoading } from '../../../hooks/useLoading';
+import UpdateOutlinedIcon from '@mui/icons-material/UpdateOutlined';
 
 function stableSort<T>(array: readonly T[]) {
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
@@ -130,7 +131,91 @@ function Row(props: IOnuLogsProps) {
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={11}>
+                    <WrapRow>
                     <Collapse in={open}>
+                        {
+                            row.is_auth && !row.is_updated && (
+                                <TableInsideTable>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Nome</th>
+                                                <th>ID pessoas completo</th>
+                                                <th>ID contrato</th>
+                                                <th>ID conexão</th>
+                                                <th>Atualizar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    {
+                                                        (isLoading && !clientData.name? 
+                                                            <CircularProgress color="primary" size={15} /> 
+                                                        :
+                                                            (!clientData.name ? 
+                                                                <HighlightOffIcon fontSize='small'/> 
+                                                            : 
+                                                                clientData.name
+                                                            )
+                                                        )
+                                                    }
+                                                </td>
+                                                <td>
+                                                    {
+                                                        (isLoading && !clientData.peopleId? 
+                                                            <CircularProgress color="primary" size={15} /> 
+                                                        :
+                                                            (!clientData.peopleId ? 
+                                                                <HighlightOffIcon fontSize='small'/> 
+                                                            : 
+                                                                clientData.peopleId
+                                                            )
+                                                        )
+                                                    }
+                                                </td>
+                                                <td>
+                                                    {
+                                                        (isLoading && !clientData.contractId? 
+                                                            <CircularProgress color="primary" size={15} /> 
+                                                        :
+                                                            (!clientData.contractId ? 
+                                                                <HighlightOffIcon fontSize='small'/> 
+                                                            : 
+                                                                clientData.contractId
+                                                            )
+                                                        )
+                                                    }
+                                                </td>
+                                                <td>
+                                                    {
+                                                        (isLoading && !clientData.connectionId? 
+                                                            <CircularProgress color="primary" size={15} /> 
+                                                        :
+                                                            (!clientData.connectionId ? 
+                                                                <HighlightOffIcon fontSize='small' /> 
+                                                            : 
+                                                                clientData.connectionId
+                                                            )
+                                                        )
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <IconButton 
+                                                        disabled={isLoading ? true : false}
+                                                        onClick={() => handleUpdateConnection(row)}
+                                                        color="primary" 
+                                                    >
+                                                        <UpdateOutlinedIcon fontSize='small'/>
+                                                    </IconButton>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </TableInsideTable>
+                                
+                            )
+                        }
                         <TableInsideTable>
                             <table>
                                 <thead>
@@ -151,80 +236,8 @@ function Row(props: IOnuLogsProps) {
                                 </tbody>
                             </table>
                         </TableInsideTable>
-                        {
-                            !row.is_updated && (
-                                <TableInsideTable>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Nome</th>
-                                                <th>id pessoas completo</th>
-                                                <th>ID do contrato</th>
-                                                <th>ID da conexão</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    {
-                                                        (isLoading && !clientData.name? 
-                                                            <CircularProgress className="MUI-CircularProgress" color="primary"/> 
-                                                        :
-                                                            (!clientData.name ? 
-                                                                <HighlightOffIcon/> 
-                                                            : 
-                                                                clientData.name
-                                                            )
-                                                        )
-                                                    }
-                                                </td>
-                                                <td>
-                                                    {
-                                                        (isLoading && !clientData.peopleId? 
-                                                            <CircularProgress className="MUI-CircularProgress" color="primary"/> 
-                                                        :
-                                                            (!clientData.peopleId ? 
-                                                                <HighlightOffIcon/> 
-                                                            : 
-                                                                clientData.peopleId
-                                                            )
-                                                        )
-                                                    }
-                                                </td>
-                                                <td>
-                                                    {
-                                                        (isLoading && !clientData.contractId? 
-                                                            <CircularProgress color="primary" size={30}/> 
-                                                        :
-                                                            (!clientData.contractId ? 
-                                                                <HighlightOffIcon/> 
-                                                            : 
-                                                                clientData.contractId
-                                                            )
-                                                        )
-                                                    }
-                                                </td>
-                                                <td>
-                                                    {
-                                                        (isLoading && !clientData.connectionId? 
-                                                            <CircularProgress color="primary" size={20} /> 
-                                                        :
-                                                            (!clientData.connectionId ? 
-                                                                <HighlightOffIcon/> 
-                                                            : 
-                                                                clientData.connectionId
-                                                            )
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </TableInsideTable>
-                            )
-                        }
-                        <button onClick={() => handleUpdateConnection(row)}>ATUALIZAR CLIENTE</button>
                     </Collapse>
+                    </WrapRow>
                 </TableCell>
             </TableRow>
         </React.Fragment>
