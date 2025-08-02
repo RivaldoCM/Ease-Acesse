@@ -25,7 +25,7 @@ import {
     IconMassivePeople, 
     MassivePeopleStyle 
 } from "./style";
-import { Fab, IconButton } from "@mui/material";
+import { Fab, Icon, IconButton } from "@mui/material";
 import DoneIcon from '@mui/icons-material/Done';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
@@ -38,6 +38,8 @@ import LocationCityOutlinedIcon from '@mui/icons-material/LocationCityOutlined';
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import { NoData } from "../../components/SVG/noData";
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import ClearIcon from '@mui/icons-material/Clear';
 
 type LocalAddPeopleMassive = {
     userId?: IUsers['id'];
@@ -142,6 +144,8 @@ export function Massive(){
     const handleOpenAddPeopleMassive = () => setOpenAddPeopleMassive(true);
     const handleCloseAddPeopleMassive = () => setOpenAddPeopleMassive(false);
 
+    console.log(user?.rule)
+
     return(
         <React.Fragment>
             {
@@ -152,7 +156,7 @@ export function Massive(){
                                 massives.map((massive, index: number) => {
                                     return(
                                         <CardController className="flex" key={index}>
-                                            <Card className="flex" offCardOpen={showOffCard.includes(index)}>
+                                            <Card className="flex" offCardOpen={showOffCard.includes(index)} readyToFinish={user?.rule! == 17 || 16 || 19 || 14 ? massive.ready_to_finish : false}>
                                                 <div className="header flex">
                                                     <h2>{massive.type} - {dayjs(massive.failure_date).add(3, "hour").format('HH:mm') + 'h'}</h2>
                                                     {massive.Cities && (
@@ -194,9 +198,9 @@ export function Massive(){
                                                                 </div>
                                                                 {
                                                                     clientMassive.length > 1 && (
-                                                                    <IconButton size="small" color="info" onClick={() => handleOpenMaps()}>
-                                                                        <MapOutlinedIcon />
-                                                                    </IconButton>
+                                                                        <IconButton size="small" color="info" onClick={() => handleOpenMaps()}>
+                                                                            <MapOutlinedIcon />
+                                                                        </IconButton>
                                                                     )
                                                                 }
                                                             </MassivePeopleStyle>
@@ -261,9 +265,19 @@ export function Massive(){
                                                                 <CreateOutlinedIcon />
                                                             </IconButton>
                                                             <IconButton size="small" color="success" onClick={() => handleFinishMassive(massive)}>
-                                                                <DoneIcon />
+                                                                <DoneAllIcon />
                                                             </IconButton>
-                                                        </React.Fragment> : 
+                                                            {
+                                                                user?.rule! === 17 ?
+                                                                <IconButton size="small" color="success" >
+                                                                    <DoneIcon />
+                                                                </IconButton>
+                                                                :
+                                                                <IconButton size="small" color="error" >
+                                                                    <ClearIcon />
+                                                                </IconButton>
+                                                            }
+                                                        </React.Fragment> :
                                                         <></>
                                                     }
                                                 </div>

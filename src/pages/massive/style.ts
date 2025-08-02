@@ -54,6 +54,7 @@ export const Card = styled.div<IOffCard>`
     height: inherit;
     padding: .5rem .5rem 2rem .5rem;
     background-color: #CCE5FF;
+    background-color: ${(props) => props.readyToFinish ? '#22b35279' : '#CCE5FF'};
     border-radius: 1.5rem;
     overflow: hidden;
     filter: ${(props) => props.offCardOpen ? 'blur(2px)' : 'blur(0)'};
