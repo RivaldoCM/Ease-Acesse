@@ -40,6 +40,10 @@ import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import { NoData } from "../../components/SVG/noData";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import ClearIcon from '@mui/icons-material/Clear';
+import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined';
+import NotInterestedOutlinedIcon from '@mui/icons-material/NotInterestedOutlined';
+import { updateMassive } from "../../services/apiManageONU/updateMassive";
+import AvTimerOutlinedIcon from '@mui/icons-material/AvTimerOutlined';
 
 type LocalAddPeopleMassive = {
     userId?: IUsers['id'];
@@ -119,6 +123,14 @@ export function Massive(){
             massiveId: value.id
         });
     }
+
+    const handleSendMassiveToFinish = (value: Pick<IMassive, 'id'>, ready: boolean) => {
+        console.log(value.id, ready);
+        updateMassive({
+            massiveId: value.id,
+            readyToFinish: ready,
+        })
+    }
     
     const handleOpenMaps = () => {
         const locations: any = [];
@@ -143,8 +155,6 @@ export function Massive(){
     const handleCloseFinishMassive = () => setOpenFinishMassive(false);
     const handleOpenAddPeopleMassive = () => setOpenAddPeopleMassive(true);
     const handleCloseAddPeopleMassive = () => setOpenAddPeopleMassive(false);
-
-    console.log(user?.rule)
 
     return(
         <React.Fragment>
@@ -265,17 +275,23 @@ export function Massive(){
                                                                 <CreateOutlinedIcon />
                                                             </IconButton>
                                                             <IconButton size="small" color="success" onClick={() => handleFinishMassive(massive)}>
-                                                                <DoneAllIcon />
+                                                                <DoneIcon />
                                                             </IconButton>
                                                             {
-                                                                user?.rule! === 17 ?
-                                                                <IconButton size="small" color="success" >
-                                                                    <DoneIcon />
+                                                                user?.rule! === 19 ?
+                                                                <IconButton size="small" color="success" onClick={() => handleSendMassiveToFinish(massive, true)}>
+                                                                    <AddTaskOutlinedIcon />
                                                                 </IconButton>
+                                                                : massive.ready_to_finish && user?.rule! === 19 ?
+                                                                    <IconButton size="small" color="error" disabled onClick={() => handleSendMassiveToFinish(massive, false)}>
+                                                                        <AvTimerOutlinedIcon />
+                                                                    </IconButton>
+                                                                : massive.ready_to_finish && user?.rule! === 17 || 16 || 14 ? 
+                                                                    <IconButton size="small" color="error" onClick={() => handleSendMassiveToFinish(massive, false)}>
+                                                                        <NotInterestedOutlinedIcon />
+                                                                    </IconButton>
                                                                 :
-                                                                <IconButton size="small" color="error" >
-                                                                    <ClearIcon />
-                                                                </IconButton>
+                                                                    <></>
                                                             }
                                                         </React.Fragment> :
                                                         <></>

@@ -18,6 +18,7 @@ export async function updateMassive(props: IAddMassive): Promise<IResponseData |
             affected_local: props.affectedLocals,
             description: props.description,
             updated_by: props.user,
+            ready_to_finish: props.readyToFinish,
         }
     }).then((response) => {
         return response.data;
