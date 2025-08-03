@@ -125,11 +125,10 @@ export function Massive(){
     }
 
     const handleSendMassiveToFinish = (value: Pick<IMassive, 'id'>, ready: boolean) => {
-        console.log(value.id, ready);
         updateMassive({
             massiveId: value.id,
             readyToFinish: ready,
-        })
+        });
     }
     
     const handleOpenMaps = () => {
@@ -201,7 +200,7 @@ export function Massive(){
                                                                                     </p>
                                                                                     : ''
                                                                                 }
-                                                                                <p>Adicionado por: {client.User.name}</p>
+                                                                                <p>Adicionado por: {client.User!.name}</p>
                                                                             </div>
                                                                         )
                                                                     })}

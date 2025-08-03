@@ -21,4 +21,5 @@ type IMassive = {
     finished_status: string;
     status: boolean;
     type: string;
+    ready_to_finish: boolean;
 }

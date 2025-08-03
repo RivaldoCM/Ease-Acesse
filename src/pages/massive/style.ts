@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 interface IOffCard extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>{
     offCardOpen?: boolean;
+    readyToFinish?: boolean;
 }
 
 export const Container = styled.div`

@@ -92,7 +92,7 @@ export function EditMassive(props: LocalEditMassive){
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if(!form.affectedLocals.match(formatInput)){
+        if(!form.affectedLocals!.match(formatInput)){
             setFetchResponseMessage('info/massive-invalid-input');
         } else {
             const response = await updateMassive(form);
