@@ -268,33 +268,57 @@ export function Massive(){
                                                         <PersonAddOutlinedIcon />
                                                     </IconButton>
                                                     {
-                                                        user?.rule! > 13 || user?.rule === 3 ? 
-                                                        <React.Fragment>
-                                                            <IconButton size="small" color="secondary" onClick={() => handleEditCard(massive)}>
-                                                                <CreateOutlinedIcon />
-                                                            </IconButton>
-                                                            <IconButton size="small" color="success" onClick={() => handleFinishMassive(massive)}>
-                                                                <DoneIcon />
-                                                            </IconButton>
-                                                            {
-                                                                user?.rule! === 19 ?
-                                                                <IconButton size="small" color="success" onClick={() => handleSendMassiveToFinish(massive, true)}>
-                                                                    <AddTaskOutlinedIcon />
+                                                        user?.rule! == 3 || 14 || 16 || 17 || 19?
+                                                            <React.Fragment>
+                                                                <IconButton size="small" color="secondary" onClick={() => handleEditCard(massive)}>
+                                                                    <CreateOutlinedIcon />
                                                                 </IconButton>
-                                                                : massive.ready_to_finish && user?.rule! === 19 ?
-                                                                    <IconButton size="small" color="error" disabled onClick={() => handleSendMassiveToFinish(massive, false)}>
-                                                                        <AvTimerOutlinedIcon />
-                                                                    </IconButton>
-                                                                : massive.ready_to_finish && user?.rule! === 17 || 16 || 14 ? 
-                                                                    <IconButton size="small" color="error" onClick={() => handleSendMassiveToFinish(massive, false)}>
-                                                                        <NotInterestedOutlinedIcon />
-                                                                    </IconButton>
-                                                                :
-                                                                    <></>
-                                                            }
-                                                        </React.Fragment> :
+                                                            </React.Fragment>
+                                                            :
                                                         <></>
                                                     }
+                                                    {
+                                                        user?.rule! == 14 || user?.rule! == 16 || user?.rule! == 17 &&
+                                                        <IconButton size="small" color="success" onClick={() => handleFinishMassive(massive)}>
+                                                            <DoneIcon />
+                                                        </IconButton>
+                                                    }
+                                                    {
+                                                        user?.rule! == 19 && massive.User_Massive_created_by.department_id == 19 && massive.ready_to_finish !== true ?
+                                                        <IconButton size="small" color="success" onClick={() => handleSendMassiveToFinish(massive, true)}>
+                                                            <AddTaskOutlinedIcon />
+                                                        </IconButton> 
+                                                        :   user?.rule! == 19 && massive.ready_to_finish ?
+                                                            <IconButton disabled size="small">
+                                                                <AvTimerOutlinedIcon />
+                                                            </IconButton> 
+                                                        :   user?.rule! == 17 && massive.ready_to_finish === true 
+                                                                || user?.rule! == 16 && massive.ready_to_finish === true
+                                                                    || user?.rule! == 14 && massive.ready_to_finish === true ?
+                                                                        <IconButton size="small" color='error' onClick={() => handleSendMassiveToFinish(massive, true)}>
+                                                                            <NotInterestedOutlinedIcon />
+                                                                        </IconButton>
+                                                        :
+                                                        <></>
+                                                    }
+                                                    {/*
+                                                                                                            !massive.ready_to_finish && user?.rule! === 19 ?
+                                                        <IconButton size="small" color="success" onClick={() => handleSendMassiveToFinish(massive, true)}>
+                                                            <AddTaskOutlinedIcon />
+                                                        </IconButton>
+                                                        : massive.ready_to_finish && user?.rule! === 19 ?
+                                                            <IconButton size="small" color="error" disabled onClick={() => handleSendMassiveToFinish(massive, false)}>
+                                                                <AvTimerOutlinedIcon />
+                                                            </IconButton>
+                                                        : massive.ready_to_finish === true && user?.rule! === 17 || 16 || 14 ? 
+                                                            <IconButton size="small" color="error" onClick={() => handleSendMassiveToFinish(massive, false)}>
+                                                                <NotInterestedOutlinedIcon />
+                                                            </IconButton>
+                                                        :
+                                                            <IconButton size="small" color="error" onClick={() => handleSendMassiveToFinish(massive, false)}>
+                                                                <AddTaskOutlinedIcon />
+                                                            </IconButton>
+                                                    */}
                                                 </div>
                                             </OffCard>
                                         </CardController>
