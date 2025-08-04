@@ -124,10 +124,10 @@ export function Massive(){
         });
     }
 
-    const handleSendMassiveToFinish = (value: Pick<IMassive, 'id'>, ready: boolean) => {
+    const handleSendMassiveToFinish = (value: Pick<IMassive, 'id'>, status: boolean) => {
         updateMassive({
             massiveId: value.id,
-            readyToFinish: ready,
+            readyToFinish: status,
         });
     }
     
@@ -165,7 +165,12 @@ export function Massive(){
                                 massives.map((massive, index: number) => {
                                     return(
                                         <CardController className="flex" key={index}>
-                                            <Card className="flex" offCardOpen={showOffCard.includes(index)} readyToFinish={user?.rule! == 17 || 16 || 19 || 14 ? massive.ready_to_finish : false}>
+                                            <Card 
+                                                className="flex" 
+                                                offCardOpen={showOffCard.includes(index)} 
+                                                readyToFinish={massive.ready_to_finish}
+                                                rule={user?.rule!}
+                                            >
                                                 <div className="header flex">
                                                     <h2>{massive.type} - {dayjs(massive.failure_date).add(3, "hour").format('HH:mm') + 'h'}</h2>
                                                     {massive.Cities && (
@@ -268,7 +273,7 @@ export function Massive(){
                                                         <PersonAddOutlinedIcon />
                                                     </IconButton>
                                                     {
-                                                        user?.rule! == 3 || 14 || 16 || 17 || 19?
+                                                        user?.rule! == 3 || 14 || 16 || 17 || 19 ?
                                                             <React.Fragment>
                                                                 <IconButton size="small" color="secondary" onClick={() => handleEditCard(massive)}>
                                                                     <CreateOutlinedIcon />
@@ -295,30 +300,12 @@ export function Massive(){
                                                         :   user?.rule! == 17 && massive.ready_to_finish === true 
                                                                 || user?.rule! == 16 && massive.ready_to_finish === true
                                                                     || user?.rule! == 14 && massive.ready_to_finish === true ?
-                                                                        <IconButton size="small" color='error' onClick={() => handleSendMassiveToFinish(massive, true)}>
+                                                                        <IconButton size="small" color='error' onClick={() => handleSendMassiveToFinish(massive, false)}>
                                                                             <NotInterestedOutlinedIcon />
                                                                         </IconButton>
                                                         :
                                                         <></>
                                                     }
-                                                    {/*
-                                                                                                            !massive.ready_to_finish && user?.rule! === 19 ?
-                                                        <IconButton size="small" color="success" onClick={() => handleSendMassiveToFinish(massive, true)}>
-                                                            <AddTaskOutlinedIcon />
-                                                        </IconButton>
-                                                        : massive.ready_to_finish && user?.rule! === 19 ?
-                                                            <IconButton size="small" color="error" disabled onClick={() => handleSendMassiveToFinish(massive, false)}>
-                                                                <AvTimerOutlinedIcon />
-                                                            </IconButton>
-                                                        : massive.ready_to_finish === true && user?.rule! === 17 || 16 || 14 ? 
-                                                            <IconButton size="small" color="error" onClick={() => handleSendMassiveToFinish(massive, false)}>
-                                                                <NotInterestedOutlinedIcon />
-                                                            </IconButton>
-                                                        :
-                                                            <IconButton size="small" color="error" onClick={() => handleSendMassiveToFinish(massive, false)}>
-                                                                <AddTaskOutlinedIcon />
-                                                            </IconButton>
-                                                    */}
                                                 </div>
                                             </OffCard>
                                         </CardController>
