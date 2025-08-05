@@ -26,6 +26,7 @@ import { getOnuInfo } from '../../../services/apiManageONU/getOnuInfo';
 import { updateLogsOnu } from '../../../services/apiManageONU/updateLogOnu';
 import { useLoading } from '../../../hooks/useLoading';
 import UpdateOutlinedIcon from '@mui/icons-material/UpdateOutlined';
+import Input from '@mui/joy/Input';
 
 function stableSort<T>(array: readonly T[]) {
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
@@ -41,6 +42,8 @@ function Row(props: IOnuLogsProps) {
 
     const [open, setOpen] = useState(false);
     const [clientData, setClientData] = useState<any>({
+        cpf: row.cpf || '',
+        pppoe: row.pppoe || '',
         name: '',
         peopleId: null,
         contractId: null,
@@ -48,9 +51,17 @@ function Row(props: IOnuLogsProps) {
         pppoePassword: '',
     });
 
+    const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setClientData({
+            ...clientData,
+            [e.target.name]: e.target.value,
+        });
+    }
+
     const handleUpdateConnection = async (row: any) => {
         startLoading();
-        const peopleData = await getPeopleId(row.cpf);
+        console.log(clientData)
+        const peopleData = await getPeopleId(clientData.cpf);
         if(peopleData){
             setClientData({
                 ...clientData,
@@ -58,8 +69,7 @@ function Row(props: IOnuLogsProps) {
                 peopleId: peopleData.id,
             });
 
-            const connectionData = await getConnectionId(row.cpf, peopleData.id, row.pppoe);
-
+            const connectionData = await getConnectionId(clientData.cpf, peopleData.id, clientData.pppoe);
             if(connectionData && connectionData.success){
                 setClientData({
                     ...clientData,
@@ -75,10 +85,12 @@ function Row(props: IOnuLogsProps) {
             }
 
             const onu = await getOnuInfo({oltId: row.Olts.id, serialNumber: row.serial_onu});
+            console.log(onu);
+
             const update = await updateConnection({
-                onuId: onu.success && onu.responses.response.id,
+                onuId: onu.success ? onu.responses.response.id : 0,
                 connectionId: connectionData.responses.response.connectionId,
-                pppoeUser: row.pppoe,
+                pppoeUser: clientData.pppoe,
                 pppoePassword: connectionData.responses.response.password,
                 slot: row.slot,
                 pon: row.pon,
@@ -88,12 +100,21 @@ function Row(props: IOnuLogsProps) {
             });
 
             if(update){
-                await updateLogsOnu({id: row.id, isUpdated: true})
+                await updateLogsOnu({id: row.id, isUpdated: true});
             }
         } else {
             stopLoading();
             return;
         }
+    }
+
+    const handleControllWrapRow = (row: any) => {
+        setOpen(!open);
+        setClientData({
+            ...clientData,
+            cpf: row.cpf,
+            pppoe: row.pppoe,
+        });
     }
 
     return (
@@ -103,7 +124,7 @@ function Row(props: IOnuLogsProps) {
                     <IconButton
                         aria-label="expand row"
                         size="small"
-                        onClick={() => setOpen(!open)}
+                        onClick={() => handleControllWrapRow(row)}
                     >
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
@@ -139,6 +160,8 @@ function Row(props: IOnuLogsProps) {
                                     <table>
                                         <thead>
                                             <tr>
+                                                <th>CPF</th>
+                                                <th>PPPoE</th>
                                                 <th>Nome</th>
                                                 <th>ID pessoas completo</th>
                                                 <th>ID contrato</th>
@@ -148,6 +171,24 @@ function Row(props: IOnuLogsProps) {
                                         </thead>
                                         <tbody>
                                             <tr>
+                                                <td>
+                                                    <Input
+                                                        name='cpf'
+                                                        size='sm'
+                                                        sx={{ width: 150}}
+                                                        value={clientData.cpf}
+                                                        onChange={handleChangeInput}
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <Input 
+                                                        name='pppoe'
+                                                        size='sm'
+                                                        sx={{ width: 150}}
+                                                        value={clientData.pppoe}
+                                                        onChange={handleChangeInput}
+                                                    />
+                                                </td>
                                                 <td>
                                                     {
                                                         (isLoading && !clientData.name? 
@@ -163,7 +204,7 @@ function Row(props: IOnuLogsProps) {
                                                 </td>
                                                 <td>
                                                     {
-                                                        (isLoading && !clientData.peopleId? 
+                                                        (isLoading && !clientData.peopleId?
                                                             <CircularProgress color="primary" size={15} /> 
                                                         :
                                                             (!clientData.peopleId ? 
