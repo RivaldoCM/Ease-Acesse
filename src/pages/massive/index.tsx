@@ -289,10 +289,10 @@ export function Massive(){
                                                         </IconButton>
                                                     }
                                                     {
-                                                        user?.rule! == 19 && massive.User_Massive_created_by.department_id == 19 && massive.ready_to_finish !== true ?
+                                                        user?.rule! == 19 && massive.ready_to_finish !== true ?
                                                         <IconButton size="small" color="success" onClick={() => handleSendMassiveToFinish(massive, true)}>
                                                             <AddTaskOutlinedIcon />
-                                                        </IconButton> 
+                                                        </IconButton>
                                                         :   user?.rule! == 19 && massive.ready_to_finish ?
                                                             <IconButton disabled size="small">
                                                                 <AvTimerOutlinedIcon />
