@@ -49,8 +49,11 @@ function Row(props: IOnuLogsProps) {
         contractId: null,
         connectionId: null,
         pppoePassword: '',
+        fakeUp: false,
+        teste: 0
     });
 
+    //ATUALIZA DADOS DE CPF E PPPOE CASO EDITADOS
     const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setClientData({
             ...clientData,
@@ -58,9 +61,18 @@ function Row(props: IOnuLogsProps) {
         });
     }
 
+    //CONTROLA A ATUALIZAÇÃO DO CPF E PPPOE A CADA ABERTURA OU FECHAMENTO DO WRAP
+    const handleControllWrapRow = (row: any) => {
+        setOpen(!open);
+        setClientData({
+            ...clientData,
+            cpf: row.cpf,
+            pppoe: row.pppoe,
+        });
+    }
+
     const handleUpdateConnection = async (row: any) => {
         startLoading();
-        console.log(clientData)
         const peopleData = await getPeopleId(clientData.cpf);
         if(peopleData){
             setClientData({
@@ -85,8 +97,6 @@ function Row(props: IOnuLogsProps) {
             }
 
             const onu = await getOnuInfo({oltId: row.Olts.id, serialNumber: row.serial_onu});
-            console.log(onu);
-
             const update = await updateConnection({
                 onuId: onu.success ? onu.responses.response.id : 0,
                 connectionId: connectionData.responses.response.connectionId,
@@ -100,22 +110,28 @@ function Row(props: IOnuLogsProps) {
             });
 
             if(update){
+                //NAO SEI PQ PRECISO REECREVER OS DADOS, O SPREAD(...) NAO ESTÁ FUNCIONANDO
+                setClientData({
+                    ...clientData,
+                    name: peopleData.name,
+                    peopleId: peopleData.id,
+                    connectionId: connectionData.responses.response.connectionId,
+                    contractId: connectionData.responses.response.contractId,
+                    pppoePassword: connectionData.responses.response.password,
+                    fakeUp: true,
+                    rowId: row.id
+                });
                 await updateLogsOnu({id: row.id, isUpdated: true});
             }
+
+            stopLoading();
         } else {
             stopLoading();
             return;
         }
     }
 
-    const handleControllWrapRow = (row: any) => {
-        setOpen(!open);
-        setClientData({
-            ...clientData,
-            cpf: row.cpf,
-            pppoe: row.pppoe,
-        });
-    }
+    console.log(row.is_updated && clientData.fakeUp && clientData.teste === row.id);
 
     return (
         <React.Fragment>
@@ -141,10 +157,10 @@ function Row(props: IOnuLogsProps) {
                 <TableCell align="center">
                     {
                         row.is_auth ?
-                            row.is_updated ? 
-                                <CheckCircleOutlineIcon color='success'/> 
+                            row.is_updated || clientData.fakeUp && clientData.rowId === row.id ? 
+                                <CheckCircleOutlineIcon color='success' /> 
                                 : 
-                                <HighlightOffIcon color='error'/>
+                                <HighlightOffIcon color='error' />
                             :
                         <></>
                     }
@@ -163,9 +179,9 @@ function Row(props: IOnuLogsProps) {
                                                 <th>CPF</th>
                                                 <th>PPPoE</th>
                                                 <th>Nome</th>
-                                                <th>ID pessoas completo</th>
-                                                <th>ID contrato</th>
-                                                <th>ID conexão</th>
+                                                <th>ID Pessoas Completo</th>
+                                                <th>ID Contrato</th>
+                                                <th>ID Conexão</th>
                                                 <th>Atualizar</th>
                                             </tr>
                                         </thead>
