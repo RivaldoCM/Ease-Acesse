@@ -7,14 +7,29 @@ export const Container = styled.div`
     align-items: center;
 
     .cpe{
-        li{
-            display: flex;
-            gap: 1rem;
+        ul{
             width: 100%;
-            background-color:aliceblue;
-            padding: 1rem;
-            border-radius: .5rem;
-            box-shadow: 0px -5px 5px rgba(0, 0, 0, 0.2);        
+
+            li{
+                width: inherit;
+                display: flex;
+                margin: 1rem;
+            }
         }
+    }
+`;
+
+export const CPE = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: inherit;
+    background-color:aliceblue;
+    padding: 1rem;
+    border-radius: .5rem;
+    box-shadow: 0px -5px 5px rgba(0, 0, 0, 0.2);
+    
+    div{
+        justify-content: space-between;
+        margin-top: .5rem;
     }
 `;

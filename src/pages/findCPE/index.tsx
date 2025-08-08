@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form } from "../onuDelete/style";
-import { Autocomplete, Button, CircularProgress, TextField } from "@mui/material";
+import { Autocomplete, Button, ButtonGroup, CircularProgress, TextField } from "@mui/material";
 
 import SendIcon from '@mui/icons-material/Send';
 import { getCities } from "../../services/apiManageONU/getCities";
@@ -9,7 +9,7 @@ import { useLoading } from "../../hooks/useLoading";
 import { ICities } from "../../interfaces/ICities";
 import { findCPE } from "../../services/apiManageONU/findCPE";
 import { useAuth } from "../../hooks/useAuth";
-import { Container } from "./style";
+import { Container, CPE } from "./style";
 
 export function FindCPE(){
     const { user } = useAuth(); 
@@ -145,9 +145,34 @@ export function FindCPE(){
                         {cpes.map((cpe: any, index) => {
                             return(
                                 <li key={index}>
-                                    <p>MAC: {cpe.mac}</p>
-                                    <p>IP: {cpe.ip}</p>
-                                    <a rel="stylesheet" href={`https://${cpe.ip}:8085`} target="_blank">abrir</a>
+                                    <CPE>
+                                        <div className="flex">
+                                            <p><b>MAC:</b> {cpe.mac}</p>
+                                            <p><b>IP: </b>{cpe.ip}</p>
+                                            {cpe.uptime && <p><b>uptime:</b> {cpe.uptime}</p> }
+                                            {cpe.pppoe && <p><b>PPPoE:</b> {cpe.pppoe}</p> }
+                                        </div>
+                                        <div className="flex">
+                                            <ButtonGroup orientation="vertical">
+                                                <Button target="_blank" href={`http://${cpe.ip}:8085`}>
+                                                    HTTP com porta 8085
+                                                </Button>
+                                                <Button target="_blank" href={`http://${cpe.ip}`}>
+                                                    HTTP com porta 80
+                                                </Button>
+                                            </ButtonGroup>
+                                            <ButtonGroup orientation="vertical">
+                                                <Button target="_blank" href={`https://${cpe.ip}:8085`}>
+                                                    HTTPS com porta 8085
+                                                </Button>
+                                                <Button target="_blank" href={`https://${cpe.ip}`}>
+                                                    HTTPS com porta 443
+                                                </Button>
+
+                                            </ButtonGroup>
+                                        </div>
+                                        
+                                    </CPE>
                                 </li>
                             )
                         })}
