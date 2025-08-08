@@ -20,6 +20,7 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import SchemaOutlinedIcon from '@mui/icons-material/SchemaOutlined';
+import RouterOutlinedIcon from '@mui/icons-material/RouterOutlined';
 
 export var handleDynamicPagesByRule: IAllPages[];
 export const handlePages: IAllPages[] = [
@@ -37,6 +38,9 @@ export const handlePages: IAllPages[] = [
            },
            {
                 onu_info: 'Consultar ONU'
+           },
+           {
+                find_CPE: 'Ver roteador resetado'
            }
         ]
     },
@@ -201,6 +205,8 @@ export const handleIconMenu = (text: string): React.ReactElement => {
             return <AssignmentOutlinedIcon />;
         case 'fiber_network':
             return <SchemaOutlinedIcon />;
+        case 'find_CPE':
+            return <RouterOutlinedIcon />;
         default:
             return <></>;
     }
