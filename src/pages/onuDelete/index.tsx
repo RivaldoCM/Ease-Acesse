@@ -124,8 +124,8 @@ export function OnuDelete(){
                     )}}
                 />
                 <TextField 
-                    label="Digite o serial da ONU" 
-                    id="fullWidth" 
+                    label="Digite o serial da ONU"
+                    sx={{ width: '250px' }}
                     value={form.serial}
                     name="serial"
                     onChange={handleFormChange}
