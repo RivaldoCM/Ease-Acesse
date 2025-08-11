@@ -40,7 +40,7 @@ export const handlePages: IAllPages[] = [
                 onu_info: 'Consultar ONU'
            },
            {
-                find_CPE: 'Ver roteador resetado'
+                find_CPE: 'Ver Roteador Resetado'
            }
         ]
     },

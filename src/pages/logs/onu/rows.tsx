@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 
-import { useResponse } from '../../../hooks/useResponse';
 import { useLoading } from '../../../hooks/useLoading';
 
 import { getPeopleId } from '../../../services/apiVoalle/getPeopleId';
@@ -8,23 +7,15 @@ import { getConnectionId } from '../../../services/apiManageONU/getConnectionId'
 import { updateConnection } from '../../../services/apiVoalle/updateConnection';
 import { getOnuInfo } from '../../../services/apiManageONU/getOnuInfo';
 import { updateLogsOnu } from '../../../services/apiManageONU/updateLogOnu';
-import { getOnuLogs } from '../../../services/apiManageONU/getOnuLogs';
 
-import { FilterOptions } from './filterOptions';
-
+import { TableInsideTable, WrapRow } from './style';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { ResponsiveTable, TableInsideTable, WrapRow } from './style';
-import { CircularProgress, TablePagination } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import UpdateOutlinedIcon from '@mui/icons-material/UpdateOutlined';
@@ -248,10 +239,10 @@ export function RowLogsOnu(props: IOnuLogsProps) {
                                                     }
                                                 </td>
                                                 <td>
-                                                    <IconButton 
+                                                    <IconButton
                                                         disabled={isLoading ? true : false}
                                                         onClick={() => handleUpdateConnection(row)}
-                                                        color="primary" 
+                                                        color="primary"
                                                     >
                                                         <UpdateOutlinedIcon fontSize='small' />
                                                     </IconButton>
