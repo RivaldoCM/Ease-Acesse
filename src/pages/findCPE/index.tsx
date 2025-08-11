@@ -69,6 +69,8 @@ export function FindCPE(){
             if(response){
                 if(response.success){
                     setCpes(response.responses.response);
+                } else {
+                    setFetchResponseMessage(response.messages.message);
                 }
             } else {
                 setFetchResponseMessage('error/no-connection-with-API');
@@ -139,20 +141,21 @@ export function FindCPE(){
                 }
             </Form>
             {
-                cpes.length > 0 ?
+                cpes && cpes.length > 0 ?
                 <div className="flex cpe">
-                    <ul className="list-cpes">
+                    <ul>
                         {cpes.map((cpe: any, index) => {
                             return(
                                 <li key={index}>
                                     <CPE>
                                         <div className="flex">
                                             <p><b>MAC:</b> {cpe.mac}</p>
-                                            <p><b>IP: </b>{cpe.ip}</p>
-                                            {cpe.uptime && <p><b>uptime:</b> {cpe.uptime}</p> }
+                                            {cpe.uptime && <p><b>Uptime:</b> {cpe.uptime}</p> }
                                             {cpe.pppoe && <p><b>PPPoE:</b> {cpe.pppoe}</p> }
+                                            <p><b>IP: </b>{cpe.ip}</p>
                                         </div>
                                         <div className="flex">
+                                            FORMAS DE ACESSO AO ROTEADOR
                                             <ButtonGroup orientation="vertical">
                                                 <Button target="_blank" href={`http://${cpe.ip}:8085`}>
                                                     HTTP com porta 8085
@@ -171,7 +174,6 @@ export function FindCPE(){
 
                                             </ButtonGroup>
                                         </div>
-                                        
                                     </CPE>
                                 </li>
                             )
