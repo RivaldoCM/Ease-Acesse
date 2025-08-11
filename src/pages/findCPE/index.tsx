@@ -3,6 +3,7 @@ import { Form } from "../onuDelete/style";
 import { Autocomplete, Button, ButtonGroup, CircularProgress, TextField } from "@mui/material";
 
 import SendIcon from '@mui/icons-material/Send';
+import LaunchIcon from '@mui/icons-material/Launch';
 import { getCities } from "../../services/apiManageONU/getCities";
 import { useResponse } from "../../hooks/useResponse";
 import { useLoading } from "../../hooks/useLoading";
@@ -155,20 +156,19 @@ export function FindCPE(){
                                             <p><b>IP: </b>{cpe.ip}</p>
                                         </div>
                                         <div className="flex">
-                                            FORMAS DE ACESSO AO ROTEADOR
                                             <ButtonGroup orientation="vertical">
-                                                <Button target="_blank" href={`http://${cpe.ip}:8085`}>
+                                                <Button target="_blank" href={`http://${cpe.ip}:8085`} endIcon={<LaunchIcon />}>
                                                     HTTP com porta 8085
                                                 </Button>
-                                                <Button target="_blank" href={`http://${cpe.ip}`}>
+                                                <Button target="_blank" href={`http://${cpe.ip}`} endIcon={<LaunchIcon />}>
                                                     HTTP com porta 80
                                                 </Button>
                                             </ButtonGroup>
                                             <ButtonGroup orientation="vertical">
-                                                <Button target="_blank" href={`https://${cpe.ip}:8085`}>
+                                                <Button target="_blank" href={`https://${cpe.ip}:8085`} endIcon={<LaunchIcon />}>
                                                     HTTPS com porta 8085
                                                 </Button>
-                                                <Button target="_blank" href={`https://${cpe.ip}`}>
+                                                <Button target="_blank" href={`https://${cpe.ip}`} endIcon={<LaunchIcon />}>
                                                     HTTPS com porta 443
                                                 </Button>
 
