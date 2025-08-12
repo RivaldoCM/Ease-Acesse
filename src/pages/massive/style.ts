@@ -302,13 +302,18 @@ export const SideMapStyle = styled.aside`
 
 //------------------------CARD-PAINEL------------------------//
 
-export const CardPanel = styled.div`
+export const CardPanel = styled.div<IOffCard>`
     position: relative;
     flex-direction: column;
     width: inherit;
     height: inherit;
     padding: 0 .5rem;
-    background-color: #CCE5FF;
+    background-color: ${(props) =>
+        props.readyToFinish && props.rule === 19 ||
+            props.readyToFinish && props.rule === 17 ||
+                props.readyToFinish && props.rule === 16 ||
+                    props.readyToFinish && props.rule === 14 ? '#22b35279' : '#CCE5FF'
+    };
     border-radius: 1.5rem;
     overflow: hidden;
 

@@ -1,6 +1,7 @@
 import React from "react";
 import dayjs from "dayjs";
 
+import { useAuth } from "../../hooks/useAuth";
 import { useMassive } from "../../hooks/useMassive";
 import { NoData } from "../../components/SVG/noData";
 
@@ -15,6 +16,7 @@ import LocationCityOutlinedIcon from '@mui/icons-material/LocationCityOutlined';
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined';
 
 export function MassivePanel(){
+    const { user } = useAuth();
     const { massives } = useMassive();
 
     return(
@@ -25,12 +27,17 @@ export function MassivePanel(){
                         <Cards>
                             {
                                 massives.map((massive, index: number) => {
+                                    console.log(massive)
                                     return(
                                         <CardController className="flex" key={index}>
-                                            <CardPanel className="flex">
+                                            <CardPanel 
+                                                className="flex"
+                                                readyToFinish={massive.ready_to_finish}
+                                                rule={user?.rule!}
+                                            >
                                                 <div className="header flex">
                                                     <h2>{massive.type} - {dayjs(massive.failure_date).add(3, "hour").format('HH:mm') + 'h'}</h2>
-                                                    <p>{massive.Cities.name}</p>
+                                                    <p>{massive.Cities ? massive.Cities.name : ''}</p>
                                                 </div>
                                                 <div className="content">
                                                     <div className="basic-info flex">
