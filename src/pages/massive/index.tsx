@@ -283,10 +283,11 @@ export function Massive(){
                                                         <></>
                                                     }
                                                     {
-                                                        user?.rule! == 14 || user?.rule! == 16 || user?.rule! == 17 &&
+                                                        user?.rule! == 14 || user?.rule! == 16 || user?.rule! == 17 ?
                                                         <IconButton size="small" color="success" onClick={() => handleFinishMassive(massive)}>
                                                             <DoneIcon />
-                                                        </IconButton>
+                                                        </IconButton> :
+                                                        <></>
                                                     }
                                                     {
                                                         user?.rule! == 19 && massive.ready_to_finish !== true ?
