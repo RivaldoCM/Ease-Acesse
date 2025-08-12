@@ -124,7 +124,7 @@ export function AddMassive(props: any){
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if(!form.affectedLocals.match(formatInput)){
+        if(!form.affectedLocals!.match(formatInput)){
             setFetchResponseMessage('info/massive-invalid-input');
         } else {
             const response = await addMassive(form);
@@ -172,7 +172,6 @@ export function AddMassive(props: any){
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    required
                                     label="Cidade"
                                     InputProps={{
                                         ...params.InputProps,
@@ -203,16 +202,17 @@ export function AddMassive(props: any){
                             <MenuItem value="Manutenção">Manutenção</MenuItem>
                             <MenuItem value="Troca de Poste">Troca de Poste</MenuItem>
                             <MenuItem value="Queda">Queda</MenuItem>
+                            <MenuItem value="Falha geral">Falha geral</MenuItem>
                         </Select>
                     </FormControl>
-                    <div className="flex">
-                        <FormControl fullWidth variant="outlined" sx={{ mt: 2, mr:1 }}>
+                    <div className="flex wrap">
+                        <FormControl variant="outlined" sx={{ mt: 1, mr: 1 }}>
                             <InputLabel>Horario de falha</InputLabel>
                             <OutlinedInput
                                 required
                                 label="Horario de falha"
                                 name="failureTime"
-                                type='text'
+                                type="text"
                                 value={form.failureTime}
                                 endAdornment={
                                     <InputAdornment position="end">
@@ -234,7 +234,7 @@ export function AddMassive(props: any){
                                 )
                             }
                         </FormControl>
-                        <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
+                        <FormControl variant="outlined" sx={{ mt: 1 }}>
                             <InputLabel>Previsão de retorno</InputLabel>
                             <OutlinedInput
                                 label="Previsão de retorno"

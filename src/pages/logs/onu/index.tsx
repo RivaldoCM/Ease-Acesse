@@ -1,26 +1,22 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { getOnuLogs } from '../../../services/apiManageONU/getOnuLogs';
 import { FilterOptions } from './filterOptions';
+import { RowLogsOnu } from './rows';
 
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
+import { useResponse } from '../../../hooks/useResponse';
+
+import { getOnuLogs } from '../../../services/apiManageONU/getOnuLogs';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ResponsiveTable } from './style';
 import { TablePagination } from '@mui/material';
-import { useResponse } from '../../../hooks/useResponse';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+
 
 function stableSort<T>(array: readonly T[]) {
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
@@ -28,62 +24,6 @@ function stableSort<T>(array: readonly T[]) {
         return a[1] - b[1];
     });
     return stabilizedThis.map((el) => el[0]);
-}
-
-function Row(props: IOnuLogsProps) {
-    const { row } = props;
-    const [open, setOpen] = React.useState(false);
-
-    return (
-        <React.Fragment>
-            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-                <TableCell>
-                    <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => setOpen(!open)}
-                    >
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
-                </TableCell>
-                <TableCell align="center">{row.created_at}</TableCell>
-                <TableCell component="th" scope="row">
-                    {row.User.name}
-                </TableCell>
-                <TableCell align="center">{row.Cities.name}</TableCell>
-                <TableCell align="center">{row.Olts.name}</TableCell>
-                <TableCell align="center">{row.slot}</TableCell>
-                <TableCell align="center">{row.pon}</TableCell>
-                <TableCell align="center">{row.serial_onu}</TableCell>
-                <TableCell align="center">{row.cpf}</TableCell>
-                <TableCell align="center">{row.pppoe}</TableCell>
-                <TableCell align="center">{row.rx_olt}</TableCell>
-                <TableCell align="center">{row.rx_onu}</TableCell>
-                <TableCell align="center">
-                    {
-                        row.is_auth ?
-                            row.is_updated ? 
-                                <CheckCircleOutlineIcon color='success'/> 
-                                : 
-                                <HighlightOffIcon color='error'/>
-                            : 
-                        <></>
-                    }
-                    </TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                Histórico
-                            </Typography>
-                        </Box>
-                    </Collapse>
-                </TableCell>
-            </TableRow>
-        </React.Fragment>
-    );
 }
 
 export function LogsOnu() {
@@ -100,7 +40,6 @@ export function LogsOnu() {
             if(data){
                 if(data.success){
                     data.responses.response && setOnu(data.responses.response);
-
                     setPage(0);
                 } else {
                     setOnu([]);
@@ -112,7 +51,7 @@ export function LogsOnu() {
         };
         getData();
     }, [filterParams]);
-    console.log(onu)
+
     const visibleRows = useMemo(() => 
         stableSort(onu).slice(
             page * rowsPerPage,
@@ -133,7 +72,7 @@ export function LogsOnu() {
     return (
         <React.Fragment>
             <TableContainer component={Paper}>
-                <FilterOptions onFilterChange={handleFilterChange}/>
+                <FilterOptions onFilterChange={handleFilterChange} />
                 <ResponsiveTable>
                     <Table aria-label="collapsible table">
                         <TableHead>
@@ -142,11 +81,7 @@ export function LogsOnu() {
                                 <TableCell align="center">Data</TableCell>
                                 <TableCell align="center">Tecnico</TableCell>
                                 <TableCell align="center" sx={{width: 150}}>Cidade</TableCell>
-                                <TableCell align="center">OLT</TableCell>
-                                <TableCell align="center">Placa</TableCell>
-                                <TableCell align="center">Pon</TableCell>
                                 <TableCell align="center">Serial</TableCell>
-                                <TableCell align="center">CPF</TableCell>
                                 <TableCell align="center">PPPoE</TableCell>
                                 <TableCell align="center">Sinal recebido pela OLT(dBM)</TableCell>
                                 <TableCell align="center">Sinal recebido pela ONU(dBM)</TableCell>
@@ -155,13 +90,13 @@ export function LogsOnu() {
                         </TableHead>
                         <TableBody>
                             {visibleRows && visibleRows.map((row, index) => (
-                                <Row key={index} row={row} />
+                                <RowLogsOnu key={index} row={row} />
                             ))}
                         </TableBody>
                     </Table>
                 </ResponsiveTable>
                 <TablePagination
-                    rowsPerPageOptions={[10, 15, 25]}
+                    rowsPerPageOptions={[10, 15, 25, 50]}
                     component="div"
                     count={onu.length}
                     rowsPerPage={rowsPerPage}

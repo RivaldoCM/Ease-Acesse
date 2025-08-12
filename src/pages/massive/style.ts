@@ -3,6 +3,8 @@ import styled from "styled-components";
 
 interface IOffCard extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>{
     offCardOpen?: boolean;
+    readyToFinish?: boolean;
+    rule?: number;
 }
 
 export const Container = styled.div`
@@ -25,15 +27,11 @@ export const Cards = styled.div`
     width: 100%;
     line-height: 30px;
 
-    @media (max-width: 822px){
-        grid-template-columns: repeat(auto-fit, 300px);
-    }
-
     @media (max-width: 620px){
         grid-template-columns: repeat(auto-fit, 400px);
     }
 
-    @media (max-width: 499px){
+    @media (max-width: 420px){
         grid-template-columns: repeat(auto-fit, 90vw);
     }
 `;
@@ -49,10 +47,6 @@ export const CardController = styled.div`
     @media (max-width: 899px){
         line-height: 28px;
     }
-
-    @media (max-width: 499px){
-        width: 100%;
-    }
 `;
 
 export const Card = styled.div<IOffCard>`
@@ -61,7 +55,12 @@ export const Card = styled.div<IOffCard>`
     width: inherit;
     height: inherit;
     padding: .5rem .5rem 2rem .5rem;
-    background-color: #CCE5FF;
+    background-color: ${(props) =>
+        props.readyToFinish && props.rule === 19 ||
+            props.readyToFinish && props.rule === 17 ||
+                props.readyToFinish && props.rule === 16 ||
+                    props.readyToFinish && props.rule === 14 ? '#22b35279' : '#CCE5FF'
+    };
     border-radius: 1.5rem;
     overflow: hidden;
     filter: ${(props) => props.offCardOpen ? 'blur(2px)' : 'blur(0)'};
@@ -195,7 +194,9 @@ export const OffCard = styled.div<IOffCard>`
 
 export const FormAddMassive = styled.form`
     flex-direction: column;
-    width: 464px;
+    width: 100%;
+    max-width: 464px;
+    margin: 0 1rem;
     height: auto;
     padding: 1rem 1rem 0 1rem;
     text-align: left;

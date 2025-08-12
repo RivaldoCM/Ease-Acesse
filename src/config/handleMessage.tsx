@@ -207,6 +207,11 @@ export const handleMessage = (res: string): {responseMessage: string, severitySt
                 responseMessage: 'Wifi atualizado com sucesso.',
                 severityStatus: 'success'
             }
+        case 'error/cpe-not-found':
+            return{
+                responseMessage: 'Roteador não encontrado.',
+                severityStatus: 'warning'
+            }
         default:
             return{
                 responseMessage: 'Erro interno, verifique com o suporte.',

@@ -88,7 +88,7 @@ export function ZTEForm({onu}: IOnu){
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(typePppoeZte.includes(onu.model), onu.model)
+
         if(isLoading){
             setFetchResponseMessage('warning/has-action-in-progress');
         }else if(!authOnu.cpf.match(isValidCpf)){

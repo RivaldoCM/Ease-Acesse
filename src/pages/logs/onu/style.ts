@@ -30,3 +30,38 @@ export const FilterButtons = styled.div`
         margin: .3rem;
     }
 `
+
+export const WrapRow = styled.div`
+    > div{
+        > div{
+            > div{
+                display: flex;
+                flex-direction: column;
+                max-width: 100%;
+            }
+        }
+    }
+`;
+
+export const TableInsideTable = styled.div`
+    margin: 1rem;
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #ffffff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    thead { background-color: #e0e0e0; }
+    th, td {
+        padding: 12px 15px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tbody tr:nth-child(even) { background-color: #f9f9f9; }
+    tbody tr:hover{ background-color: #f1f1f1; }
+    th { color: #333; font-weight: bold; }
+`

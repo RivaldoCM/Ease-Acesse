@@ -7,6 +7,7 @@ type IMassive = {
     }
     User_Massive_created_by: {
         name: string;
+        department_id: number;
     },
     User_Massive_last_updated_by: {
         name: string | null;
@@ -21,4 +22,5 @@ type IMassive = {
     finished_status: string;
     status: boolean;
     type: string;
+    ready_to_finish: boolean;
 }

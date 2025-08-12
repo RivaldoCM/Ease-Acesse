@@ -42,7 +42,6 @@ export function OnuInfo(){
         wifi58: null as string | null,
         password58: null as string | null
     });
-    console.log(onu)
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
