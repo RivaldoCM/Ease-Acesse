@@ -149,7 +149,7 @@ export const handleShowPageByRule = (rule?: number) => {
             return handleDynamicPagesByRule = massiveAndExitLag;
         case 3:
             let onlyBreakTime = cloneDeep(handlePages);
-            onlyBreakTime[0].pages.splice(0,3);
+            onlyBreakTime[0].pages.splice(2,1);
             onlyBreakTime.splice(1,2);
             onlyBreakTime.splice(3,2);
             return handleDynamicPagesByRule = onlyBreakTime;
