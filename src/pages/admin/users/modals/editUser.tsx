@@ -18,7 +18,7 @@ type IEditUser = {
         name: string,
         email: string,
         department_id: number,
-        status: string
+        is_disabled: any
     } | null,
     handleClose: () => void
 }
@@ -27,19 +27,34 @@ export function EditUser(props: IEditUser){
     const { user } = useAuth();
     const { setFetchResponseMessage } = useResponse();
 
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<any>({
         id: props.selectedUser!.id,
         userName: props.selectedUser!.name,
         email: props.selectedUser!.email,
         accessLevel: props.selectedUser!.department_id,
-        status: props.selectedUser!.status
+        isDisabled: props.selectedUser!.is_disabled === 'false' ? false : true
     });
-
+    console.log(form)
     const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string | number>) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value
         });
+    }
+
+    const handleStatus = (e: SelectChangeEvent<string | number>) => {
+        //ESSE CAPETA DESSE JAVASCRIPT QUE NÃO ENTENDE DIREITO
+        if(e.target.value === 'true'){
+            setForm({
+                ...form,
+                [e.target.name]: true
+            });
+        } else {
+            setForm({
+                ...form,
+                [e.target.name]: false
+            });
+        }
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -55,7 +70,7 @@ export function EditUser(props: IEditUser){
                 userName: form.userName,
                 email: form.email,
                 accessLevel: form.accessLevel,
-                status: form.status
+                status: form.isDisabled
             });
             
             if(response){
@@ -128,12 +143,12 @@ export function EditUser(props: IEditUser){
                     <InputLabel>Status</InputLabel>
                     <Select
                         label="Status"
-                        name="status"
-                        value={form.status}
-                        onChange={handleFormChange}
+                        name="isDisabled"
+                        value={form.isDisabled}
+                        onChange={handleStatus}
                     >
-                        <MenuItem value="normal">Ativo</MenuItem>
-                        <MenuItem value="Desativado">Desativado</MenuItem>
+                        <MenuItem value="true">Ativo</MenuItem>
+                        <MenuItem value="false">Desativado</MenuItem>
                     </Select>
                 </FormControl>
                 <div className="flex">

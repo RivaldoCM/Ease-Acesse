@@ -179,7 +179,6 @@ export function Users(){
                 <TableContainer>
                     <Table
                         sx={{ minWidth: 750 }}
-                        aria-labelledby="tableTitle"
                         size={dense ? 'small' : 'medium'}
                     >
                         <EnhancedTableHead />
@@ -218,7 +217,9 @@ export function Users(){
                                     </TableCell>
                                     <TableCell align="right">{row.email}</TableCell>
                                     {renderDepartment(row.department_id)}
-                                    <TableCell align="right">{row.status}</TableCell>
+                                    <TableCell align="right">
+                                        {row.is_disabled ? 'Desabilitado' : 'Habilitado'}
+                                    </TableCell>
                                 </TableRow>
                             );
                         })}
