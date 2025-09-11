@@ -4,6 +4,7 @@ import { handleShowPageByRule } from '../config/menu';
 import { IDecodedJWT } from '../interfaces/IDecodedJWT';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 export const SocketContext = createContext<{
     socket: Socket,
@@ -23,8 +24,12 @@ export function SocketContextProvider({ children }: {children: ReactNode}) {
         });
 
         newSocket.on('update-user', data => {
-            localStorage.setItem('Authorization', data);
-            const jwtDecoded: IDecodedJWT = jwtDecode(data);
+            if(data.updateToken === false) {
+                localStorage.removeItem('Authorization');
+                return;
+            }
+            localStorage.setItem('Authorization', data.token);
+            const jwtDecoded: IDecodedJWT = jwtDecode(data.token);
             handleShowPageByRule(jwtDecoded.rule);
         });
 

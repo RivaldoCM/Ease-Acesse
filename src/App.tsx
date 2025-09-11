@@ -13,17 +13,15 @@ export function App() {
     return (
         <AuthContextProvider>
             <SocketContextProvider>
-                <TicketContextProvider>
-                    <DataPickerContext>
-                        <HandleResponseContextProvider>
-                            <BrowserRouter>
-                                <AppRoutes />
-                                <Analytics />
-                                <GlobalStyle />
-                            </BrowserRouter>
-                        </HandleResponseContextProvider>
-                    </DataPickerContext>
-                </TicketContextProvider>
+                <DataPickerContext>
+                    <HandleResponseContextProvider>
+                        <BrowserRouter>
+                            <AppRoutes />
+                            <Analytics />
+                            <GlobalStyle />
+                        </BrowserRouter>
+                    </HandleResponseContextProvider>
+                </DataPickerContext>
             </SocketContextProvider>
         </AuthContextProvider>
     );
