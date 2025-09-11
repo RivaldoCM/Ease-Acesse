@@ -13,7 +13,8 @@ export async function getMassive(): Promise<IResponseData | IResponseError>{
         }
     }).then((response) => {
         return response.data;
-    }).catch(() =>{
+    }).catch((err) => {
+        console.log(err);
         return null;
     });
 

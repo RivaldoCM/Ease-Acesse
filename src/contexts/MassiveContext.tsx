@@ -17,7 +17,15 @@ export function MassiveContextProvider({ children }: {children: ReactNode}) {
     useEffect(() => {
         const getData = async () => {
             const response = await getMassive();
-            response.success ? setMassives(response.responses.response) : setMassives([]);
+            if(response){
+                if(response.success){
+                    setMassives(response.responses.response);
+                } else {
+                    console.log(response.messages)
+                }
+
+            }
+
         }
         getData();
     }, []);

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function updateUser({id, userName, email, accessLevel, status}: any){
+export async function updateUser({id, userName, email, accessLevel, status}: {id: number, userName: string, email: string, accessLevel: number, status: boolean}){
     const res = await axios({
         method: 'patch',
         url: `${import.meta.env.VITE_BASEURL_MANAGE_ONU}/users`,
@@ -12,7 +12,7 @@ export async function updateUser({id, userName, email, accessLevel, status}: any
             name: userName,
             email: email,
             rule: accessLevel,
-            status: status,
+            isDisabled: status,
         }
     }).then((response) => {
         return response.data;

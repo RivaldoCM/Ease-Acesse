@@ -32,9 +32,9 @@ export function EditUser(props: IEditUser){
         userName: props.selectedUser!.name,
         email: props.selectedUser!.email,
         accessLevel: props.selectedUser!.department_id,
-        isDisabled: props.selectedUser!.is_disabled === 'false' ? false : true
+        isDisabled: props.selectedUser!.is_disabled.toString() === 'false' ? false : true
     });
-    console.log(form)
+    console.log(form);
     const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string | number>) => {
         setForm({
             ...form,
@@ -147,8 +147,8 @@ export function EditUser(props: IEditUser){
                         value={form.isDisabled}
                         onChange={handleStatus}
                     >
-                        <MenuItem value="true">Ativo</MenuItem>
-                        <MenuItem value="false">Desativado</MenuItem>
+                        <MenuItem value="false">Ativado</MenuItem>
+                        <MenuItem value="true">Desabilitado</MenuItem>
                     </Select>
                 </FormControl>
                 <div className="flex">
