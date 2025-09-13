@@ -34,8 +34,8 @@ export function Login() {
         const response = await signIn({email, password});
         if(response){
             if(response.success){
-                localStorage.setItem('Authorization', response.responses.response);
-                const jwtDecoded: IDecodedJWT = jwtDecode(response.responses.response);
+                localStorage.setItem('Authorization', response.responses.response.token);
+                const jwtDecoded: IDecodedJWT = jwtDecode(response.responses.response.token);
                 setUser(jwtDecoded);
                 navigate('/');
             } else {
