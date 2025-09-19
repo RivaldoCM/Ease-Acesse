@@ -273,7 +273,7 @@ export function Massive(){
                                                         <PersonAddOutlinedIcon />
                                                     </IconButton>
                                                     {
-                                                        user?.rule! == 3 || 14 || 16 || 17 || 19 ?
+                                                        user?.rule! == 3 || user?.rule! == 14 || user?.rule! == 16 || user?.rule! == 17 || user?.rule! == 19 ?
                                                             <React.Fragment>
                                                                 <IconButton size="small" color="secondary" onClick={() => handleEditCard(massive)}>
                                                                     <CreateOutlinedIcon />
