@@ -212,6 +212,8 @@ export const handleIconMenu = (text: string): React.ReactElement => {
             return <SchemaOutlinedIcon />;
         case 'find_CPE':
             return <RouterOutlinedIcon />;
+        case 'find_CPE':
+            return <RouterOutlinedIcon />;
         default:
             return <></>;
     }
