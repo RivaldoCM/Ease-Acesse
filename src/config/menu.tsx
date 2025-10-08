@@ -22,6 +22,11 @@ import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import SchemaOutlinedIcon from '@mui/icons-material/SchemaOutlined';
 import RouterOutlinedIcon from '@mui/icons-material/RouterOutlined';
 
+
+function Pages(){
+    console.log()
+}
+
 export var handleDynamicPagesByRule: IAllPages[];
 export const handlePages: IAllPages[] = [
     {

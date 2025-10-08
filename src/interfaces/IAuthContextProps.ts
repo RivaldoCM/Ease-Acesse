@@ -1,6 +1,6 @@
 export interface IAuthContextProps {
-    user: { rule: number; uid: number }| undefined;
-    setUser: React.Dispatch<React.SetStateAction<{ rule: number; uid: number }| undefined >>;
+    user:  any;
+    setUser: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export interface IAuthContextProviderProps {

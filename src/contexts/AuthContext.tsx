@@ -7,7 +7,7 @@ import { IDecodedJWT } from "../interfaces/IDecodedJWT";
 export const AuthContext = createContext<IAuthContextProps | undefined>(undefined);
 
 export function AuthContextProvider(props: IAuthContextProviderProps){
-    const [user, setUser] = useState<{ rule: number; uid: number } | undefined>(() => {
+    const [user, setUser] = useState<any | undefined>(() => {
         const storedToken = localStorage.getItem('Authorization');
         if (storedToken) {
 
@@ -21,6 +21,8 @@ export function AuthContextProvider(props: IAuthContextProviderProps){
         return undefined;
     });
     handleShowPageByRule(user?.rule);
+
+    console.log(handleShowPageByRule(user?.rule), user)
     return(
         <AuthContext.Provider value={{ user, setUser }}> 
             {props.children}

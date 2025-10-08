@@ -36,13 +36,11 @@ export function Login() {
             if(response.success){
                 localStorage.setItem('Authorization', response.responses.response.token);
                 const jwtDecoded: IDecodedJWT = jwtDecode(response.responses.response.token);
-                setUser(jwtDecoded);
+                setUser({user: jwtDecoded, roles: response.responses.response.permissions});
                 navigate('/');
             } else {
                 setFetchResponseMessage(response.messages.message)
             }
-        } else {
-
         }
     }
 
