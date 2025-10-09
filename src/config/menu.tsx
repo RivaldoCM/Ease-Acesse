@@ -23,8 +23,8 @@ import SchemaOutlinedIcon from '@mui/icons-material/SchemaOutlined';
 import RouterOutlinedIcon from '@mui/icons-material/RouterOutlined';
 
 
-function Pages(){
-    console.log()
+export const Pages = (pages: any) => {
+    console.log(pages, 'aq')
 }
 
 export var handleDynamicPagesByRule: IAllPages[];

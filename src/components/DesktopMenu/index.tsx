@@ -2,7 +2,7 @@ import _React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../hooks/useAuth';
-import { handleDynamicPagesByRule, handleIconMenu } from '../../config/menu';
+import { handleDynamicPagesByRule, handleIconMenu, Pages } from '../../config/menu';
 
 import { StyledMenu, TopStyled } from './style';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
@@ -101,6 +101,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export function MenuDrawer() {
+	const pages = localStorage.getItem('Pages');
+
 	const navigate = useNavigate();
 	const { user, setUser } = useAuth();
 	const {response, severityStatus, responseMassage} = useResponse();
@@ -177,33 +179,12 @@ export function MenuDrawer() {
 					<Divider sx={{width:'100%'}}/>
 				</DrawerHeader>
 				<List>
-					{user && handleDynamicPagesByRule.map((area, index) => (
-						<div key={index}>
-							{open ? <StyledMenu className='selection-menu'>{area.name}</StyledMenu> : <></>}
-							<List>
-								{area.pages.map((page, pageIndex) => (
-									<ListItem key={pageIndex} disablePadding sx={{ display: 'block' }}>
-										<ListItemButton
-											onClick={() => { handlePageChange(Object.keys(page)[0], Object.values(page)[0]); }}
-											sx={{
-												minHeight: 48,
-												px: 2.5,
-											}}
-										>
-											<ListItemIcon
-												sx={{
-													minWidth: 0,
-													justifyContent: 'center',
-												}}
-											>
-												{handleIconMenu(Object.keys(page)[0])}
-											</ListItemIcon>
-											<ListItemText primary={Object.values(page)[0]} sx={{ padding: '.5rem 1.5rem' }}/>
-										</ListItemButton>
-									</ListItem>
-								))}
-							</List>
-					</div>
+					{user && JSON.parse(pages).map((area, index) => (
+						  <div key={area.category}>
+							<h3>{area.category}</h3>
+
+						</div>
+
 					))}
 				</List>
 			</Drawer>

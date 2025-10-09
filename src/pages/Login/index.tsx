@@ -35,11 +35,13 @@ export function Login() {
         if(response){
             if(response.success){
                 localStorage.setItem('Authorization', response.responses.response.token);
+                localStorage.setItem('Pages', JSON.stringify(response.responses.response.permissions));
+
                 const jwtDecoded: IDecodedJWT = jwtDecode(response.responses.response.token);
-                setUser({user: jwtDecoded, roles: response.responses.response.permissions});
+                setUser({user: jwtDecoded});
                 navigate('/');
             } else {
-                setFetchResponseMessage(response.messages.message)
+                setFetchResponseMessage(response.messages.message);
             }
         }
     }
