@@ -173,34 +173,35 @@ export const handleShowPageByRule = (rule?: number) => {
 }
 
 export const handleIconMenu = (text: string): React.ReactElement => {
+    console.log(text)
     switch(text){
-        case 'auth_onu':
+        case '/auth_onu':
             return <MiscellaneousServicesOutlinedIcon />;
-        case 'onuDelete':
+        case '/onuDelete':
             return <HighlightOffOutlinedIcon />;
-        case 'users':
+        case '/users':
             return <AdminPanelSettingsOutlinedIcon />;
-        case "olts":
+        case "/olts":
             return <AccountTreeOutlinedIcon />;
         case 'logs_onu':
             return <TroubleshootOutlinedIcon />;
-        case 'massive':
+        case '/massive':
             return <ViewModuleOutlinedIcon />;
-        case 'logs_massive':
+        case '/logs_massive':
             return <LibraryBooksOutlinedIcon />;
-        case 'massive_panel':
+        case '/massive_panel':
             return <DesktopWindowsOutlinedIcon />;
-        case 'my_auth_onus':
+        case '/my_auth_onus':
             return <BallotOutlinedIcon />;
-        case 'break_time/breaks':
+        case '/break_time/breaks':
             return <AccessTimeRoundedIcon />;
-        case 'break_time/dashboard':
+        case '/break_time/dashboard':
             return <SpaceDashboardOutlinedIcon />;
         case 'break_time/panel':
             return <TvOutlinedIcon />;
         case 'exitlag':
             return <IconExitLag />;
-        case 'onu_info':
+        case '/onu_info':
             return <WifiChannelOutlinedIcon />;
         case 'helpdesk/tickets':
             return <ConfirmationNumberOutlinedIcon />;
@@ -210,9 +211,7 @@ export const handleIconMenu = (text: string): React.ReactElement => {
             return <AssignmentOutlinedIcon />;
         case 'fiber_network':
             return <SchemaOutlinedIcon />;
-        case 'find_CPE':
-            return <RouterOutlinedIcon />;
-        case 'find_CPE':
+        case '/find_CPE':
             return <RouterOutlinedIcon />;
         default:
             return <></>;

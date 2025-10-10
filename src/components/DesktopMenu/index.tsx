@@ -101,7 +101,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export function MenuDrawer() {
-	const pages = localStorage.getItem('Pages');
+	const pages: any = localStorage.getItem('Pages');
 
 	const navigate = useNavigate();
 	const { user, setUser } = useAuth();
@@ -113,8 +113,9 @@ export function MenuDrawer() {
 
 	const handleDrawerOpen = () => { setOpen(true);	};
 	const handleDrawerClose = () => { setOpen(false); };
-	const redirectToRoute = (text: string) => {	navigate(`/${text.toLocaleLowerCase()}`); }
+	const redirectToRoute = (text: string) => {	navigate(`${text.toLocaleLowerCase()}`); }
 	const handlePageChange = (route: string, page: string) => { 
+		console.log(route)
 		redirectToRoute(route);	
 		setCurrentPage(page);
 	};
@@ -179,13 +180,31 @@ export function MenuDrawer() {
 					<Divider sx={{width:'100%'}}/>
 				</DrawerHeader>
 				<List>
-					{user && JSON.parse(pages).map((area, index) => (
-						  <div key={area.category}>
-							<h3>{area.category}</h3>
-
-						</div>
-
-					))}
+					{user && JSON.parse(pages).map((collection: any, index: number) => {
+						return(
+							<div key={index}>
+								{ open && <StyledMenu className='selection-menu'>{collection.category}</StyledMenu> }
+								<List>
+									{collection.pages.map((page: any, index: number) => {
+										return(
+											<ListItem key={index} disablePadding sx={{ display: 'block' }}>
+												<ListItemButton
+													onClick={() => {handlePageChange(page.path, page.name)}}
+													sx={{ minHeight: 48, px: 2.5 }}
+												>
+													<ListItemIcon sx={{ minWidth: 0, justifyContent: 'center' }}
+													>
+														{handleIconMenu(page.path)}
+													</ListItemIcon>
+													<ListItemText primary={page.name} sx={{ padding: '.5rem 1.5rem' }}/>
+												</ListItemButton>
+											</ListItem>
+										)
+									})}
+								</List>
+							</div>
+						)
+					})}
 				</List>
 			</Drawer>
 			<Box component="main" className='flex' sx={{ flexGrow: 1, mt: '68px' }}>
