@@ -22,6 +22,8 @@ import { Alert } from '@mui/material';
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 export function MobileDrawerMenu() {
+    const pages: any = localStorage.getItem('Pages');
+
     const navigate = useNavigate();
     const {response, severityStatus, responseMassage} = useResponse();
     const { setUser } = useAuth();
@@ -65,7 +67,7 @@ export function MobileDrawerMenu() {
             onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
-                {handleDynamicPagesByRule.map((area, index) => (
+                {pages.map((area, index) => (
                     <div key={index}>
                         <StyledMenu>{area.name}</StyledMenu>
                         <List>
@@ -73,17 +75,9 @@ export function MobileDrawerMenu() {
                                 <ListItem key={pageIndex} disablePadding sx={{ display: 'block' }}>
                                     <ListItemButton
                                         onClick={() => { handlePageChange(Object.keys(page)[0]); }}
-                                        sx={{
-                                            minHeight: 48,
-                                            px: 2.5,
-                                        }}
+                                        sx={{ minHeight: 48, px: 2.5 }}
                                     >
-                                        <ListItemIcon
-                                            sx={{
-                                                minWidth: 0,
-                                                justifyContent: 'center',
-                                            }}
-                                        >
+                                        <ListItemIcon sx={{ minWidth: 0, justifyContent: 'center' }}>
                                             {handleIconMenu(Object.keys(page)[0])}
                                         </ListItemIcon>
                                         <ListItemText primary={Object.values(page)[0]} sx={{ padding: '1rem' }}/>

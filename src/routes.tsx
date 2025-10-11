@@ -39,6 +39,7 @@ import { ClientLocationByFiberNetwork } from "./pages/telecom/ClientLocationByFi
 import ClientFiberNetworkData from "./pages/telecom/ClientLocationByFiberNetwork/desktop";
 import { FindCPE } from "./pages/findCPE";
 import { TicketContextProvider } from "./contexts/TicketContext";
+import { SystemManagement } from "./pages/admin/systemManagement";
 
 const PrivateRoute: React.FC<{element: ReactElement}> = ({ element }: {element: ReactElement}) => {
     return isLogged() ? element : <Navigate to='/login' />;
@@ -235,6 +236,14 @@ export function AppRoutes() {
                                     element={<Tickets/>} 
                                 />
                             </TicketContextProvider>
+                        }
+                    />
+                    <Route
+                        path="system"
+                        element={
+                            <PrivateRoute 
+                                element={<SystemManagement />}
+                            />
                         }
                     />
                 </Route>

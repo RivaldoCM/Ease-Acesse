@@ -2,7 +2,7 @@ import _React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../hooks/useAuth';
-import { handleDynamicPagesByRule, handleIconMenu, Pages } from '../../config/menu';
+import { handleIconMenu } from '../../config/menu';
 
 import { StyledMenu, TopStyled } from './style';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
@@ -115,7 +115,6 @@ export function MenuDrawer() {
 	const handleDrawerClose = () => { setOpen(false); };
 	const redirectToRoute = (text: string) => {	navigate(`${text.toLocaleLowerCase()}`); }
 	const handlePageChange = (route: string, page: string) => { 
-		console.log(route)
 		redirectToRoute(route);	
 		setCurrentPage(page);
 	};

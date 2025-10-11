@@ -21,11 +21,7 @@ import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import SchemaOutlinedIcon from '@mui/icons-material/SchemaOutlined';
 import RouterOutlinedIcon from '@mui/icons-material/RouterOutlined';
-
-
-export const Pages = (pages: any) => {
-    console.log(pages, 'aq')
-}
+import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 
 export var handleDynamicPagesByRule: IAllPages[];
 export const handlePages: IAllPages[] = [
@@ -173,7 +169,6 @@ export const handleShowPageByRule = (rule?: number) => {
 }
 
 export const handleIconMenu = (text: string): React.ReactElement => {
-    console.log(text)
     switch(text){
         case '/auth_onu':
             return <MiscellaneousServicesOutlinedIcon />;
@@ -183,7 +178,7 @@ export const handleIconMenu = (text: string): React.ReactElement => {
             return <AdminPanelSettingsOutlinedIcon />;
         case "/olts":
             return <AccountTreeOutlinedIcon />;
-        case 'logs_onu':
+        case '/logs_onu':
             return <TroubleshootOutlinedIcon />;
         case '/massive':
             return <ViewModuleOutlinedIcon />;
@@ -197,22 +192,24 @@ export const handleIconMenu = (text: string): React.ReactElement => {
             return <AccessTimeRoundedIcon />;
         case '/break_time/dashboard':
             return <SpaceDashboardOutlinedIcon />;
-        case 'break_time/panel':
+        case '/break_time/panel':
             return <TvOutlinedIcon />;
-        case 'exitlag':
+        case '/exitlag':
             return <IconExitLag />;
         case '/onu_info':
             return <WifiChannelOutlinedIcon />;
-        case 'helpdesk/tickets':
+        case '/helpdesk/tickets':
             return <ConfirmationNumberOutlinedIcon />;
-        case 'helpdesk/dashboard':
+        case '/helpdesk/dashboard':
             return <DashboardOutlinedIcon />;
-        case 'client_location':
+        case '/client_location':
             return <AssignmentOutlinedIcon />;
-        case 'fiber_network':
+        case '/fiber_network':
             return <SchemaOutlinedIcon />;
         case '/find_CPE':
             return <RouterOutlinedIcon />;
+        case '/users_management':
+            return <SecurityOutlinedIcon />;
         default:
             return <></>;
     }
