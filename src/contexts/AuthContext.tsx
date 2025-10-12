@@ -1,6 +1,5 @@
 import { jwtDecode } from "jwt-decode";
 import { createContext, useState } from "react";
-import { handleShowPageByRule, Pages } from "../config/menu";
 import { IAuthContextProps, IAuthContextProviderProps } from "../interfaces/IAuthContextProps";
 import { IDecodedJWT } from "../interfaces/IDecodedJWT";
 
@@ -21,7 +20,6 @@ export function AuthContextProvider(props: IAuthContextProviderProps){
         }
         return undefined;
     });
-    handleShowPageByRule(user?.rule);
 
     return(
         <AuthContext.Provider value={{ user, setUser }}> 

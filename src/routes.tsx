@@ -41,19 +41,17 @@ import { FindCPE } from "./pages/findCPE";
 import { TicketContextProvider } from "./contexts/TicketContext";
 import { SystemManagement } from "./pages/admin/systemManagement";
 import { privateRoutes } from "./config/privateRoutes";
+import { PageNotFound } from "./components/SVG/pageNotFound";
 
 const PrivateRoute: React.FC<{element: ReactElement,path: string}> = ({ element, path }: {element: ReactElement, path: string}) => {
     const response = privateRoutes(path);
-    console.log((response))
     switch(response){
         case 100:
             return element;
         case 401:
-            return <Navigate to='/login' />
-        break;
+            return <Navigate to='/login' />;
         case 403:
-            return <Navigate to='/login' />
-        break;
+            return <Navigate to='/*' />;
     }
 }
 
@@ -73,7 +71,7 @@ export function AppRoutes() {
         setLastRoutes(prevRoutes => [...prevRoutes, location.pathname]);
 
         rooms.map((room: string) => {
-            if(lastRoutes.at(-1)?.includes(room) && !location.pathname.includes(room) || location.pathname == '/login'){
+            if(lastRoutes.at(-1)?.includes(room) && !location.pathname.includes(room)){
                 socket.emit("leave_room", {
                     uid: user?.uid,
                     room: lastRoutes.at(-1)
@@ -83,15 +81,9 @@ export function AppRoutes() {
 
         //COLOCAR UMMA PAGE DEFAULT NO DB
         if(token && location.pathname === '/login' || token && location.pathname === '/'){
-            if(user?.rule === 1 || user?.rule === 2){
-                navigate('/break_time/breaks');
-            } else if(user?.rule === 3){
-                navigate('/break_time/dashboard');
-            } else if(user?.rule === 10){
-                navigate('/auth_onu');
-            } else {
-                navigate('/massive');
-            }
+
+            navigate('/helpdesk/tickets');
+            
         }
         
         if (!token && location.pathname !== '/login') {
@@ -108,6 +100,12 @@ export function AppRoutes() {
                     <MassiveContextProvider>
                         <PrivateRoute element={ <MassivePanel /> } path="/massive_panel"/>
                     </MassiveContextProvider>
+                }
+            />
+            <Route 
+                path="*"
+                element={
+                    <PageNotFound />
                 }
             />
             <Route path="" element={matches ? <MobileDrawerMenu /> : <MenuDrawer />}>
@@ -152,7 +150,7 @@ export function AppRoutes() {
                     path="massive"
                     element={
                         <MassiveContextProvider>
-                            <PrivateRoute element={ <Massive />} path="/massive"/>
+                            <PrivateRoute element={ <Massive />} path="/massive" />
                         </MassiveContextProvider>
                     }
                 />
@@ -179,7 +177,8 @@ export function AppRoutes() {
                         element={
                             <BreakTimeContextProvider>
                                 <PrivateRoute 
-                                    element={<BreakTime />} 
+                                    element={<BreakTime />}
+                                    path="/break_time/breaks"
                                 />
                             </BreakTimeContextProvider>
                         }
@@ -189,7 +188,8 @@ export function AppRoutes() {
                         element={
                             <BreakTimeContextProvider>
                                 <PrivateRoute 
-                                    element={<BreakTimePanel />} 
+                                    element={<BreakTimePanel />}
+                                    path="/break_time/panel"
                                 />
                             </BreakTimeContextProvider>
                         }
@@ -197,13 +197,14 @@ export function AppRoutes() {
                 </Route>
                 <Route
                     path="my_auth_onus"
-                    element={<PrivateRoute element={matches ? <MyAuthorizedOnusMobile /> : <MyAuthorizedOnus />} />}
+                    element={<PrivateRoute element={matches ? <MyAuthorizedOnusMobile /> : <MyAuthorizedOnus />} path="my_auth_onus"/>}
                 />
                 <Route 
                     path="exitlag"
                     element={
                         <PrivateRoute
                             element={<Exitlag />}
+                            path="/exitlag"
                         />
                     }
                 >
@@ -211,7 +212,7 @@ export function AppRoutes() {
                 <Route 
                     path="onu_info"
                     element={
-                        <PrivateRoute element={<OnuInfo />}/>
+                        <PrivateRoute element={<OnuInfo />} path="/onu_info"/>
                     }
                 >
                 </Route>
