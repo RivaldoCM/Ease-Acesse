@@ -40,19 +40,32 @@ import ClientFiberNetworkData from "./pages/telecom/ClientLocationByFiberNetwork
 import { FindCPE } from "./pages/findCPE";
 import { TicketContextProvider } from "./contexts/TicketContext";
 import { SystemManagement } from "./pages/admin/systemManagement";
+import { privateRoutes } from "./config/privateRoutes";
 
-const PrivateRoute: React.FC<{element: ReactElement}> = ({ element }: {element: ReactElement}) => {
-    return isLogged() ? element : <Navigate to='/login' />;
+const PrivateRoute: React.FC<{element: ReactElement,path: string}> = ({ element, path }: {element: ReactElement, path: string}) => {
+    const response = privateRoutes(path);
+    console.log((response))
+    switch(response){
+        case 100:
+            return element;
+        case 401:
+            return <Navigate to='/login' />
+        break;
+        case 403:
+            return <Navigate to='/login' />
+        break;
+    }
 }
 
 export function AppRoutes() {
-    const { user } = useAuth(); 
-    const { socket, rooms } = useSocket();
+    const theme = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
-    const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.down('md'));
 
+    const { user } = useAuth(); 
+    const { socket, rooms } = useSocket();
+
+    const matches = useMediaQuery(theme.breakpoints.down('md'));
     const [lastRoutes, setLastRoutes] = useState<string[]>([]);
 
     useEffect(() => {
@@ -60,7 +73,7 @@ export function AppRoutes() {
         setLastRoutes(prevRoutes => [...prevRoutes, location.pathname]);
 
         rooms.map((room: string) => {
-            if(lastRoutes.at(-1)?.includes(room) && !location.pathname.includes(room)){
+            if(lastRoutes.at(-1)?.includes(room) && !location.pathname.includes(room) || location.pathname == '/login'){
                 socket.emit("leave_room", {
                     uid: user?.uid,
                     room: lastRoutes.at(-1)
@@ -68,6 +81,7 @@ export function AppRoutes() {
             }
         });
 
+        //COLOCAR UMMA PAGE DEFAULT NO DB
         if(token && location.pathname === '/login' || token && location.pathname === '/'){
             if(user?.rule === 1 || user?.rule === 2){
                 navigate('/break_time/breaks');
@@ -92,7 +106,7 @@ export function AppRoutes() {
                 path="massive_panel"
                 element={
                     <MassiveContextProvider>
-                        <PrivateRoute element={ <MassivePanel /> }/>
+                        <PrivateRoute element={ <MassivePanel /> } path="/massive_panel"/>
                     </MassiveContextProvider>
                 }
             />
@@ -100,7 +114,7 @@ export function AppRoutes() {
                 <Route path="olts">
                     <Route
                         path=""
-                        element={<PrivateRoute element={<Olts />} />}
+                        element={<PrivateRoute element={<Olts />} path="/olts" />}
                     />
                     <Route
                         path=":id"
@@ -108,20 +122,20 @@ export function AppRoutes() {
                     />
                     <Route
                         path="new_olt"
-                        element={<PrivateRoute element={<AddOlt />} />}
+                        element={<PrivateRoute element={<AddOlt />} path="/new_olt" />}
                     />
                 </Route>
                 <Route
                     path="users"
-                    element={<PrivateRoute element={<Users />} />}
+                    element={<PrivateRoute element={<Users />} path="/users" />}
                 />
                 <Route
                     path="onuDelete"
-                    element={<PrivateRoute element={<OnuDelete />} />}
+                    element={<PrivateRoute element={<OnuDelete />} path="/onuDelete"/>}
                 />
                 <Route
                     path="logs_onu"
-                    element={<PrivateRoute element={<LogsOnu />} />}
+                    element={<PrivateRoute element={<LogsOnu />} path="/logs_onu"/>}
                 />
                 <Route
                     path="auth_onu"
@@ -129,6 +143,7 @@ export function AppRoutes() {
                         <AuthOnuContextProvider>
                             <PrivateRoute
                                 element={<AuthOnuController />}
+                                path="/auth_onu"
                             />
                         </AuthOnuContextProvider>
                     }
@@ -137,14 +152,14 @@ export function AppRoutes() {
                     path="massive"
                     element={
                         <MassiveContextProvider>
-                            <PrivateRoute element={ <Massive />}/>
+                            <PrivateRoute element={ <Massive />} path="/massive"/>
                         </MassiveContextProvider>
                     }
                 />
                 <Route 
                     path="logs_massive"
                     element={
-                        <PrivateRoute element={ <LogsMassives />}/>
+                        <PrivateRoute element={ <LogsMassives />} path="/logs_massive" />
                     }
                 />
                 <Route path="break_time">
@@ -154,6 +169,7 @@ export function AppRoutes() {
                             <BreakTimeContextProvider>
                                 <PrivateRoute 
                                     element={<BreakTimeDashboard />} 
+                                    path="/break_time/dashboard"
                                 />
                             </BreakTimeContextProvider>
                         }
@@ -202,8 +218,9 @@ export function AppRoutes() {
                 <Route 
                     path="find_CPE"
                     element={
-                        <PrivateRoute element={<FindCPE />}/>
+                        <PrivateRoute element={<FindCPE />} path="/find_CPE"/>
                     }
+                    
                 >
                 </Route>
                 {/*
@@ -233,7 +250,8 @@ export function AppRoutes() {
                         element={
                             <TicketContextProvider>
                                 <PrivateRoute 
-                                    element={<Tickets/>} 
+                                    element={<Tickets/>}
+                                    path="/helpdesk/tickets"
                                 />
                             </TicketContextProvider>
                         }
@@ -243,6 +261,7 @@ export function AppRoutes() {
                         element={
                             <PrivateRoute 
                                 element={<SystemManagement />}
+                                path="/system"
                             />
                         }
                     />

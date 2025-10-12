@@ -1,15 +1,19 @@
-export const PrivateRoutes = (path: string) => {
+export const privateRoutes = (path: string) => {
     const token = localStorage.getItem('Authorization');
     const pages = localStorage.getItem('Pages');
+    let hasPage = '';
 
     if(!token){
-        return false;
+        return 401;
     } else {
-        pages && JSON.parse(pages).map((page: any) => {
-            if(page.path === path){
-                return true;
-            }
+        pages && JSON.parse(pages).map((collection: any) => {
+            hasPage = collection.pages.find((pagePath: any) => pagePath.path === path);
         });
-        return false;
+
+        if(hasPage){
+            return 100;
+        } else {
+            return 403;
+        }
     }
 }

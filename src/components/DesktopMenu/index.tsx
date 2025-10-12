@@ -121,6 +121,7 @@ export function MenuDrawer() {
 
 	const handleLogout = () => {
 		localStorage.removeItem('Authorization');
+		localStorage.removeItem('Pages');
 		setUser(undefined);
 		navigate('/login');
 	};
