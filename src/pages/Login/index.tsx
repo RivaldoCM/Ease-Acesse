@@ -32,10 +32,12 @@ export function Login() {
         e.preventDefault();
 
         const response = await signIn({email, password});
+        console.log(response)
         if(response){
             if(response.success){
                 localStorage.setItem('Authorization', response.responses.response.token);
                 localStorage.setItem('Pages', JSON.stringify(response.responses.response.permissions));
+                localStorage.setItem('initialPage', response.responses.response.initialPage)
 
                 const jwtDecoded: IDecodedJWT = jwtDecode(response.responses.response.token);
                 setUser({user: jwtDecoded});

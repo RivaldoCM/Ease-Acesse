@@ -192,8 +192,7 @@ export function MenuDrawer() {
 													onClick={() => {handlePageChange(page.path, page.name)}}
 													sx={{ minHeight: 48, px: 2.5 }}
 												>
-													<ListItemIcon sx={{ minWidth: 0, justifyContent: 'center' }}
-													>
+													<ListItemIcon sx={{ minWidth: 0, justifyContent: 'center' }}>
 														{handleIconMenu(page.path)}
 													</ListItemIcon>
 													<ListItemText primary={page.name} sx={{ padding: '.5rem 1.5rem' }}/>

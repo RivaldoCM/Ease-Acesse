@@ -79,11 +79,8 @@ export function AppRoutes() {
             }
         });
 
-        //COLOCAR UMMA PAGE DEFAULT NO DB
         if(token && location.pathname === '/login' || token && location.pathname === '/'){
-
-            navigate('/helpdesk/tickets');
-            
+            navigate(localStorage.getItem("initialPage")!);
         }
         
         if (!token && location.pathname !== '/login') {
@@ -257,16 +254,16 @@ export function AppRoutes() {
                             </TicketContextProvider>
                         }
                     />
-                    <Route
-                        path="system"
-                        element={
-                            <PrivateRoute 
-                                element={<SystemManagement />}
-                                path="/system"
-                            />
-                        }
-                    />
                 </Route>
+                <Route
+                    path="role_management"
+                    element={
+                        <PrivateRoute 
+                            element={<SystemManagement />}
+                            path="/role_management"
+                        />
+                    }
+                />
             </Route>
         </Routes>
     );

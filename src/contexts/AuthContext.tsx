@@ -7,7 +7,6 @@ export const AuthContext = createContext<IAuthContextProps | undefined>(undefine
 
 export function AuthContextProvider(props: IAuthContextProviderProps){
     const storedToken = localStorage.getItem('Authorization');
-    const pages = localStorage.getItem('Pages');
 
     const [user, setUser] = useState<any | undefined>(() => {
         if (storedToken) {

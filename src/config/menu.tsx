@@ -208,7 +208,7 @@ export const handleIconMenu = (text: string): React.ReactElement => {
             return <SchemaOutlinedIcon />;
         case '/find_CPE':
             return <RouterOutlinedIcon />;
-        case '/users_management':
+        case '/role_management':
             return <SecurityOutlinedIcon />;
         default:
             return <></>;
