@@ -71,7 +71,10 @@ export function AppRoutes() {
         setLastRoutes(prevRoutes => [...prevRoutes, location.pathname]);
 
         rooms.map((room: string) => {
-            if(lastRoutes.at(-1)?.includes(room) && !location.pathname.includes(room)){
+            //VERIFICA PRIMARIAMENTE SE POSSUI ACESSO À PAGINA
+            //SE NÃO POSSUI, NÃO FAZ NADA, POIS NEM CHEGOU A ENTRAR NA ROOM. 
+            const response = privateRoutes(lastRoutes.at(-1)!);
+            if(response === 100 && lastRoutes.at(-1)?.includes(room) && !location.pathname.includes(room)){
                 socket.emit("leave_room", {
                     uid: user?.uid,
                     room: lastRoutes.at(-1)
