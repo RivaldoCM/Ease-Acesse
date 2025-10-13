@@ -3,8 +3,6 @@ import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { isLogged } from "./config/isLogged";
-
 import { Login } from "./pages/Login";
 import { Olts } from "./pages/admin/olts";
 import { Users } from "./pages/admin/users";
@@ -39,7 +37,7 @@ import { ClientLocationByFiberNetwork } from "./pages/telecom/ClientLocationByFi
 import ClientFiberNetworkData from "./pages/telecom/ClientLocationByFiberNetwork/desktop";
 import { FindCPE } from "./pages/findCPE";
 import { TicketContextProvider } from "./contexts/TicketContext";
-import { SystemManagement } from "./pages/admin/systemManagement";
+import { AccessControl } from "./pages/admin/accessControl";
 import { privateRoutes } from "./config/privateRoutes";
 import { PageNotFound } from "./components/SVG/pageNotFound";
 
@@ -262,7 +260,7 @@ export function AppRoutes() {
                     path="role_management"
                     element={
                         <PrivateRoute 
-                            element={<SystemManagement />}
+                            element={<AccessControl />}
                             path="/role_management"
                         />
                     }
