@@ -17,6 +17,7 @@ export const Container = styled.div`
 		"nav header  header  header"
 		"nav    view    view    view"
 	;
+    font-family: "Itim", cursive !important;
 `;
 
 export const Header = styled.div`
@@ -43,6 +44,7 @@ export const Nav = styled.aside`
     }
     > div {
         flex-direction: column;
+        width: 100%;
         padding: .5rem;
     }
 `;
@@ -53,12 +55,27 @@ export const View = styled.section`
     border-radius: 1rem;
 `;
 
-export const CardDepartment = styled.button<isSelected>`
-    width: 92%;
+export const CardDepartment = styled.div<isSelected>`
+    justify-content: space-between;
+    width: 100%;
     height: 60px;
-    border-radius: 1rem;
+    border-radius: .5rem;
     margin: .5rem 0;
     background-color: ${(props) =>
-        props.isSelected ? 'green' : '#636B74'
+        props.isSelected ? 'green' : '#F0F4F8'
     };
+
+    .header{
+        width: 100%;
+        justify-content: space-around;
+        div:nth-child(2){
+            width: 50%;
+        }
+        div:nth-last-of-type(){
+            button {
+                margin: 0 5px;
+            }
+        }
+
+    }
 `;

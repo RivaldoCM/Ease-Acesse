@@ -5,6 +5,7 @@ import { IconButton } from "@mui/joy";
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 
 export function AccessControl(){
 
@@ -39,15 +40,24 @@ export function AccessControl(){
                 </header>
                 <div className="flex">
                     {departaments && departaments.map((dep, index) => (
-                        <CardDepartment className="teste" isSelected={index === selected} onClick={() => {setSelected(index)}}>
-                            <div className="header">
-                                <p>{dep.name}</p>
-                                <IconButton variant="soft" size="sm">
-                                <KeyboardArrowDownIcon />
-                                </IconButton>
-                                <IconButton variant="soft" size="sm" sx={{fontSize: '10px !important'}}>
-                                <KeyboardDoubleArrowRightIcon />
-                                </IconButton>
+                        <CardDepartment className="flex" isSelected={index === selected} onClick={() => {setSelected(index)}}>
+                            <div className="header flex">
+                                <div>
+                                    <IconButton variant="soft" size="sm">
+                                        <GroupOutlinedIcon />
+                                    </IconButton>
+                                </div>
+                                <div>
+                                    <p>{dep.name}</p>
+                                </div>
+                                <div>
+                                    <IconButton variant="soft" size="sm">
+                                        <KeyboardArrowDownIcon />
+                                    </IconButton>
+                                    <IconButton variant="soft" size="sm">
+                                        <KeyboardDoubleArrowRightIcon />
+                                    </IconButton>
+                                </div>
                             </div>
                             <div className="accordion">
                                 
