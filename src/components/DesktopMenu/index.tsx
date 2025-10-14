@@ -103,10 +103,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export function MenuDrawer() {
 	const pages: any = localStorage.getItem('Pages');
 
-	const navigate = useNavigate();
-	const { user, setUser } = useAuth();
-	const {response, severityStatus, responseMassage} = useResponse();
 	const theme = useTheme();
+	const navigate = useNavigate();
+
+	const { user, setUser } = useAuth();
+	const { response, severityStatus, responseMassage } = useResponse();
 
 	const [ open, setOpen ] = useState(false);
 	const [ currentPage, setCurrentPage ] = useState('EASE ACESSE');
@@ -115,7 +116,7 @@ export function MenuDrawer() {
 	const handleDrawerClose = () => { setOpen(false); };
 	const redirectToRoute = (text: string) => {	navigate(`${text.toLocaleLowerCase()}`); }
 	const handlePageChange = (route: string, page: string) => { 
-		redirectToRoute(route);	
+		redirectToRoute(route);
 		setCurrentPage(page);
 	};
 

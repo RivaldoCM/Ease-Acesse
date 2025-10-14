@@ -10,6 +10,7 @@ export const GlobalStyle = createGlobalStyle`
     :root {
         //altura to menu, parte superior
         --top-menu-size: 68px;
+        --nav-aside-size: 65px;
         //colors
         --surface-color: #F8F8FF;
         --curve: 40;

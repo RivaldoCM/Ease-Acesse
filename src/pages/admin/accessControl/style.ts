@@ -2,31 +2,41 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     display: grid;
-    width: calc(100vw - 65px);
+    width: calc(100vw - var(--nav-aside-size));
     height: calc(100vh - var(--top-menu-size));
     gap: .5rem;
     padding: .5rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 8fr;
 	grid-template-areas:
-		"header header  header"
-		"nav    view    view"
+		"header header  header  header"
+		"nav    view    view    view"
 	;
 `;
 
 export const Header = styled.div`
-    height: 100px;
-    border: 1px solid blue;
     grid-area: header;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
+    border-radius: 1rem;
 `;
 
 export const Nav = styled.aside`
-    height: calc(100vh - var(--top-menu-size) - 100px - 1rem);
     grid-area: nav;
-    border: 5px solid black;
+    border-radius: 1rem;
+    background: #fff7f2;
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    header{
+        width: 100%;
+        height: 10%;
+        border-bottom: 2px solid grey;
+    }
 `;
 
 export const View = styled.section`
-
     grid-area: view;
-    border: 5px solid green;
+
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 1rem;
 `;
