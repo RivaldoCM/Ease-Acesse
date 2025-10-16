@@ -5,6 +5,9 @@ interface isSelected{
     isExpanded: boolean;
 }
 
+interface Status{
+    color: string
+}
 
 export const Container = styled.div`
     display: grid;
@@ -59,12 +62,12 @@ export const View = styled.section`
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 1rem;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 2fr 1fr;
+    grid-template-rows: 1.5fr 1fr;
 	grid-template-areas:
 		"config pages"
 		"table table"
 	;
-
+    overflow: auto;
     > div:nth-child(1){
         grid-area: config;
 
@@ -164,4 +167,17 @@ export const CardDepartment = styled.div<isSelected>`
 
         }
     }
+`;
+
+export const Status = styled.span<Status>`
+    display: inline-block;
+    background-color:  ${(props) => props.color};
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    text-align: center;
+    line-height: 1.2;
+    user-select: none;
 `;

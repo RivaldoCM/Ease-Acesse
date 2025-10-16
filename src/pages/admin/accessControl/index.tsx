@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { CardDepartment, Container, Header, Nav, View } from "./style";
+import { CardDepartment, Container, Header, Nav, Status, View } from "./style";
 import { getDepartments } from "../../../services/apiManageONU/getDepartments";
-import { FormControl, FormHelperText, FormLabel, IconButton, Input, Option, Select, Table } from "@mui/joy";
+import { Box, FormControl, FormLabel, IconButton, Input, Option, Select, Sheet, Table, Typography } from "@mui/joy";
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
@@ -9,12 +9,27 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
 import { getUsers } from "../../../services/apiManageONU/getUsers";
+import { Data, EnhancedTableHead, EnhancedTableToolbar, getComparator, labelDisplayedRows } from "./table";
+
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+
+type Order = 'asc' | 'desc';
 
 export function AccessControl(){
     const [departaments, setDepartaments] = useState([]);
     const [departmentId, setDepartamentId] = useState<null | number>(null);
     const [accordions, setAccordions] = useState<number[]>([]);
     const [usersByDepartment, setUsersBydeparment] = useState([])
+    const [selected, setSelected] = useState<readonly number[]>([]);
+
+    const [order, setOrder] = useState<Order>('asc');
+    const [orderBy, setOrderBy] = useState<keyof Data>('ticketId');
+    const [isNested, setIsNested] = useState<boolean>(false);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     useEffect(() => {
         async function getData(){
@@ -62,6 +77,45 @@ export function AccessControl(){
         if(id !== departmentId){
             setDepartamentId(id);
         }
+    }
+
+    const handleClick = (_event: React.MouseEvent<unknown>, ticket: any) => {
+        if(selected[0] === ticket.id){
+            setSelected([]);
+            return;
+        }
+        setSelected([ticket.id]);
+    };
+
+    const handleChangePage = (newPage: number) => { setPage(newPage); };
+    const handleChangeRowsPerPage = (_event: any, newValue: number | null) => {
+        setRowsPerPage(parseInt(newValue!.toString(), 10));
+        setPage(0);
+    };
+
+    const getLabelDisplayedRowsTo = () => {
+        if (usersByDepartment.length === -1) {
+            return (page + 1) * rowsPerPage;
+        }
+        return rowsPerPage === -1
+        ? usersByDepartment.length
+        : Math.min(usersByDepartment.length, (page + 1) * rowsPerPage);
+    };
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersByDepartment.length) : 0;
+
+    const handleRequestSort = (
+        _event: React.MouseEvent<unknown>,
+        property: keyof Data,
+        isNested: boolean
+    ) => {
+        const isAsc = orderBy === property && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy(property);
+        setIsNested(isNested);
+    };
+
+    const handleEditUser = (id: number) => {
+        console.log(id)
     }
 
     return(
@@ -151,28 +205,147 @@ export function AccessControl(){
                 <div className="table">
                     <div><h3>Usuários vinculados</h3></div>
                     <div>
-                        <Table>
-                            <thead>
-                                <tr>
-                                <th>Column width (40%)</th>
-                                <th>Calories</th>
-                                <th>Fat&nbsp;(g)</th>
+                        <Sheet
+                    variant="outlined"
+                    sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm' }}
+                >
+                    <EnhancedTableToolbar
+                        ticketId={usersByDepartment.find((row) => row.id === selected[0])?.id}
+                        numSelected={selected.length}
+                    />
+                    <Table
+                        stickyFooter
+                        hoverRow
+                        sx={{
+                            '--TableCell-headBackground': 'transparent',
+                            '--TableCell-selectedBackground': (theme) =>
+                                theme.vars.palette.success.softBg,
+                            '& thead th:nth-child(3)': {
+                                width: '76px',
+                            },
+                            '& thead th:nth-child(4)': {
+                                width: '144px',
+                            },
+                            '& tr > *:nth-child(n+3)': { textAlign: 'center' },
+                        }}
+                    >
+                        <EnhancedTableHead
+                            numSelected={selected.length}
+                            order={order}
+                            orderBy={orderBy}
+                            onRequestSort={handleRequestSort}
+                            rowCount={usersByDepartment.length}
+                        />
+                        <tbody>
+                        {[...usersByDepartment]
+                            .sort(getComparator(order, orderBy, isNested))
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row, index) => {
+                            const isItemSelected = selected.includes(row.id);
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {usersByDepartment.map((row) => (
-                                <tr key={row.name}>
+                            return(
+                                <tr
+                                    onClick={(event) => handleClick(event, row)}
+                                    role="checkbox"
+                                    aria-checked={isItemSelected}
+                                    tabIndex={-1}
+                                    key={row.id}
+                                    style={
+                                        isItemSelected
+                                        ? ({
+                                            '--TableCell-dataBackground':
+                                                'var(--TableCell-selectedBackground)',
+                                            '--TableCell-headBackground':
+                                                'var(--TableCell-selectedBackground)',
+                                            } as React.CSSProperties)
+                                        : {}
+                                    }
+                                >
                                     <td>{row.name}</td>
                                     <td>{row.email}</td>
-                                    <td>{row.is_disabled === false ? 'oi' : 'nao'}</td>
-
+                                    <td>
+                                        {row.is_disable ? 
+                                        <Status color="#F44336">Inativo</Status> : 
+                                        <Status color="#28A745">Ativo</Status>
+                                    }
+                                    </td>
+                                    <td>
+                                        <IconButton variant="soft" color="primary" size="sm" onClick={() => {handleEditUser(row.id)}}>
+                                            <EditOutlinedIcon />
+                                        </IconButton>
+                                    </td>
                                 </tr>
-                                ))}
-                            </tbody>
-                        </Table>
+                            );
+                        })}
+                        {emptyRows > 0 && (
+                            <tr
+                                style={{
+                                    height: `calc(${emptyRows} * 40px)`,
+                                    '--TableRow-hoverBackground': 'transparent',
+                                    } as React.CSSProperties
+                                }
+                            >
+                                <td colSpan={4} aria-hidden />
+                            </tr>
+                        )}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colSpan={4}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 2,
+                                            justifyContent: 'flex-end',
+                                        }}
+                                    >
+                                        <FormControl orientation="horizontal" size="sm">
+                                            <Select onChange={handleChangeRowsPerPage} value={rowsPerPage}>
+                                                <Option value={5}>5</Option>
+                                                <Option value={10}>10</Option>
+                                            </Select>
+                                        </FormControl>
+                                        <Typography sx={{ textAlign: 'center', minWidth: 80 }}>
+                                            {labelDisplayedRows({
+                                                from: usersByDepartment.length === 0 ? 0 : page * rowsPerPage + 1,
+                                                to: getLabelDisplayedRowsTo(),
+                                                count: usersByDepartment.length === -1 ? -1 : usersByDepartment.length,
+                                            })}
+                                        </Typography>
+                                        <Box sx={{ display: 'flex', gap: 1 }}>
+                                            <IconButton
+                                                size="sm"
+                                                color="neutral"
+                                                variant="outlined"
+                                                disabled={page === 0}
+                                                onClick={() => handleChangePage(page - 1)}
+                                                sx={{ bgcolor: 'background.surface' }}
+                                            >
+                                                <KeyboardArrowLeftIcon />
+                                            </IconButton>
+                                            <IconButton
+                                                size="sm"
+                                                color="neutral"
+                                                variant="outlined"
+                                                disabled={
+                                                    usersByDepartment.length !== -1
+                                                        ? page >= Math.ceil(usersByDepartment.length / rowsPerPage) - 1
+                                                        : false
+                                                    }
+                                                onClick={() => handleChangePage(page + 1)}
+                                                sx={{ bgcolor: 'background.surface' }}
+                                            >
+                                                <KeyboardArrowRightIcon />
+                                            </IconButton>
+                                        </Box>
+                                    </Box>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </Table>
+                </Sheet>
                     </div>
-                
                 </div>
             </View>
         </Container>
