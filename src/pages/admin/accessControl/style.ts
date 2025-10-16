@@ -9,11 +9,11 @@ interface isSelected{
 export const Container = styled.div`
     display: grid;
     width: calc(100vw - var(--nav-aside-size));
-    height: calc(100vh - var(--top-menu-size));
+    max-height: calc(100vh - var(--top-menu-size));
     gap: .5rem;
     padding: .5rem;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 8fr;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 11fr;
 	grid-template-areas:
 		"nav header  header  header"
 		"nav    view    view    view"
@@ -52,8 +52,47 @@ export const Nav = styled.aside`
 
 export const View = styled.section`
     grid-area: view;
+    display: grid;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    max-height: inherit;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 1rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 2fr 1fr;
+	grid-template-areas:
+		"config pages"
+		"table table"
+	;
+
+    > div:nth-child(1){
+        grid-area: config;
+
+        h3{
+            margin: 1rem 0;
+            color: #1a1a1a;
+            font-family: "Itim", cursive !important;
+        }
+
+        label{
+            color: #333333;
+            font-family: "Itim", cursive !important;
+        }
+    }
+    
+    > div:nth-child(2){
+        grid-area: pages;
+    }
+    
+    > div:nth-child(3){
+        grid-area: table;
+
+        
+        > div:last-of-type{
+
+            overflow: scroll;
+        }
+    }
 `;
 
 export const CardDepartment = styled.div<isSelected>`
@@ -69,12 +108,11 @@ export const CardDepartment = styled.div<isSelected>`
         justify-content: space-around;
         width: 100%;
         min-height: 60px;
-        padding: 0 1rem;
-        background-color: #;
+        padding: 0 .5rem;
         border-radius: ${(props) => props.isExpanded ? '.5rem .5rem 0 0' : '.5rem'};
 
         > div:nth-of-type(1){ 
-            width: 10%; 
+            width: 15%; 
         }
 
         > div:nth-of-type(2){
@@ -83,13 +121,20 @@ export const CardDepartment = styled.div<isSelected>`
 
             p{ font-family: "Itim", cursive !important; }
 
-            > p:last-of-type{
-                padding: 2px .5rem;
-                font-size: 12px;
-                color: white;
-                border-radius:1rem;
-                background: #4d4d4dff;
+            > div:first-of-type{
+                max-width: 70%;
             }
+            > div:last-of-type{
+                
+                p{
+                    padding: 2px .5rem;
+                    font-size: 12px;
+                    color: white;
+                    border-radius: 1rem;
+                    background: #4d4d4dff;
+                }
+            } 
+
         }
 
         > div:nth-of-type(3){
