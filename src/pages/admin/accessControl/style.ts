@@ -9,18 +9,22 @@ interface Status{
     color: string
 }
 
+interface Teste {
+    action: string
+}
+
 export const Container = styled.div`
     display: grid;
-    width: calc(100vw - var(--nav-aside-size));
-    max-height: calc(100vh - var(--top-menu-size));
-    gap: .5rem;
-    padding: .5rem;
     grid-template-columns: 1.2fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 11fr;
 	grid-template-areas:
 		"nav header  header  header"
 		"nav    view    view    view"
 	;
+    gap: .5rem;
+    width: calc(100vw - var(--nav-aside-size));
+    max-height: calc(100vh - var(--top-menu-size));
+    padding: .5rem;
     font-family: "Itim", cursive !important;
 `;
 
@@ -32,9 +36,9 @@ export const Header = styled.div`
 
 export const Nav = styled.aside`
     grid-area: nav;
-    border-radius: 1rem;
-    background: #fff7f2;
     width: 100%;
+    background: #fff7f2;
+    border-radius: 1rem;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     overflow: auto;
     ::-webkit-scrollbar { display: none; }
@@ -56,18 +60,19 @@ export const Nav = styled.aside`
 export const View = styled.section`
     grid-area: view;
     display: grid;
-    gap: 1rem;
-    padding: 1rem 2rem;
-    max-height: inherit;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    border-radius: 1rem;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1.2fr;
     grid-template-rows: 1.5fr 1fr;
 	grid-template-areas:
 		"config pages"
 		"table table"
 	;
+    gap: 1rem;
+    max-height: inherit;
+    padding: 1rem 2rem;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 1rem;
     overflow: auto;
+
     > div:nth-child(1){
         grid-area: config;
 
@@ -85,14 +90,68 @@ export const View = styled.section`
     
     > div:nth-child(2){
         grid-area: pages;
+        width: 100%;
+
+        h3{
+            margin: 1rem 0;
+            color: #1a1a1a;
+            font-family: "Itim", cursive !important;
+        }
+        
+        > div:first-of-type{
+            justify-content: space-between;
+            width: 100%;
+            max-height: inherit;
+            flex-wrap: wrap;
+
+            > div{
+                //CADA PAGINA INDIVIDUAL
+                justify-content: space-between;
+                width: 304px;
+                height: 96px;
+                margin: .5rem 0;
+                border: 2px solid #d9d9d9;
+                border-radius: .8rem;
+
+                > div:first-of-type{
+                    flex-direction: column;
+                    width: 80%;
+                    height: 100%;
+
+                    padding: .2rem 0;
+
+                    > div:first-of-type{
+                        width: 100%;
+                        height: 70%;
+                        margin-left: .5rem;
+                        justify-content: start;
+                    }
+
+                    > div:last-of-type{
+                        width: 100%;
+                        height: 30%;
+                        justify-content: start;
+                    }
+                }
+
+                > div:last-of-type{
+                    flex-direction: column;
+                    justify-content: space-around;
+                    width: 20%;
+                    height: 100%;
+                    border-left: 2px solid #d9d9d9;
+                }
+
+            }
+        }
+
+
     }
     
     > div:nth-child(3){
         grid-area: table;
-
         
         > div:last-of-type{
-
             overflow: scroll;
         }
     }
@@ -127,6 +186,7 @@ export const CardDepartment = styled.div<isSelected>`
             > div:first-of-type{
                 max-width: 70%;
             }
+
             > div:last-of-type{
                 
                 p{
@@ -176,6 +236,25 @@ export const Status = styled.span<Status>`
     font-weight: 600;
     font-size: 14px;
     padding: 4px 12px;
+    border-radius: 999px;
+    text-align: center;
+    line-height: 1.2;
+    user-select: none;
+`;
+
+export const Rules = styled.span<Teste>`
+    display: inline-block;
+    background-color:  ${(props) => 
+    props.color === 'View' ? 
+        props.action : props.action === 'Edit' ? '#FFA500' : 
+            props.action === 'Delete' ? '#F44336' : 
+                '#28A745'
+    };      
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 4px 12px;
+    margin-left: .5rem;
     border-radius: 999px;
     text-align: center;
     line-height: 1.2;

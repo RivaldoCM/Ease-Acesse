@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CardDepartment, Container, Header, Nav, Status, View } from "./style";
+import { CardDepartment, Container, Header, Nav, Rules, Status, Statuss, Teste, View } from "./style";
 import { getDepartments } from "../../../services/apiManageONU/getDepartments";
 import { Box, FormControl, FormLabel, IconButton, Input, Option, Select, Sheet, Table, Typography } from "@mui/joy";
 
@@ -15,6 +15,9 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { getPages } from "../../../services/apiManageONU/getPages";
+import { handleIconMenu } from "../../../config/menu";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 type Order = 'asc' | 'desc';
 
@@ -23,6 +26,7 @@ export function AccessControl(){
     const [departmentId, setDepartamentId] = useState<null | number>(null);
     const [accordions, setAccordions] = useState<number[]>([]);
     const [usersByDepartment, setUsersBydeparment] = useState([])
+    const [pages, setPages] = useState([]);
     const [selected, setSelected] = useState<readonly number[]>([]);
 
     const [order, setOrder] = useState<Order>('asc');
@@ -50,10 +54,14 @@ export function AccessControl(){
     useEffect(() => {
         if(departmentId){
             async function getData(){
-                const response = await getUsers({departmentId: departmentId});
-                if(response){
-                    if(response.success){
-                        setUsersBydeparment(response.responses.response);
+                const getPagesByDepartment = getPages({departmentId: departmentId});
+                const getUsersByDepartment = getUsers({departmentId: departmentId});
+                const [pages, users] = await Promise.all([getPagesByDepartment, getUsersByDepartment]);
+                console.log(pages, users);
+                setPages(pages.responses.response);
+                if(users){
+                    if(users.success){
+                        setUsersBydeparment(users.responses.response);
                     } else {
 
                     }
@@ -67,7 +75,7 @@ export function AccessControl(){
 
     const handleExpandAccordion = (index: number) => {
         if(accordions.includes(index)){
-            setAccordions(accordions.filter(accordions => accordions !== index))
+            setAccordions(accordions.filter(accordions => accordions !== index));
         } else {
             setAccordions([...accordions, index]);
         }
@@ -121,7 +129,7 @@ export function AccessControl(){
     return(
         <Container>
             <Header className="header">
-
+                TOTAL DE USUARIOS / LOGS GERAIS DE MUDANÇAS FEITAS AQ
             </Header>
             <Nav className="nav">
                 <header className="flex">
@@ -200,7 +208,33 @@ export function AccessControl(){
                     </div>
                 </div>
                 <div className="pages">
-                    paginas
+                    <h3>Páginas disponíveis</h3>
+                    <div className="flex">
+                        {pages && pages.map((collection: any, index: number) => (
+                            collection.pages.map((page, index: number) => (
+                                <div className="flex" key={index}>
+                                    <div className="flex">
+                                        <div className="flex">
+                                            {handleIconMenu(page.path)}<h4>{page.name}</h4>
+                                        </div>
+                                        <div className="flex">
+                                            {page.Rules.map((rule: any, index: number) => (
+                                                <Rules action={rule.name} key={index}>{rule.name}</Rules>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="flex">
+                                        <IconButton variant="soft" color="primary">
+                                            <EditOutlinedIcon />
+                                        </IconButton>
+                                        <IconButton variant="soft" color="danger">
+                                            <DeleteOutlineOutlinedIcon />
+                                        </IconButton>
+                                    </div>
+                                </div>
+                            ))
+                        ))}
+                    </div>
                 </div>
                 <div className="table">
                     <div><h3>Usuários vinculados</h3></div>

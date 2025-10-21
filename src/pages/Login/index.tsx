@@ -32,7 +32,6 @@ export function Login() {
         e.preventDefault();
 
         const response = await signIn({email, password});
-        console.log(response)
         if(response){
             if(response.success){
                 localStorage.setItem('Authorization', response.responses.response.token);
