@@ -5,6 +5,7 @@ import { useLoading } from '../../../../hooks/useLoading';
 import { useAuth } from '../../../../hooks/useAuth';
 import { useAuthOnu } from '../../../../hooks/useAuthOnu';
 import { useResponse } from '../../../../hooks/useResponse';
+import { useSocket } from '../../../../hooks/useSocket';
 
 import { isValidCpf, spaceNotAllowed, wifiPassword } from '../../../../config/regex';
 import { cleanUpModelName, typePppoeZte } from '../../../../config/typesOnus';
@@ -33,6 +34,7 @@ import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 export function ZTEForm({onu}: IOnu){
     const navigate = useNavigate();
     const { user } = useAuth();
+    const { socket } = useSocket();
     const { authOnu, setAuthOnu, setOnus } = useAuthOnu();
     const { isLoading, startLoading, stopLoading } = useLoading();
     const { setFetchResponseMessage } = useResponse();
@@ -40,6 +42,7 @@ export function ZTEForm({onu}: IOnu){
     const [checkedSIP, setCheckedSIP] = useState(false);
     const [checkBandSteering, setCheckBandSteering] = useState(false);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+    const [realTimeOnu, setRealTimeOnu] = useState(null);
 
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
@@ -134,6 +137,17 @@ export function ZTEForm({onu}: IOnu){
             }
         }else{
             connectionData.contractId = 0;
+        }
+
+        if(socket){
+            socket.emit('select_room', {
+                uid: user?.uid,
+                room: `/auth_onu/${user?.uid}/${onu.serialNumber}`
+            });
+
+            socket.on('realtime', data => {
+                console.log(data)
+            });
         }
 
         const hasAuth = await writeONU({

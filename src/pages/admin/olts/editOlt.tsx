@@ -73,7 +73,7 @@ export function EditOlt(){
             /*
                 POPULANDO DADOS DA OLT REQUISITADA.
                 ESTÁ RECEBENDO DOIS OBJETOS NO RETORNO DA API
-                OS DADOS DA OLT E AS SUAUS VLANS
+                OS DADOS DA OLT E AS SUAS VLANS
             */
             if (olt.success && olt.responses.response) {
                 setForm({
@@ -306,6 +306,18 @@ export function EditOlt(){
         });
         setVlans(newProfile);
     }
+
+    const handleModifyMaxAttenuation = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const newProfile = vlans.map((value) => {
+            if(form.modifySlot === value.slot){
+                return { ...value, profile_vlan: form.modifyProfileVlan};
+            }
+            return {...value}
+        });
+        setVlans(newProfile);
+    }
+
 
     const handleSubmit = async () => {
         if(!form.name || !form.modelId || !form.host || !form.telnetUser || !form.telnetPassword || vlans.length === 0){
@@ -700,6 +712,7 @@ export function EditOlt(){
                                                 <th>Pon</th>
                                                 <th>Vlan</th>
                                                 <th>Perfil de Vlan</th>
+                                                <th>Atenuação</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -720,6 +733,11 @@ export function EditOlt(){
                                                                 <input
                                                                     value={vlans.profile_vlan || ''}
                                                                     onChange={handleChangeProfileVlan(index)}
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    value={vlans.max_attenuation || ''} 
                                                                 />
                                                             </td>
                                                         </tr>
