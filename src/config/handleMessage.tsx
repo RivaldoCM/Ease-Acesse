@@ -212,6 +212,11 @@ export const handleMessage = (res: string): {responseMessage: string, severitySt
                 responseMessage: 'Roteador não encontrado.',
                 severityStatus: 'warning'
             }
+        case 'error/attenuation-too-high':
+            return{
+                responseMessage: 'Não provisionado, perda fora do limite aceitável.',
+                severityStatus: 'error'
+            }
         default:
             return{
                 responseMessage: 'Erro interno, verifique com o suporte.',
