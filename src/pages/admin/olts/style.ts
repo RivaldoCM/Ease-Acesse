@@ -28,19 +28,85 @@ export const OltStyledContainer = styled.div`
 `;
 
 export const InputsWrapper = styled.div`
-    h4{
-        margin-left: .8rem; 
-    }
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
     width: 50%;
     height: 100%;
 
+    h4{ margin-left: .8rem; }
+
+
     @media (max-width: 720px){
         width: 100%;
     }
 `;
+
+
+
+export const Inputs = styled.div`
+    width: 100%;
+    height: 100%;
+    padding: 1rem 0;
+
+    .ip-validation{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        @media (max-width: 550px){
+            justify-content: center;
+            margin-left: 18.5px
+        }
+
+    }
+
+    > div{
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin: 0 .5rem;
+
+        @media (max-width: 1214px){
+            width: 100%;
+        }
+
+        @media (max-width: 550px){
+            justify-content: center;
+        }
+
+        > div{
+            margin: .3rem;
+        }
+    }
+`
+
+export const CardAttenuation = styled.div`
+    width: 60%;
+    padding: 20px;
+    background-color: #e8f0fe; /* fundo azul claro */
+    border: 2px solid #4a90e2; /* borda azul */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+    color: #333;
+
+    h3 {
+        margin-top: 0;
+        font-size: 18px !important;
+        color: #2c3e50;
+    }
+
+    p {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 1550px){
+        width: 80%;
+    }
+    @media (max-width: 1214px){
+        width: 92%;
+    }
+`
 
 export const VlanConfig = styled.div`
     flex-direction: column;
@@ -171,44 +237,3 @@ export const VlanConfig = styled.div`
         }
     }
 `;
-
-export const Inputs = styled.div`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 100%;
-    height: 100%;
-    padding: 1rem 0;
-
-
-    .ip-validation{
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        @media (max-width: 550px){
-            justify-content: center;
-            margin-left: 18.5px
-        }
-
-    }
-
-    > div{
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        margin: 0 .5rem;
-
-        @media (max-width: 1214px){
-            width: 100%;
-        }
-
-        @media (max-width: 550px){
-            justify-content: center;
-        }
-
-        > div{
-            margin: .3rem;
-        }
-    }
-`

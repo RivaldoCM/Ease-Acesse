@@ -5,6 +5,7 @@ import { useLoading } from '../../../../hooks/useLoading';
 import { useAuth } from '../../../../hooks/useAuth';
 import { useAuthOnu } from '../../../../hooks/useAuthOnu';
 import { useResponse } from '../../../../hooks/useResponse';
+import { useSocket } from '../../../../hooks/useSocket';
 
 import { isValidCpf, spaceNotAllowed, wifiPassword } from '../../../../config/regex';
 import { cleanUpModelName, typePppoeZte } from '../../../../config/typesOnus';

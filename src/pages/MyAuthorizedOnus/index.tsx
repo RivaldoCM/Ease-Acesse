@@ -98,9 +98,9 @@ export function MyAuthorizedOnus() {
     if(socket){
         socket.emit('select_room', {
             uid: user?.uid,
-            room: '/my_auth_onus'
+            room: `/my_auth_onus/${user?.uid}`
         });
-        socket.on('update', data => {
+        socket.on('updateOnuData', data => {
             setOnu(data);
         });
     }

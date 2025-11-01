@@ -13,8 +13,9 @@ import { updateOlt } from "../../../services/apiManageONU/updateOlt";
 import { getOltModel } from "../../../services/apiManageONU/getOltModel";
 import { getOltManufacturer } from "../../../services/apiManageONU/getOltManufacturer";
 
-import { Inputs, InputsWrapper, OltStyledContainer, VlanConfig } from "./style";
+import { CardAttenuation, Inputs, InputsWrapper, OltStyledContainer, VlanConfig } from "./style";
 import { Button, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { Switch } from "@mui/joy";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import CheckIcon from '@mui/icons-material/Check';
@@ -49,13 +50,15 @@ export function EditOlt(){
         geponPassword: '',
         geponEnablePassword: '',
         isActive: '' as number | boolean | '',
+        controlAttenuation: false,
         voalleId: '' as number | '',
         formatVlanConfig: 1,
         vlan: '',
+        maxAttenuation: '',
         modifySlot: 1,
         modifyVlan: 0,
         modifyProfileVlan: '',
-        modifySlotNumber: ''
+        modifySlotNumber: '',
     });
 
     useEffect(() => {
@@ -73,7 +76,7 @@ export function EditOlt(){
             /*
                 POPULANDO DADOS DA OLT REQUISITADA.
                 ESTÁ RECEBENDO DOIS OBJETOS NO RETORNO DA API
-                OS DADOS DA OLT E AS SUAUS VLANS
+                OS DADOS DA OLT E AS SUAS VLANS
             */
             if (olt.success && olt.responses.response) {
                 setForm({
@@ -91,6 +94,7 @@ export function EditOlt(){
                     geponEnablePassword: olt.responses.response.olt.gepon_enable_password || '',
                     isActive: olt.responses.response.olt.is_active === true ? 1 : 0,
                     voalleId: olt.responses.response.olt.voalle_id || '',
+                    controlAttenuation: olt.responses.response.olt.optical_auth_control ? true : false,
                 });
                 setVlans(olt.responses.response.vlans);
                 setModelControl(olt.responses.response.olt.Olt_Model.id);
@@ -135,6 +139,14 @@ export function EditOlt(){
         setForm({
             ...form,
             [e.target.name]: e.target.value
+        });
+    }
+
+    const handleChangeSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+        setForm({
+            ...form,
+            controlAttenuation: event.target.checked ? true : false
         });
     }
 
@@ -250,6 +262,24 @@ export function EditOlt(){
         }
     }
 
+    const handleChangeMaxAttenuation = (index: number) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if(event.target.value === ''){
+            const newAttenuation = [...vlans];
+            newAttenuation[index] = {
+                ...newAttenuation[index],
+                max_attenuation: null
+            };
+            setVlans(newAttenuation);
+        } else {
+            const newAttenuation = [...vlans];
+            newAttenuation[index] = {
+                ...newAttenuation[index],
+                max_attenuation: event.target.value
+            };
+            setVlans(newAttenuation);
+        }
+    }
+
     const generateSlotOptions = () => {
         let initialSlot = 0, modelSlots = 0, items = [];
 
@@ -316,6 +346,7 @@ export function EditOlt(){
             } else {
                 const {vlan, formatVlanConfig, modifySlot, modifyVlan, modifyProfileVlan, ...dataForm} = form;
                 dataForm.isActive = dataForm.isActive === 1 ? true : false;
+                
                 const response = await updateOlt(dataForm, vlans);
                 if(response){
                     if(response.success){
@@ -439,6 +470,22 @@ export function EditOlt(){
                                 onChange={handleFormChange}
                                 sx={{ m: 1, width: '200px' }}
                             />
+                        </div>
+                        <div>
+                            <CardAttenuation>
+                                <h3>Controle de Provisionamento por Limite de Perda</h3>
+                                <p>
+                                    Quando habilitado, a autorização do equipamento ocorrerá<br/>
+                                    apenas se a perda estiver dentro do valor previamente configurado.<br/>
+                                    Caso esse valor não esteja definido, o provisionamento será realizado
+                                    sem a verificação da perda.
+                                </p>
+                                <Switch
+                                    checked={form.controlAttenuation}
+                                    onChange={handleChangeSwitch} 
+                                    color={form.controlAttenuation ? "success" : "neutral"} 
+                                />
+                            </CardAttenuation>
                         </div>
                     </Inputs>
                 </InputsWrapper>
@@ -700,6 +747,7 @@ export function EditOlt(){
                                                 <th>Pon</th>
                                                 <th>Vlan</th>
                                                 <th>Perfil de Vlan</th>
+                                                <th>Atenuação</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -720,6 +768,13 @@ export function EditOlt(){
                                                                 <input
                                                                     value={vlans.profile_vlan || ''}
                                                                     onChange={handleChangeProfileVlan(index)}
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    className="vlans"
+                                                                    value={vlans.max_attenuation || ''}
+                                                                    onChange={handleChangeMaxAttenuation(index)}
                                                                 />
                                                             </td>
                                                         </tr>
