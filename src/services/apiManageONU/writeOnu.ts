@@ -17,7 +17,7 @@ export async function writeONU(props: IAuthOnuProps): Promise<IResponseData | IR
             serialNumber: props.serialNumber,
             modelOnu: props.modelOnu,
             typeOnu: props.typeOnu,
-            rxPower: props.rxPower,
+            rxPowerPreview: props.rxPowerPreview,
             contract: props.contract,
             cpf: props.cpf,
             pppoeUser: props.pppoeUser,
@@ -29,7 +29,7 @@ export async function writeONU(props: IAuthOnuProps): Promise<IResponseData | IR
             wifiSSID58: props.wifiSSID58,
             wifiPass58: props.wifiPass58,
             sipUser: props.sipUser,
-            sipPass: props.sipPass
+            sipPass: props.sipPass,
         }
     })
     .then(response => {

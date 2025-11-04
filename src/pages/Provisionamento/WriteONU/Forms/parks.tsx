@@ -12,13 +12,14 @@ import { getPeopleId } from "../../../../services/apiVoalle/getPeopleId";
 import { getConnectionId } from "../../../../services/apiManageONU/getConnectionId";
 import { writeONU } from "../../../../services/apiManageONU/writeOnu";
 import { updateConnection } from "../../../../services/apiVoalle/updateConnection";
+import { updateLogsOnu } from "../../../../services/apiManageONU/updateLogOnu";
 
 import { IOnu } from "../../../../interfaces/IOnus";
 
 import { InputContainer } from "../../../../styles/globalStyles";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { Button, CircularProgress, TextField } from "@mui/material";
-import { updateLogsOnu } from "../../../../services/apiManageONU/updateLogOnu";
+
 
 export function PARKSForm({onu}: IOnu){
     const navigate = useNavigate();
@@ -82,7 +83,7 @@ export function PARKSForm({onu}: IOnu){
                 contract: connectionData.contractId,
                 cpf: authOnu.cpf,
                 pppoeUser: authOnu.pppoeUser,
-                rxPower: onu.rxPower
+                rxPowerPreview: onu.onuRx
             });
             stopLoading();
 

@@ -9,7 +9,7 @@ export interface IAuthOnuProps {
     modelOlt?: string,
     modelOnu?: string,
     typeOnu?: string,
-    rxPower?: string,
+    rxPowerPreview?: string,
     cpf: string,
     pppoeUser: string,
     pppPass?: string,
