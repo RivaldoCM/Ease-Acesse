@@ -5,9 +5,8 @@ import { useLoading } from '../../../../hooks/useLoading';
 import { useAuth } from '../../../../hooks/useAuth';
 import { useAuthOnu } from '../../../../hooks/useAuthOnu';
 import { useResponse } from '../../../../hooks/useResponse';
-import { useSocket } from '../../../../hooks/useSocket';
 
-import { isValidCpf, spaceNotAllowed, wifiPassword } from '../../../../config/regex';
+import { Act2436ANATEL, isValidCpf, spaceNotAllowed } from '../../../../config/regex';
 import { cleanUpModelName, typePppoeZte } from '../../../../config/typesOnus';
 import { verifyOnuType } from '../../../../config/verifyOnuType';
 
@@ -100,7 +99,7 @@ export function ZTEForm({onu}: IOnu){
                     setFetchResponseMessage('info/wifi-ssid-did-not-match');
                     return;
                 }
-                if(!authOnu.wifiPasswordBS.match(wifiPassword)){
+                if(!authOnu.wifiPasswordBS.match(Act2436ANATEL)){
                     setFetchResponseMessage('info/wifi-password-did-not-match');
                     return;
                 }
@@ -109,7 +108,7 @@ export function ZTEForm({onu}: IOnu){
                     setFetchResponseMessage('info/wifi-ssid-did-not-match');
                     return;
                 }
-                if(!authOnu.wifiPassword24.match(wifiPassword) || !authOnu.wifiPassword58.match(wifiPassword)){
+                if(!authOnu.wifiPassword24.match(Act2436ANATEL) || !authOnu.wifiPassword58.match(Act2436ANATEL)){
                     setFetchResponseMessage('info/wifi-password-did-not-match');
                     return;
                 }
@@ -263,8 +262,12 @@ export function ZTEForm({onu}: IOnu){
                                                     }}
                                                 >
                                                     <Typography sx={{ p: 2, background: '#fffff0', color: '#000' }}>
-                                                        A senha deve ter pelo menos 8 caracteres, 
-                                                        <br/>sem espaços em branco ou caracteres especiais.
+                                                        <p>
+                                                            ✅ A senha deve ter pelo menos <strong>8 caracteres</strong><br/>
+                                                            ✅ Deve conter ao menos <strong>uma letra maiúscula</strong>, <strong>uma letra minúscula</strong> e <strong>um número</strong><br/>
+                                                            ⚠️ Caracteres especiais são <strong>opcionais</strong>, mas se usados, devem ser um dos seguintes: <strong>@ $ ! % * ? &</strong><br/>
+                                                            ❌ <strong>Não deve conter espaços em branco</strong> ou outros caracteres especiais além dos permitidos
+                                                        </p>
                                                     </Typography>
                                                 </Popover>
                                             </HelpPopover>

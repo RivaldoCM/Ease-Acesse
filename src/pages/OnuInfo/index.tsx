@@ -6,7 +6,7 @@ import { useResponse } from "../../hooks/useResponse";
 import { useLoading } from "../../hooks/useLoading";
 import { getOnuInfo } from "../../services/apiManageONU/getOnuInfo";
 import { updateWifi } from "../../services/apiManageONU/updateWifi";
-import { spaceNotAllowed, wifiPassword } from "../../config/regex";
+import { Act2436ANATEL, spaceNotAllowed, wifiPassword } from "../../config/regex";
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import { cleanUpModelName, typePppoeZte } from "../../config/typesOnus";
 
@@ -230,7 +230,7 @@ export function OnuInfo(){
                 setFetchResponseMessage('info/wifi-ssid-did-not-match');
                 return;
             }
-            if(form.passwordBS && !form.passwordBS.match(wifiPassword)){
+            if(form.passwordBS && !form.passwordBS.match(Act2436ANATEL)){
                 setFetchResponseMessage('info/wifi-password-did-not-match');
                 return;
             }
@@ -243,8 +243,8 @@ export function OnuInfo(){
                 return;
             }
             if(
-                form.password24 && !form.password24.match(wifiPassword) 
-                || form.password58 && !form.password58.match(wifiPassword)
+                form.password24 && !form.password24.match(Act2436ANATEL) 
+                || form.password58 && !form.password58.match(Act2436ANATEL)
             ){
                 setFetchResponseMessage('info/wifi-password-did-not-match');
                 return;
@@ -528,8 +528,12 @@ export function OnuInfo(){
                                                                 }}
                                                             >
                                                                 <Typography sx={{ p: 2, background: '#fffff0', color: '#000' }}>
-                                                                    A senha deve ter pelo menos 8 caracteres, 
-                                                                    <br/>sem espaços em branco ou caracteres especiais.
+                                                                    <p>
+                                                                        ✅ A senha deve ter pelo menos <strong>8 caracteres</strong><br/>
+                                                                        ✅ Deve conter ao menos <strong>uma letra maiúscula</strong>, <strong>uma letra minúscula</strong> e <strong>um número</strong><br/>
+                                                                        ⚠️ Caracteres especiais são <strong>opcionais</strong>, mas se usados, devem ser um dos seguintes: <strong>@ $ ! % * ? &</strong><br/>
+                                                                        ❌ <strong>Não deve conter espaços em branco</strong> ou outros caracteres especiais além dos permitidos
+                                                                    </p>
                                                                 </Typography>
                                                             </Popover>
                                                         </div>
