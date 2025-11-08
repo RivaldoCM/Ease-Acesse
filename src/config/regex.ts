@@ -8,3 +8,6 @@ export const isValidIp = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/;
 export const formatInput = /^(?=.*[a-zA-Z0-9\u00C0-\u00FF])[a-zA-Z0-9\u00C0-\u00FF.()_+\-=/\\|, ]{3,}$/;
 export const wifiPassword = /^[a-zA-Z0-9_]{8,}$/;
 export const spaceNotAllowed = /^\S*$/;
+
+//OBRIGA USO DE LETRAS MAIUSCULAS, MINUSCULAS E NUMEROS
+export const Act2436ANATEL = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;

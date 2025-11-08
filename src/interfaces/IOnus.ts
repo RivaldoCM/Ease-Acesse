@@ -6,7 +6,7 @@ export type IOnu = {
         model: string;
         modelOlt: string;
         serialNumber: string;
-        rxPower?: string;
+        onuRx?: string;
         voalleId: number;
     }
 }

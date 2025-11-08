@@ -48,8 +48,10 @@ export function FHForm({onu}: IOnu){
 
         if(isLoading){
             setFetchResponseMessage('warning/has-action-in-progress');
+            return;
         }else if(!authOnu.cpf.match(isValidCpf)){
             setFetchResponseMessage('warning/invalid-cpf-input');
+            return;
         }else{
             startLoading();
             const peopleId = await getPeopleId(authOnu.cpf);
