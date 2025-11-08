@@ -91,8 +91,10 @@ export function ZTEForm({onu}: IOnu){
 
         if(isLoading){
             setFetchResponseMessage('warning/has-action-in-progress');
+            return;
         }else if(!authOnu.cpf.match(isValidCpf)){
             setFetchResponseMessage('warning/invalid-cpf-input');
+            return;
         }else if(typePppoeZte.includes(cleanUpModelName(onu.model))){
             if(checkBandSteering){
                 if(!authOnu.wifiNameBS.match(spaceNotAllowed)){
