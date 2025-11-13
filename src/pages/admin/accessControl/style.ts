@@ -35,28 +35,42 @@ export const Header = styled.div`
 `;
 
 export const Nav = styled.aside`
-    grid-area: nav;
-    width: 100%;
-    background: #fff7f2;
-    border-radius: 1rem;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    overflow: auto;
-    ::-webkit-scrollbar { display: none; }
+  grid-area: nav;
+  width: 100%;
+  background: #fffaf5;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  overflow: auto;
 
-    header{
-        position: sticky;
-        top: 0;
-        width: 100%;
-        height: 8%;
-        border-bottom: 2px solid grey;
-    }
-    > div {
-        flex-direction: column;
-        width: 100%;
-        padding: .5rem;
-    }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 8%;
+    border-bottom: 2px solid grey;
+    background: inherit;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    font-family: "Itim", cursive !important;
+    font-weight: 600;
+    color: #1a1a1a;
+    z-index: 10;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0.5rem;
+  }
 `;
 
+/* ---------------- ÁREA PRINCIPAL ---------------- */
 export const View = styled.section`
     grid-area: view;
     display: grid;
@@ -144,8 +158,6 @@ export const View = styled.section`
 
             }
         }
-
-
     }
     
     > div:nth-child(3){
@@ -157,74 +169,147 @@ export const View = styled.section`
     }
 `;
 
+/* ---------------- CARD DEPARTMENT ---------------- */
 export const CardDepartment = styled.div<isSelected>`
     position: relative;
+    display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     width: 100%;
-    border-radius: .5rem;
-    margin: .5rem 0;
+    background: ${({ isSelected }) => (isSelected ? "#fff2eb" : "#ffffff")};
+    border: 2px solid ${({ isSelected }) => (isSelected ? "#ff9f68" : "#d9d9d9")};
+    border-radius: 0.8rem;
+    margin: 0.5rem 0;
+    box-shadow: ${({ isSelected }) =>
+        isSelected
+        ? "rgba(0,0,0,0.15) 0px 4px 10px"
+        : "rgba(0,0,0,0.08) 0px 2px 6px"};
+    transition: all 0.25s ease;
 
-    .header{
-        justify-content: space-around;
-        width: 100%;
-        min-height: 60px;
-        padding: 0 .5rem;
-        border-radius: ${(props) => props.isExpanded ? '.5rem .5rem 0 0' : '.5rem'};
-
-        > div:nth-of-type(1){ 
-            width: 15%; 
-        }
-
-        > div:nth-of-type(2){
-            justify-content: space-between;
-            width: 70%;
-
-            p{ font-family: "Itim", cursive !important; }
-
-            > div:first-of-type{
-                max-width: 70%;
-            }
-
-            > div:last-of-type{
-                
-                p{
-                    padding: 2px .5rem;
-                    font-size: 12px;
-                    color: white;
-                    border-radius: 1rem;
-                    background: #4d4d4dff;
-                }
-            } 
-
-        }
-
-        > div:nth-of-type(3){
-            display: flex;
-            justify-content: space-around;
-            width: 20%; 
-        }
-
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 10px;
     }
 
-    .accordion{
-        display: ${(props) => props.isExpanded ? 'flex' : 'none'};
-        flex-direction: column;
-        align-items: end;
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         width: 100%;
-        
-        > div {
+        min-height: 60px;
+        padding: 0.6rem 1rem;
+        border-radius: ${({ isExpanded }) =>
+        isExpanded ? "0.8rem 0.8rem 0 0" : "0.8rem"};
+        background: ${({ isSelected }) => (isSelected ? "#fffaf5" : "#fefefe")};
+        border-bottom: ${({ isExpanded }) =>
+        isExpanded ? "1px solid #ddd" : "none"};
+        transition: background 0.25s ease;
 
-            width: 86%;
-            height: 36px;
-            justify-content: start;
+        > div:nth-of-type(1) {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 70%;
 
-            p{
-                text-align: start;
+            > div:first-of-type p {
                 font-family: "Itim", cursive !important;
+                font-size: 1rem;
+                font-weight: 600;
+                color: #333;
             }
 
+            > div:last-of-type p {
+                padding: 3px 10px;
+                font-size: 12px;
+                font-weight: 500;
+                color: white;
+                border-radius: 1rem;
+                background: #4d4d4d;
+            }
+        }
+
+        > div:nth-of-type(2) {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 20%;
+
+            button {
+                margin-left: 0.3rem;
+                color: #4d4d4d;
+                transition: all 0.2s;
+
+                &:hover {
+                    color: #ff7a2f;
+                }
+            }
+        }
+    }
+
+    .accordion {
+        overflow: hidden;
+        max-height: ${({ isExpanded }) => (isExpanded ? "1000px" : "0")};
+        transition: max-height 0.4s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        padding: ${({ isExpanded }) => (isExpanded ? "0.8rem 1rem" : "0 1rem")};
+        background: #fffdfb;
+        border-top: 1px solid #eee;
+        border-radius: 0 0 0.8rem 0.8rem;
+
+        .node {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-left: 24px;
+            margin-bottom: 8px;
+
+            .line-vertical {
+                position: absolute;
+                left: -12px;
+                width: 2px;
+                height: 100%;
+                background-color: #ffd4b8;
+            }
+
+            .line-down {
+                position: absolute;
+                left: -12px;
+                bottom: -16px;
+                width: 2px;
+                height: 16px;
+                background-color: #ffd4b8;
+            }
+
+            .box {
+                position: relative;
+                background: #ffe8d6;
+                color: #a34a00;
+                font-weight: 600;
+                border-radius: 8px;
+                padding: 6px 12px;
+                margin: 4px 0;
+                transition: background 0.25s ease, color 0.25s ease;
+
+                &:hover {
+                    background: #ffd7b8;
+                    color: #7a3500;
+                }
+
+                &::before {
+                content: "";
+                position: absolute;
+                left: -12px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 12px;
+                height: 2px;
+                background-color: #ffd4b8;
+                }
+            }
         }
     }
 `;

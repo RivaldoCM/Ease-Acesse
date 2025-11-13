@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CardDepartment, Container, Header, Nav, Rules, Status, Statuss, Teste, View } from "./style";
 import { getDepartments } from "../../../services/apiManageONU/getDepartments";
-import { Box, FormControl, FormLabel, IconButton, Input, Option, Select, Sheet, Table, Typography } from "@mui/joy";
+import { Box, Button, FormControl, FormLabel, IconButton, Input, Option, Select, Sheet, Table, Typography } from "@mui/joy";
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
@@ -137,13 +137,8 @@ export function AccessControl(){
                 </header>
                 <div className="flex">
                     {departaments && departaments.map((department: IDepartments, index) => (
-                        <CardDepartment className="flex" isSelected={index === departmentId} isExpanded={accordions.includes(index)}>
+                        <CardDepartment className="flex" isSelected={index + 1 === departmentId} isExpanded={accordions.includes(index)}>
                             <div className="header flex">
-                                <div>
-                                    <IconButton variant="soft" size="sm">
-                                        <GroupOutlinedIcon />
-                                    </IconButton>
-                                </div>
                                 <div className="flex">
                                     <div>
                                         <p>{department.name}</p>
@@ -162,21 +157,13 @@ export function AccessControl(){
                                 </div>
                             </div>
                             <div className="accordion">
-                                {
-                                    department.Roles.map((role, roleIndex) => (
-                                        <div key={roleIndex} className="flex">
-
-                                            <div>
-                                                <IconButton variant="soft" size="sm">
-                                                    <AssignmentIndOutlinedIcon />
-                                                </IconButton>
-                                            </div>
-                                            <div>
-                                                <p>{role.name}</p>
-                                            </div>
-                                        </div>
-                                    ))
-                                }
+                                {department.Roles.map((role, i) => (
+                                    <div key={i} className="node">
+                                        <div className="line-vertical" />
+                                        <div className="box">{role.name}</div>
+                                        {i < department.Roles.length - 1 && <div className="line-down" />}
+                                    </div>
+                                ))}
                             </div>
                         </CardDepartment>
                     ))}
@@ -240,145 +227,145 @@ export function AccessControl(){
                     <div><h3>Usuários vinculados</h3></div>
                     <div>
                         <Sheet
-                    variant="outlined"
-                    sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm' }}
-                >
-                    <EnhancedTableToolbar
-                        ticketId={usersByDepartment.find((row) => row.id === selected[0])?.id}
-                        numSelected={selected.length}
-                    />
-                    <Table
-                        stickyFooter
-                        hoverRow
-                        sx={{
-                            '--TableCell-headBackground': 'transparent',
-                            '--TableCell-selectedBackground': (theme) =>
-                                theme.vars.palette.success.softBg,
-                            '& thead th:nth-child(3)': {
-                                width: '76px',
-                            },
-                            '& thead th:nth-child(4)': {
-                                width: '144px',
-                            },
-                            '& tr > *:nth-child(n+3)': { textAlign: 'center' },
-                        }}
-                    >
-                        <EnhancedTableHead
-                            numSelected={selected.length}
-                            order={order}
-                            orderBy={orderBy}
-                            onRequestSort={handleRequestSort}
-                            rowCount={usersByDepartment.length}
-                        />
-                        <tbody>
-                        {[...usersByDepartment]
-                            .sort(getComparator(order, orderBy, isNested))
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row, index) => {
-                            const isItemSelected = selected.includes(row.id);
-
-                            return(
-                                <tr
-                                    onClick={(event) => handleClick(event, row)}
-                                    role="checkbox"
-                                    aria-checked={isItemSelected}
-                                    tabIndex={-1}
-                                    key={row.id}
-                                    style={
-                                        isItemSelected
-                                        ? ({
-                                            '--TableCell-dataBackground':
-                                                'var(--TableCell-selectedBackground)',
-                                            '--TableCell-headBackground':
-                                                'var(--TableCell-selectedBackground)',
-                                            } as React.CSSProperties)
-                                        : {}
-                                    }
-                                >
-                                    <td>{row.name}</td>
-                                    <td>{row.email}</td>
-                                    <td>
-                                        {row.is_disable ? 
-                                        <Status color="#F44336">Inativo</Status> : 
-                                        <Status color="#28A745">Ativo</Status>
-                                    }
-                                    </td>
-                                    <td>
-                                        <IconButton variant="soft" color="primary" size="sm" onClick={() => {handleEditUser(row.id)}}>
-                                            <EditOutlinedIcon />
-                                        </IconButton>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                        {emptyRows > 0 && (
-                            <tr
-                                style={{
-                                    height: `calc(${emptyRows} * 40px)`,
-                                    '--TableRow-hoverBackground': 'transparent',
-                                    } as React.CSSProperties
-                                }
+                            variant="outlined"
+                            sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm' }}
+                        >
+                            <EnhancedTableToolbar
+                                ticketId={usersByDepartment.find((row) => row.id === selected[0])?.id}
+                                numSelected={selected.length}
+                            />
+                            <Table
+                                stickyFooter
+                                hoverRow
+                                sx={{
+                                    '--TableCell-headBackground': 'transparent',
+                                    '--TableCell-selectedBackground': (theme) =>
+                                        theme.vars.palette.success.softBg,
+                                    '& thead th:nth-child(3)': {
+                                        width: '76px',
+                                    },
+                                    '& thead th:nth-child(4)': {
+                                        width: '144px',
+                                    },
+                                    '& tr > *:nth-child(n+3)': { textAlign: 'center' },
+                                }}
                             >
-                                <td colSpan={4} aria-hidden />
-                            </tr>
-                        )}
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colSpan={4}>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: 2,
-                                            justifyContent: 'flex-end',
-                                        }}
+                                <EnhancedTableHead
+                                    numSelected={selected.length}
+                                    order={order}
+                                    orderBy={orderBy}
+                                    onRequestSort={handleRequestSort}
+                                    rowCount={usersByDepartment.length}
+                                />
+                                <tbody>
+                                {[...usersByDepartment]
+                                    .sort(getComparator(order, orderBy, isNested))
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row, index) => {
+                                    const isItemSelected = selected.includes(row.id);
+
+                                    return(
+                                        <tr
+                                            onClick={(event) => handleClick(event, row)}
+                                            role="checkbox"
+                                            aria-checked={isItemSelected}
+                                            tabIndex={-1}
+                                            key={row.id}
+                                            style={
+                                                isItemSelected
+                                                ? ({
+                                                    '--TableCell-dataBackground':
+                                                        'var(--TableCell-selectedBackground)',
+                                                    '--TableCell-headBackground':
+                                                        'var(--TableCell-selectedBackground)',
+                                                    } as React.CSSProperties)
+                                                : {}
+                                            }
+                                        >
+                                            <td>{row.name}</td>
+                                            <td>{row.email}</td>
+                                            <td>
+                                                {row.is_disable ? 
+                                                <Status color="#F44336">Inativo</Status> : 
+                                                <Status color="#28A745">Ativo</Status>
+                                            }
+                                            </td>
+                                            <td>
+                                                <IconButton variant="soft" color="primary" size="sm" onClick={() => {handleEditUser(row.id)}}>
+                                                    <EditOutlinedIcon />
+                                                </IconButton>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                                {emptyRows > 0 && (
+                                    <tr
+                                        style={{
+                                            height: `calc(${emptyRows} * 40px)`,
+                                            '--TableRow-hoverBackground': 'transparent',
+                                            } as React.CSSProperties
+                                        }
                                     >
-                                        <FormControl orientation="horizontal" size="sm">
-                                            <Select onChange={handleChangeRowsPerPage} value={rowsPerPage}>
-                                                <Option value={5}>5</Option>
-                                                <Option value={10}>10</Option>
-                                            </Select>
-                                        </FormControl>
-                                        <Typography sx={{ textAlign: 'center', minWidth: 80 }}>
-                                            {labelDisplayedRows({
-                                                from: usersByDepartment.length === 0 ? 0 : page * rowsPerPage + 1,
-                                                to: getLabelDisplayedRowsTo(),
-                                                count: usersByDepartment.length === -1 ? -1 : usersByDepartment.length,
-                                            })}
-                                        </Typography>
-                                        <Box sx={{ display: 'flex', gap: 1 }}>
-                                            <IconButton
-                                                size="sm"
-                                                color="neutral"
-                                                variant="outlined"
-                                                disabled={page === 0}
-                                                onClick={() => handleChangePage(page - 1)}
-                                                sx={{ bgcolor: 'background.surface' }}
+                                        <td colSpan={4} aria-hidden />
+                                    </tr>
+                                )}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colSpan={4}>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 2,
+                                                    justifyContent: 'flex-end',
+                                                }}
                                             >
-                                                <KeyboardArrowLeftIcon />
-                                            </IconButton>
-                                            <IconButton
-                                                size="sm"
-                                                color="neutral"
-                                                variant="outlined"
-                                                disabled={
-                                                    usersByDepartment.length !== -1
-                                                        ? page >= Math.ceil(usersByDepartment.length / rowsPerPage) - 1
-                                                        : false
-                                                    }
-                                                onClick={() => handleChangePage(page + 1)}
-                                                sx={{ bgcolor: 'background.surface' }}
-                                            >
-                                                <KeyboardArrowRightIcon />
-                                            </IconButton>
-                                        </Box>
-                                    </Box>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </Table>
-                </Sheet>
+                                                <FormControl orientation="horizontal" size="sm">
+                                                    <Select onChange={handleChangeRowsPerPage} value={rowsPerPage}>
+                                                        <Option value={5}>5</Option>
+                                                        <Option value={10}>10</Option>
+                                                    </Select>
+                                                </FormControl>
+                                                <Typography sx={{ textAlign: 'center', minWidth: 80 }}>
+                                                    {labelDisplayedRows({
+                                                        from: usersByDepartment.length === 0 ? 0 : page * rowsPerPage + 1,
+                                                        to: getLabelDisplayedRowsTo(),
+                                                        count: usersByDepartment.length === -1 ? -1 : usersByDepartment.length,
+                                                    })}
+                                                </Typography>
+                                                <Box sx={{ display: 'flex', gap: 1 }}>
+                                                    <IconButton
+                                                        size="sm"
+                                                        color="neutral"
+                                                        variant="outlined"
+                                                        disabled={page === 0}
+                                                        onClick={() => handleChangePage(page - 1)}
+                                                        sx={{ bgcolor: 'background.surface' }}
+                                                    >
+                                                        <KeyboardArrowLeftIcon />
+                                                    </IconButton>
+                                                    <IconButton
+                                                        size="sm"
+                                                        color="neutral"
+                                                        variant="outlined"
+                                                        disabled={
+                                                            usersByDepartment.length !== -1
+                                                                ? page >= Math.ceil(usersByDepartment.length / rowsPerPage) - 1
+                                                                : false
+                                                            }
+                                                        onClick={() => handleChangePage(page + 1)}
+                                                        sx={{ bgcolor: 'background.surface' }}
+                                                    >
+                                                        <KeyboardArrowRightIcon />
+                                                    </IconButton>
+                                                </Box>
+                                            </Box>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </Table>
+                        </Sheet>
                     </div>
                 </div>
             </View>
