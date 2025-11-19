@@ -27,7 +27,8 @@ export function AccessControl(){
     const [departments, setDepartments] = useState<IDepartments[]>([]);
     const [department, setDepartment] = useState<IDepartments | null>(null);
     const [accordions, setAccordions] = useState<number[]>([]);
-    const [usersByDepartment, setUsersBydeparment] = useState<IUsers[]>([])
+    const [usersByDepartment, setUsersBydeparment] = useState<IUsers[]>([]);
+    const [filteredTable, setFilteredTable] = useState<IUsers[]>([]);
     const [pages, setPages] = useState([]);
     const [selected, setSelected] = useState<readonly number[]>([]);
     const [page, setPage] = useState(0);
@@ -72,6 +73,7 @@ export function AccessControl(){
                 if(users){
                     if(users.success){
                         setUsersBydeparment(users.responses.response);
+                        setFilteredTable(users.responses.response);
                     } else {
 
                     }
@@ -83,6 +85,7 @@ export function AccessControl(){
         }
     }, [department]);
 
+    
     const handleExpandAccordion = (index: number) => {
         if(accordions.includes(index)){
             setAccordions(accordions.filter(accordions => accordions !== index));
@@ -103,6 +106,27 @@ export function AccessControl(){
         }
         setSelected([ticket.id]);
     };
+
+
+    const handleSearchValueChange = (value: string) => {
+        let filteredUsers;
+        if(value.includes('@')){
+            filteredUsers = usersByDepartment.filter((el) => {
+                if(el.email.toLowerCase().includes(value.toLowerCase())){
+                    setPage(0);
+                    return el;
+                }
+            });
+        } else {
+            filteredUsers = usersByDepartment.filter((el) => {
+                if(el.name.toLowerCase().startsWith(value.toLowerCase())){
+                    setPage(0);
+                    return el;
+                }
+            });
+        }
+        setFilteredTable(filteredUsers);
+    }
 
     const handleChangePage = (newPage: number) => { setPage(newPage); };
     const handleChangeRowsPerPage = (_event: any, newValue: number | null) => {
@@ -203,7 +227,7 @@ export function AccessControl(){
                                         <div className="flex" key={index}>
                                             <div className="flex">
                                                 <div className="flex">
-                                                    {handleIconMenu(page)}<h4>{page.name}</h4>
+                                                    {handleIconMenu(page.path)}<h4>{page.name}</h4>
                                                 </div>
                                                 <div className="flex">
                                                     {page.Rules.map((rule: IPageCollection["pages"][number]["Rules"][number], index: number) => (
@@ -232,7 +256,7 @@ export function AccessControl(){
                                     sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm' }}
                                 >
                                     <EnhancedTableToolbar
-                                        
+                                        onInputValueChange={handleSearchValueChange}
                                     />
                                     <Table
                                         stickyFooter
@@ -254,7 +278,7 @@ export function AccessControl(){
 
                                         />
                                         <tbody>
-                                        {[...usersByDepartment]
+                                        {[...filteredTable]
                                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                             .map((row, index) => {
                                             return(

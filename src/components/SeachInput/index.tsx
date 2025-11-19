@@ -3,11 +3,11 @@ import { SearchButton } from './style';
 import { IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-export function SearchInput({ value, onChange, placeholder }: any){
+export function SearchInput({ value, onChange, placeholder, onSubmit}: any){
     return(
         <SearchButton>
             <div className="search-container">
-                <form>
+                <form onSubmit={onSubmit}>
                     <div className="search-box">
                         <input
                             className="search-input" 

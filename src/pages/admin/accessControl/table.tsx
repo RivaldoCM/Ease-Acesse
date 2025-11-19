@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Box from '@mui/joy/Box';
 import Typography from '@mui/joy/Typography';
@@ -23,6 +23,7 @@ import { ITickets } from '../../../interfaces/ITickets';
 type Order = 'asc' | 'desc';
 
 interface EnhancedTableToolbarProps {
+    onInputValueChange: (args: string) => void;
 }
 
 export function labelDisplayedRows({ from, to, count,} : {
@@ -91,6 +92,22 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+    const { onInputValueChange } = props;
+    const [inputSearchValue, setInputSearchValue] = useState('');
+
+    useEffect(() => {
+        onInputValueChange(inputSearchValue);
+    }, [inputSearchValue]);
+
+    const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInputSearchValue(e.target.value);
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        onInputValueChange(inputSearchValue);
+    }
+
     return (
         <Box
             sx={[
@@ -107,7 +124,11 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             ]}
         >
             <Tooltip title="Filter list">
-                <SearchInput placeholder='Busque aqui' />
+                <SearchInput
+                    placeholder='Busque aqui'
+                    onSubmit={handleSubmit}
+                    onChange={handleChangeValue}
+                />
             </Tooltip>
         </Box>
     );
