@@ -84,7 +84,7 @@ export const View = styled.section`
     max-height: inherit;
     padding: 1rem 2rem;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    border-radius: 1rem;
+    border-radius: .8rem;
     overflow: auto;
 
     > div:nth-child(1){
@@ -114,6 +114,10 @@ export const View = styled.section`
         
         > div:first-of-type{
             justify-content: space-between;
+        }
+
+        > div:nth-child(2){
+            justify-content: space-between;
             width: 100%;
             max-height: inherit;
             flex-wrap: wrap;
@@ -125,29 +129,17 @@ export const View = styled.section`
                 height: 96px;
                 margin: .5rem 0;
                 border: 2px solid #d9d9d9;
-                border-radius: .8rem;
+                border-radius: .4rem;
 
                 > div:first-of-type{
                     flex-direction: column;
+                    justify-content: space-around;
                     width: 80%;
                     height: 100%;
-
                     padding: .2rem 0;
-
-                    > div:first-of-type{
-                        width: 100%;
-                        height: 70%;
-                        margin-left: .5rem;
-                        justify-content: start;
-                    }
-
-                    > div:last-of-type{
-                        width: 100%;
-                        height: 30%;
-                        justify-content: start;
-                    }
                 }
 
+                //BOTÕES DE AÇÃO
                 > div:last-of-type{
                     flex-direction: column;
                     justify-content: space-around;
@@ -155,7 +147,6 @@ export const View = styled.section`
                     height: 100%;
                     border-left: 2px solid #d9d9d9;
                 }
-
             }
         }
     }
