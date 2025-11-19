@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { CardDepartment, Container, Header, Nav, Rules, Status, View } from "./style";
 import { getDepartments } from "../../../services/apiManageONU/getDepartments";
-import { Box, Button, FormControl, FormLabel, IconButton, Input, Option, Select, Sheet, Table, Typography } from "@mui/joy";
+import { Box, FormControl, FormLabel, IconButton, Input, Option, Select, Sheet, Table, Typography } from "@mui/joy";
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
-import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
+
 import { getUsers } from "../../../services/apiManageONU/getUsers";
-import { Data, EnhancedTableHead, EnhancedTableToolbar, getComparator, labelDisplayedRows } from "./table";
+import { EnhancedTableHead, EnhancedTableToolbar, labelDisplayedRows } from "./table";
 
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
@@ -21,19 +20,16 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import AddIcon from '@mui/icons-material/Add';
 import { AddPage } from "./modals/addPage";
 import { EditUser } from "./modals/editUser";
-type Order = 'asc' | 'desc';
+import { IPageCollection } from "../../../interfaces/IPages";
+import { IUsers } from "../../../interfaces/IUsers";
 
 export function AccessControl(){
-    const [departments, setDepartments] = useState([]);
-    const [department, setDepartment] = useState(null);
+    const [departments, setDepartments] = useState<IDepartments[]>([]);
+    const [department, setDepartment] = useState<IDepartments | null>(null);
     const [accordions, setAccordions] = useState<number[]>([]);
-    const [usersByDepartment, setUsersBydeparment] = useState([])
+    const [usersByDepartment, setUsersBydeparment] = useState<IUsers[]>([])
     const [pages, setPages] = useState([]);
     const [selected, setSelected] = useState<readonly number[]>([]);
-
-    const [order, setOrder] = useState<Order>('asc');
-    const [orderBy, setOrderBy] = useState<keyof Data>('ticketId');
-    const [isNested, setIsNested] = useState<boolean>(false);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -65,11 +61,14 @@ export function AccessControl(){
     useEffect(() => {
         if(department){
             async function getData(){
-                const getPagesByDepartment = getPages({departmentId: department.id});
-                const getUsersByDepartment = getUsers({departmentId: department.id});
+                const getPagesByDepartment = getPages({departmentId: department?.id});
+                const getUsersByDepartment = getUsers({departmentId: department?.id});
                 const [pages, users] = await Promise.all([getPagesByDepartment, getUsersByDepartment]);
 
-                setPages(pages.responses.response);
+                if(pages && pages.success){
+                    setPages(pages.responses.response);
+                }
+
                 if(users){
                     if(users.success){
                         setUsersBydeparment(users.responses.response);
@@ -120,17 +119,6 @@ export function AccessControl(){
         : Math.min(usersByDepartment.length, (page + 1) * rowsPerPage);
     };
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersByDepartment.length) : 0;
-
-    const handleRequestSort = (
-        _event: React.MouseEvent<unknown>,
-        property: keyof Data,
-        isNested: boolean
-    ) => {
-        const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
-        setOrderBy(property);
-        setIsNested(isNested);
-    };
 
     const handleEditUser = (id: number) => {
         console.log(id)
@@ -210,15 +198,15 @@ export function AccessControl(){
                                 </IconButton>
                             </div>
                             <div className="flex">
-                                {pages && pages.map((collection: any) => (
-                                    collection.pages.map((page, index: number) => (
+                                {pages && pages.map((collection: IPageCollection) => (
+                                    collection.pages.map((page: IPageCollection["pages"][number], index: number) => (
                                         <div className="flex" key={index}>
                                             <div className="flex">
                                                 <div className="flex">
-                                                    {handleIconMenu(page.path)}<h4>{page.name}</h4>
+                                                    {handleIconMenu(page)}<h4>{page.name}</h4>
                                                 </div>
                                                 <div className="flex">
-                                                    {page.Rules.map((rule: any, index: number) => (
+                                                    {page.Rules.map((rule: IPageCollection["pages"][number]["Rules"][number], index: number) => (
                                                         <Rules action={rule.name} key={index}>{rule.name}</Rules>
                                                     ))}
                                                 </div>
@@ -244,8 +232,7 @@ export function AccessControl(){
                                     sx={{ width: '100%', boxShadow: 'sm', borderRadius: 'sm' }}
                                 >
                                     <EnhancedTableToolbar
-                                        ticketId={usersByDepartment.find((row) => row.id === selected[0])?.id}
-                                        numSelected={selected.length}
+                                        
                                     />
                                     <Table
                                         stickyFooter
@@ -264,44 +251,26 @@ export function AccessControl(){
                                         }}
                                     >
                                         <EnhancedTableHead
-                                            numSelected={selected.length}
-                                            order={order}
-                                            orderBy={orderBy}
-                                            onRequestSort={handleRequestSort}
-                                            rowCount={usersByDepartment.length}
+
                                         />
                                         <tbody>
                                         {[...usersByDepartment]
-                                            .sort(getComparator(order, orderBy, isNested))
                                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                             .map((row, index) => {
-                                            const isItemSelected = selected.includes(row.id);
-
                                             return(
                                                 <tr
                                                     onClick={(event) => handleClick(event, row)}
                                                     role="checkbox"
-                                                    aria-checked={isItemSelected}
                                                     tabIndex={-1}
-                                                    key={row.id}
-                                                    style={
-                                                        isItemSelected
-                                                        ? ({
-                                                            '--TableCell-dataBackground':
-                                                                'var(--TableCell-selectedBackground)',
-                                                            '--TableCell-headBackground':
-                                                                'var(--TableCell-selectedBackground)',
-                                                            } as React.CSSProperties)
-                                                        : {}
-                                                    }
+                                                    key={index}
                                                 >
                                                     <td>{row.name}</td>
                                                     <td>{row.email}</td>
                                                     <td>
-                                                        {row.is_disable ? 
-                                                        <Status color="#F44336">Inativo</Status> : 
-                                                        <Status color="#28A745">Ativo</Status>
-                                                    }
+                                                        {row.is_disabled ? 
+                                                            <Status color="#F44336">Inativo</Status> : 
+                                                            <Status color="#28A745">Ativo</Status>
+                                                        }
                                                     </td>
                                                     <td>
                                                         <IconButton variant="soft" color="primary" size="sm" onClick={() => {handleEditUser(row.id)}}>
