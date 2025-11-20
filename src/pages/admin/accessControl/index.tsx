@@ -29,8 +29,8 @@ export function AccessControl(){
     const [accordions, setAccordions] = useState<number[]>([]);
     const [usersByDepartment, setUsersBydeparment] = useState<IUsers[]>([]);
     const [filteredTable, setFilteredTable] = useState<IUsers[]>([]);
+    const [userSelected, setUserSelected] = useState<IUsers | null>(null);
     const [pages, setPages] = useState([]);
-    const [selected, setSelected] = useState<readonly number[]>([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -46,12 +46,8 @@ export function AccessControl(){
     useEffect(() => {
         async function getData(){
             const response = await getDepartments();
-            if(response){
-                if(response.success){
-                    setDepartments(response.responses.response);
-                } else {
-
-                }
+            if(response && response.success){
+                setDepartments(response.responses.response);
             } else {
 
             }
@@ -85,7 +81,6 @@ export function AccessControl(){
         }
     }, [department]);
 
-    
     const handleExpandAccordion = (index: number) => {
         if(accordions.includes(index)){
             setAccordions(accordions.filter(accordions => accordions !== index));
@@ -99,17 +94,8 @@ export function AccessControl(){
         selectedDepartment ? setDepartment(selectedDepartment) : setDepartment(null);
     }
 
-    const handleClick = (_event: React.MouseEvent<unknown>, ticket: any) => {
-        if(selected[0] === ticket.id){
-            setSelected([]);
-            return;
-        }
-        setSelected([ticket.id]);
-    };
-
-
     const handleSearchValueChange = (value: string) => {
-        let filteredUsers;
+        let filteredUsers: IUsers[];
         if(value.includes('@')){
             filteredUsers = usersByDepartment.filter((el) => {
                 if(el.email.toLowerCase().includes(value.toLowerCase())){
@@ -127,6 +113,11 @@ export function AccessControl(){
         }
         setFilteredTable(filteredUsers);
     }
+    
+    const handleEditUser = (user: IUsers) => {
+        setUserSelected(user);
+        handleOpenEditUser();
+    }
 
     const handleChangePage = (newPage: number) => { setPage(newPage); };
     const handleChangeRowsPerPage = (_event: any, newValue: number | null) => {
@@ -143,10 +134,6 @@ export function AccessControl(){
         : Math.min(usersByDepartment.length, (page + 1) * rowsPerPage);
     };
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersByDepartment.length) : 0;
-
-    const handleEditUser = (id: number) => {
-        console.log(id)
-    }
 
     return(
         <Container>
@@ -282,12 +269,7 @@ export function AccessControl(){
                                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                             .map((row, index) => {
                                             return(
-                                                <tr
-                                                    onClick={(event) => handleClick(event, row)}
-                                                    role="checkbox"
-                                                    tabIndex={-1}
-                                                    key={index}
-                                                >
+                                                <tr tabIndex={-1} key={index}>
                                                     <td>{row.name}</td>
                                                     <td>{row.email}</td>
                                                     <td>
@@ -297,7 +279,7 @@ export function AccessControl(){
                                                         }
                                                     </td>
                                                     <td>
-                                                        <IconButton variant="soft" color="primary" size="sm" onClick={() => {handleEditUser(row.id)}}>
+                                                        <IconButton variant="soft" color="primary" size="sm" onClick={() => {handleEditUser(row)}}>
                                                             <EditOutlinedIcon />
                                                         </IconButton>
                                                     </td>
@@ -390,6 +372,7 @@ export function AccessControl(){
                 openEditUser && (
                     <EditUser 
                         open={openEditUser}
+                        user={userSelected}
                         handleClose={handleCloseEditUser}
                     />
                 )

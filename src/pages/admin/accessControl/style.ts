@@ -70,7 +70,7 @@ export const Nav = styled.aside`
   }
 `;
 
-/* ---------------- ÁREA PRINCIPAL ---------------- */
+/* ---------------- MAIN ---------------- */
 export const View = styled.section`
     grid-area: view;
     display: grid;
@@ -336,3 +336,30 @@ export const Rules = styled.span<Teste>`
     line-height: 1.2;
     user-select: none;
 `;
+
+/* ---------------- MODALS ---------------- */
+export const ModalContent = styled.div`
+    width: 650px;
+    > div:first-child {
+        width: inherit;
+        text-align: end;
+    }
+
+    div:nth-child(2) {
+        > div{
+            width: 100%;
+            justify-content: space-between;
+            margin-bottom: .2rem;
+        }
+
+        > div:nth-child(4){
+            border-radius: 12px;
+            background-color: rgb(232, 240, 254);
+            border: 2px solid rgb(74, 144, 226);
+        }
+
+        > div:nth-child(){
+
+        }
+    }
+`
