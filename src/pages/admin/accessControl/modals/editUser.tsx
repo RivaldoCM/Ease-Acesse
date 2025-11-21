@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/joy/Button';
 import Modal from '@mui/joy/Modal';
 import ModalClose from '@mui/joy/ModalClose';
@@ -9,14 +9,55 @@ import { ModalContent } from '../style';
 import { FormControl, FormLabel, IconButton, Input, Option, Select } from '@mui/joy';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
+import { getCities } from '../../../../services/apiManageONU/getCities';
+import { getDepartments } from '../../../../services/apiManageONU/getDepartments';
+import { ICities } from '../../../../interfaces/ICities';
 
 type EditUserPropsLocal = {
     open: boolean;
-    user: IUsers | null;
+    user: IUsers;
+    departments: IDepartments[];
     handleClose: () => void;
 }
 
 export function EditUser(props: EditUserPropsLocal){
+    const [cities, setCities] = useState<ICities[]>([]);
+
+    const [user, setUser] = useState<IUsers>({
+        id: props.user.id,
+        name: props.user.name,
+        email: props.user.email,
+        department_id: props.user.department_id,
+        password: '',
+        is_disabled: props.user.is_disabled,
+        Role: {
+            id: props.user.Role.id,
+            name: props.user.Role.name,
+        }
+    });
+
+    useEffect(() => {
+        async function fetchData() {
+            const getCity = getCities();
+            const [cities] = await Promise.all([getCity]);
+
+            if(cities && cities.success){
+                setCities(cities.responses.response);
+            }
+        }
+        fetchData();
+    }, []);
+
+    const handleUserChange = (e: any) => {
+        console.log(e.target.name, e.target.value);
+        setUser({
+            ...user,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    console.log(user)
+
     return (
         <React.Fragment>
             <Modal
@@ -30,7 +71,7 @@ export function EditUser(props: EditUserPropsLocal){
                 >
                     <ModalContent>
                         <div>
-                            <IconButton variant="outlined">
+                            <IconButton variant="outlined" size='sm' onClick={props.handleClose}>
                                 <CloseIcon />
                             </IconButton>
                         </div>
@@ -38,38 +79,57 @@ export function EditUser(props: EditUserPropsLocal){
                             <div className='flex'>
                                 <FormControl sx={{maxWidth: 300}}>
                                     <FormLabel>Nome do usuário</FormLabel>
-                                    <Input />
+                                    <Input value={props.user?.name}/>
                                 </FormControl>
                                 <FormControl sx={{maxWidth: 300}}>
                                     <FormLabel>Email</FormLabel>
-                                    <Input />
-                                </FormControl>
-                            </div>
-                            <div className='flex'>
-                                <FormControl sx={{maxWidth: 300}}>
-                                    <FormLabel>Departamento</FormLabel>
-                                    <Input />
-                                </FormControl>
-                                <FormControl sx={{maxWidth: 300}}>
-                                    <FormLabel>Cargo</FormLabel>
-                                    <Input />
+                                    <Input value={user.email} name='Email' onChange={handleUserChange} />
                                 </FormControl>
                             </div>
                             <div className='flex'>
                                 <FormControl sx={{maxWidth: 300}}>
                                     <FormLabel>
+                                        Departamento
+                                    </FormLabel>
+                                    <Select value={props.user.department_id}>
+                                        {
+                                            props.departments.map((department) => (
+                                                <Option value={department.id}>{department.name}</Option>
+                                            ))
+                                        }
+                                    </Select>
+                                </FormControl>
+                                <FormControl sx={{maxWidth: 300}}>
+                                    <FormLabel>
+                                        Cargo
+                                    </FormLabel>
+                                    <Select value={props.user.Role.id}>
+                                        {
+                                            props.departments.find(department => department.id === props.user.department_id)!.Roles.map((role) => (
+                                                <Option value={role.id}>{role.name}</Option>
+                                            ))
+                                        }
+                                    </Select>
+                                </FormControl>
+                            </div>
+                            <div className='flex'>
+                                <FormControl sx={{width: 300}}>
+                                    <FormLabel>
                                         Cidade
                                     </FormLabel>
                                     <Select value={true}>
-                                        <Option value={true}>Ativo</Option>
-                                        <Option value={false}>Inativo</Option>
+                                        {
+                                            cities.map((city) => (
+                                                <Option value={city.id}>{city.name}</Option>
+                                            ))
+                                        }
                                     </Select>
                                 </FormControl>
                                 <FormControl sx={{width: 300}}>
                                     <FormLabel>
                                         Status
                                     </FormLabel>
-                                    <Select value={true}>
+                                    <Select value={user.is_disabled} name="is_disabled" onChange={handleUserChange}>
                                         <Option value={true}>Ativo</Option>
                                         <Option value={false}>Inativo</Option>
                                     </Select>

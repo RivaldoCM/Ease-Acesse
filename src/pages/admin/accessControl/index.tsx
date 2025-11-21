@@ -372,7 +372,8 @@ export function AccessControl(){
                 openEditUser && (
                     <EditUser 
                         open={openEditUser}
-                        user={userSelected}
+                        user={userSelected!}
+                        departments={departments!}
                         handleClose={handleCloseEditUser}
                     />
                 )

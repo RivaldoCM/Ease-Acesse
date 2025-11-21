@@ -4,7 +4,11 @@ export interface IUsers{
     email: string,
     password: string,
     department_id: number,
-    is_disabled: boolean
+    is_disabled: boolean,
+    Role: {
+        id: number,
+        name: string,
+    }
 }
 
 export type IAuthedUser = {
