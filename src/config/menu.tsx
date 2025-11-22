@@ -168,48 +168,48 @@ export const handleShowPageByRule = (rule?: number) => {
     }
 }
 
-export const handleIconMenu = (text: string): React.ReactElement => {
+export const handleIconMenu = (text: string, size?: "small" | "large" | "medium"): React.ReactElement => {
     switch(text){
         case '/auth_onu':
-            return <MiscellaneousServicesOutlinedIcon />;
+            return <MiscellaneousServicesOutlinedIcon fontSize={size}/>;
         case '/onuDelete':
-            return <HighlightOffOutlinedIcon />;
+            return <HighlightOffOutlinedIcon fontSize={size}/>;
         case '/users':
-            return <AdminPanelSettingsOutlinedIcon />;
+            return <AdminPanelSettingsOutlinedIcon fontSize={size}/>;
         case "/olts":
-            return <AccountTreeOutlinedIcon />;
+            return <AccountTreeOutlinedIcon fontSize={size}/>;
         case '/logs_onu':
-            return <TroubleshootOutlinedIcon />;
+            return <TroubleshootOutlinedIcon fontSize={size}/>;
         case '/massive':
-            return <ViewModuleOutlinedIcon />;
+            return <ViewModuleOutlinedIcon fontSize={size}/>;
         case '/logs_massive':
-            return <LibraryBooksOutlinedIcon />;
+            return <LibraryBooksOutlinedIcon fontSize={size}/>;
         case '/massive_panel':
-            return <DesktopWindowsOutlinedIcon />;
+            return <DesktopWindowsOutlinedIcon fontSize={size}/>;
         case '/my_auth_onus':
-            return <BallotOutlinedIcon />;
+            return <BallotOutlinedIcon fontSize={size}/>;
         case '/break_time/breaks':
-            return <AccessTimeRoundedIcon />;
+            return <AccessTimeRoundedIcon fontSize={size}/>;
         case '/break_time/dashboard':
-            return <SpaceDashboardOutlinedIcon />;
+            return <SpaceDashboardOutlinedIcon fontSize={size}/>;
         case '/break_time/panel':
-            return <TvOutlinedIcon />;
+            return <TvOutlinedIcon fontSize={size}/>;
         case '/exitlag':
             return <IconExitLag />;
         case '/onu_info':
-            return <WifiChannelOutlinedIcon />;
+            return <WifiChannelOutlinedIcon fontSize={size}/>;
         case '/helpdesk/tickets':
-            return <ConfirmationNumberOutlinedIcon />;
+            return <ConfirmationNumberOutlinedIcon fontSize={size}/>;
         case '/helpdesk/dashboard':
-            return <DashboardOutlinedIcon />;
+            return <DashboardOutlinedIcon fontSize={size}/>;
         case '/client_location':
-            return <AssignmentOutlinedIcon />;
+            return <AssignmentOutlinedIcon fontSize={size}/>;
         case '/fiber_network':
-            return <SchemaOutlinedIcon />;
+            return <SchemaOutlinedIcon fontSize={size}/>;
         case '/find_CPE':
-            return <RouterOutlinedIcon />;
+            return <RouterOutlinedIcon fontSize={size}/>;
         case '/role_management':
-            return <SecurityOutlinedIcon />;
+            return <SecurityOutlinedIcon fontSize={size}/>;
         default:
             return <></>;
     }

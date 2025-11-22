@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CardDepartment, Container, Header, Nav, Rules, Status, View } from "./style";
+import { CardDepartment, Container, Header, Nav, Status, View } from "./style";
 import { getDepartments } from "../../../services/apiManageONU/getDepartments";
 import { Box, FormControl, FormLabel, IconButton, Input, Option, Select, Sheet, Table, Typography } from "@mui/joy";
 
@@ -22,6 +22,7 @@ import { AddPage } from "./modals/addPage";
 import { EditUser } from "./modals/editUser";
 import { IPageCollection } from "../../../interfaces/IPages";
 import { IUsers } from "../../../interfaces/IUsers";
+import { Pages } from "../../../components/Pages";
 
 export function AccessControl(){
     const [departments, setDepartments] = useState<IDepartments[]>([]);
@@ -208,32 +209,7 @@ export function AccessControl(){
                                     <AddIcon />
                                 </IconButton>
                             </div>
-                            <div className="flex">
-                                {pages && pages.map((collection: IPageCollection) => (
-                                    collection.pages.map((page: IPageCollection["pages"][number], index: number) => (
-                                        <div className="flex" key={index}>
-                                            <div className="flex">
-                                                <div className="flex">
-                                                    {handleIconMenu(page.path)}<h4>{page.name}</h4>
-                                                </div>
-                                                <div className="flex">
-                                                    {page.Rules.map((rule: IPageCollection["pages"][number]["Rules"][number], index: number) => (
-                                                        <Rules action={rule.name} key={index}>{rule.name}</Rules>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <div className="flex">
-                                                <IconButton variant="soft" color="primary">
-                                                    <EditOutlinedIcon />
-                                                </IconButton>
-                                                <IconButton variant="soft" color="danger">
-                                                    <DeleteOutlineOutlinedIcon />
-                                                </IconButton>
-                                            </div>
-                                        </div>
-                                    ))
-                                ))}
-                            </div>
+                            <Pages pages={pages as IPageCollection[]} />
                         </div>
                         <div className="table">
                             <div><h3>Usuários vinculados</h3></div>
@@ -364,6 +340,7 @@ export function AccessControl(){
                 openAddPage && (
                     <AddPage 
                         open={openAddPage}
+                        pages={pages as IPageCollection[]}
                         handleClose={handleCloseAddPage}
                     />
                 )

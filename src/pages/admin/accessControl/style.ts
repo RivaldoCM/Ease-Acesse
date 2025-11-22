@@ -115,40 +115,6 @@ export const View = styled.section`
         > div:first-of-type{
             justify-content: space-between;
         }
-
-        > div:nth-child(2){
-            justify-content: space-between;
-            width: 100%;
-            max-height: inherit;
-            flex-wrap: wrap;
-
-            > div{
-                //CADA PAGINA INDIVIDUAL
-                justify-content: space-between;
-                width: 304px;
-                height: 96px;
-                margin: .5rem 0;
-                border: 2px solid #d9d9d9;
-                border-radius: .4rem;
-
-                > div:first-of-type{
-                    flex-direction: column;
-                    justify-content: space-around;
-                    width: 80%;
-                    height: 100%;
-                    padding: .2rem 0;
-                }
-
-                //BOTÕES DE AÇÃO
-                > div:last-of-type{
-                    flex-direction: column;
-                    justify-content: space-around;
-                    width: 20%;
-                    height: 100%;
-                    border-left: 2px solid #d9d9d9;
-                }
-            }
-        }
     }
     
     > div:nth-child(3){
@@ -318,27 +284,8 @@ export const Status = styled.span<Status>`
     user-select: none;
 `;
 
-export const Rules = styled.span<Teste>`
-    display: inline-block;
-    background-color:  ${(props) => 
-    props.color === 'View' ? 
-        props.action : props.action === 'Edit' ? '#FFA500' : 
-            props.action === 'Delete' ? '#F44336' : 
-                '#28A745'
-    };      
-    color: #fff;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 4px 12px;
-    margin-left: .5rem;
-    border-radius: 999px;
-    text-align: center;
-    line-height: 1.2;
-    user-select: none;
-`;
-
 /* ---------------- MODALS ---------------- */
-export const ModalContent = styled.div`
+export const EditUserModal = styled.div`
     width: 650px;
     > div:first-child {
         width: inherit;
@@ -347,19 +294,77 @@ export const ModalContent = styled.div`
 
     div:nth-child(2) {
         > div{
-            width: 100%;
             justify-content: space-between;
+            width: 100%;
             margin-bottom: .2rem;
         }
 
         > div:nth-child(4){
+            padding: .5rem;
             border-radius: 12px;
-            background-color: rgb(232, 240, 254);
-            border: 2px solid rgb(74, 144, 226);
-        }
-
-        > div:nth-child(){
-
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
         }
     }
 `
+
+export const AddPageModal = styled.div`
+    width: 400px;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+
+    //CADA ITEM
+    > div {
+        border: 1px solid #e0e0e0;
+        margin-bottom: 12px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+
+        > div:first-child {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            padding: 14px 18px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #333;
+
+            &:hover {
+                background: #f9f9f9;
+            }
+
+            > div {
+                display: flex;
+                align-items: center;
+                font-size: 20px;
+                color: #666;
+            }
+        }
+
+    }
+`;
+
+// Conteúdo do accordion
+export const AccordionContent = styled.div`
+    max-height: ${({ open }) => (open ? "300px" : "0")};
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+    padding: ${({ open }) => (open ? "12px 18px" : "0 18px")};
+    background: #fafafa;
+
+    > label {
+        display: flex;
+        align-items: center;
+        margin: 8px 0;
+        font-size: 14px;
+        color: #444;
+
+        input {
+            margin-right: 10px;
+            accent-color: #4a90e2;
+        }
+    }
+`;
+

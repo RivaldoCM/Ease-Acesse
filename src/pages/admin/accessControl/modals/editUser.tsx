@@ -5,13 +5,19 @@ import ModalClose from '@mui/joy/ModalClose';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import { IUsers } from '../../../../interfaces/IUsers';
-import { ModalContent } from '../style';
+import { EditUserModal } from '../style';
 import { FormControl, FormLabel, IconButton, Input, Option, Select } from '@mui/joy';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 import { getCities } from '../../../../services/apiManageONU/getCities';
 import { getDepartments } from '../../../../services/apiManageONU/getDepartments';
 import { ICities } from '../../../../interfaces/ICities';
+import { getUsers } from '../../../../services/apiManageONU/getUsers';
+import { IPageCollection } from '../../../../interfaces/IPages';
+import { handleIconMenu } from '../../../../config/menu';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { Pages } from '../../../../components/Pages';
 
 type EditUserPropsLocal = {
     open: boolean;
@@ -22,7 +28,7 @@ type EditUserPropsLocal = {
 
 export function EditUser(props: EditUserPropsLocal){
     const [cities, setCities] = useState<ICities[]>([]);
-
+    const [overrideRules, setOverrideRules] = useState<IPageCollection[]>([]);
     const [user, setUser] = useState<IUsers>({
         id: props.user.id,
         name: props.user.name,
@@ -36,27 +42,31 @@ export function EditUser(props: EditUserPropsLocal){
         }
     });
 
+    console.log(overrideRules)
+
     useEffect(() => {
         async function fetchData() {
             const getCity = getCities();
-            const [cities] = await Promise.all([getCity]);
+            const getOverrideRules = getUsers({userId: props.user.id});
+            const [cities, userOverrideRules] = await Promise.all([getCity, getOverrideRules]);
 
             if(cities && cities.success){
                 setCities(cities.responses.response);
+            }
+
+            if(userOverrideRules && userOverrideRules.success){
+                setOverrideRules(userOverrideRules.responses.response);
             }
         }
         fetchData();
     }, []);
 
     const handleUserChange = (e: any) => {
-        console.log(e.target.name, e.target.value);
         setUser({
             ...user,
             [e.target.name]: e.target.value
         })
     }
-
-    console.log(user)
 
     return (
         <React.Fragment>
@@ -69,7 +79,7 @@ export function EditUser(props: EditUserPropsLocal){
                     variant="outlined"
                     sx={{ borderRadius: 'md', p: 3, boxShadow: 'lg' }}
                 >
-                    <ModalContent>
+                    <EditUserModal>
                         <div>
                             <IconButton variant="outlined" size='sm' onClick={props.handleClose}>
                                 <CloseIcon />
@@ -137,7 +147,9 @@ export function EditUser(props: EditUserPropsLocal){
                             </div>
                             <div>
                                 <p>REGRAS PERSONALIZADAS</p>
-                                <div>renderizar as paginas caso tenha</div>
+                                <div className="flex">
+                                    <Pages pages={overrideRules} />
+                                </div>
                             </div>
                             <div>
                                 <Button endDecorator={<CheckIcon />} variant='solid' color="success" size='sm'>
@@ -145,7 +157,7 @@ export function EditUser(props: EditUserPropsLocal){
                                 </Button>
                             </div>
                         </div>
-                    </ModalContent>
+                    </EditUserModal>
                 </Sheet>
             </Modal>
         </React.Fragment>
