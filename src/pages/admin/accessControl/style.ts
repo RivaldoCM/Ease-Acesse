@@ -13,6 +13,10 @@ interface Teste {
     action: string
 }
 
+interface AccordionProps {
+    open: boolean;
+}
+
 export const Container = styled.div`
     display: grid;
     grid-template-columns: 1.2fr 1fr 1fr 1fr;
@@ -347,7 +351,7 @@ export const AddPageModal = styled.div`
 `;
 
 // Conteúdo do accordion
-export const AccordionContent = styled.div`
+export const AccordionContent = styled.div<AccordionProps>`
     max-height: ${({ open }) => (open ? "300px" : "0")};
     overflow: hidden;
     transition: max-height 0.35s ease, padding 0.35s ease;
