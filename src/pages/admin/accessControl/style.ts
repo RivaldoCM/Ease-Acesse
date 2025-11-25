@@ -39,39 +39,39 @@ export const Header = styled.div`
 `;
 
 export const Nav = styled.aside`
-  grid-area: nav;
-  width: 100%;
-  background: #fffaf5;
-  border-radius: 1rem;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  overflow: auto;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-
-  header {
-    position: sticky;
-    top: 0;
+    grid-area: nav;
     width: 100%;
-    height: 8%;
-    border-bottom: 2px solid grey;
-    background: inherit;
-    padding: 0.5rem 1rem;
-    display: flex;
-    align-items: center;
-    font-family: "Itim", cursive !important;
-    font-weight: 600;
-    color: #1a1a1a;
-    z-index: 10;
-  }
+    background: #fffaf5;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    overflow: auto;
 
-  > div {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 0.5rem;
-  }
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    header {
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: 8%;
+        border-bottom: 2px solid grey;
+        background: inherit;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+        font-family: "Itim", cursive !important;
+        font-weight: 600;
+        color: #1a1a1a;
+        z-index: 10;
+    }
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0.5rem;
+    }
 `;
 
 /* ---------------- MAIN ---------------- */
@@ -311,42 +311,53 @@ export const EditUserModal = styled.div`
     }
 `
 
-export const AddPageModal = styled.div`
+export const AddPageModal = styled.form`
     width: 400px;
-    margin: 20px auto;
+    height: 600px;
     font-family: Arial, sans-serif;
 
+    > div:nth-child(1), > div:nth-child(3){ height: 10%; }
+    > div:nth-child(1){
+        justify-content: end;
+    }
+
+
+
     //CADA ITEM
-    > div {
-        border: 1px solid #e0e0e0;
-        margin-bottom: 12px;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
+    > div:nth-child(2) {
+        height: 80%;
+        overflow: auto;
+        > div{
+            width: 98%;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
 
-        > div:first-child {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #ffffff;
-            padding: 14px 18px;
-            cursor: pointer;
-            font-weight: 600;
-            color: #333;
-
-            &:hover {
-                background: #f9f9f9;
-            }
-
-            > div {
+            > div:first-child {
                 display: flex;
                 align-items: center;
-                font-size: 20px;
-                color: #666;
+                justify-content: space-between;
+                background: #ffffff;
+                padding: 14px 18px;
+                cursor: pointer;
+                font-weight: 600;
+                color: #333;
+
+                &:hover {
+                    background: #f9f9f9;
+                }
+
+                > div {
+                    display: flex;
+                    align-items: center;
+                    font-size: 20px;
+                    color: #666;
+                }
             }
         }
-
     }
 `;
 

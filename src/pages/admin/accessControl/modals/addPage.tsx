@@ -7,11 +7,13 @@ import Sheet from '@mui/joy/Sheet';
 import { AccordionContent, AddPageModal } from '../style';
 import React, { useEffect, useState } from 'react';
 import { getPages } from '../../../../services/apiManageONU/getPages';
-import { Box, Checkbox, checkboxClasses } from '@mui/joy';
+import { Box, Checkbox, checkboxClasses, IconButton } from '@mui/joy';
 import { getRules } from '../../../../services/apiManageONU/getRules';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import { IPageCollection } from '../../../../interfaces/IPages';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 
 type AddPagePropsLocal = {
     open: boolean;
@@ -64,6 +66,10 @@ export function AddPage(props: AddPagePropsLocal){
         }
     }
 
+    const handleSubmit = () => {
+
+    }
+
     return (
         <React.Fragment>
             <Modal
@@ -75,31 +81,43 @@ export function AddPage(props: AddPagePropsLocal){
                     variant="outlined"
                     sx={{ maxWidth: 500, borderRadius: 'md', p: 3, boxShadow: 'lg' }}
                 >
-                    <AddPageModal>
-                        {availablePages.map((page) => (
-                            <div key={page.id}>
-                                <div onClick={() => setOpenPage(openPage === page.id ? null : page.id)}>
-                                    <label>
-                                        <input type="checkbox" onClick={() =>  handleCheckboxClick({pageId: page.id})} checked={newPages.some((item) => item.pageId === page.id)}/> {page.name}
-                                    </label>
-                                    <div>
-                                        {openPage === page.id ? <KeyboardArrowUpOutlinedIcon /> : <KeyboardArrowDownOutlinedIcon />}
-                                    </div>
-                                </div>
-                                <AccordionContent open={openPage === page.id}>
-                                    {rules.map((rule, idx) => (
-                                        <label key={idx}>
-                                            <input 
-                                                type="checkbox" 
-                                                onClick={() => handleCheckboxClick({pageId: page.id,ruleId: rule.id})} 
-                                                checked={newPages.some((item) => item.pageId === page.id && item.ruleId === rule.id)} 
-                                            /> 
-                                            {rule.name}
+                    <AddPageModal onSubmit={handleSubmit}>
+                        <div className='flex'>
+                            <IconButton variant="outlined" onClick={props.handleClose}>
+                                <CloseOutlinedIcon />
+                            </IconButton>
+                        </div>
+                        <div>
+                            {availablePages.map((page) => (
+                                <div key={page.id}>
+                                    <div onClick={() => setOpenPage(openPage === page.id ? null : page.id)}>
+                                        <label>
+                                            <input type="checkbox" onClick={() =>  handleCheckboxClick({pageId: page.id})} checked={newPages.some((item) => item.pageId === page.id)}/> {page.name}
                                         </label>
-                                    ))}
-                                </AccordionContent>
-                            </div>
-                        ))}
+                                        <div>
+                                            {openPage === page.id ? <KeyboardArrowUpOutlinedIcon /> : <KeyboardArrowDownOutlinedIcon />}
+                                        </div>
+                                    </div>
+                                    <AccordionContent open={openPage === page.id}>
+                                        {rules.map((rule, idx) => (
+                                            <label key={idx}>
+                                                <input 
+                                                    type="checkbox" 
+                                                    onClick={() => handleCheckboxClick({pageId: page.id,ruleId: rule.id})} 
+                                                    checked={newPages.some((item) => item.pageId === page.id && item.ruleId === rule.id)} 
+                                                /> 
+                                                {rule.name}
+                                            </label>
+                                        ))}
+                                    </AccordionContent>
+                                </div>
+                            ))}
+                        </div>
+                        <div className='flex'>
+                            <Button startDecorator={<CheckOutlinedIcon />} color='success' type='submit'>
+                                Finalizar
+                            </Button>
+                        </div>
                     </AddPageModal>
                 </Sheet>
             </Modal>
