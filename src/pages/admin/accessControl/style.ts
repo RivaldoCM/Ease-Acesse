@@ -321,8 +321,6 @@ export const AddPageModal = styled.form`
         justify-content: end;
     }
 
-
-
     //CADA ITEM
     > div:nth-child(2) {
         height: 80%;

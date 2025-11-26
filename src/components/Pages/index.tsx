@@ -18,8 +18,6 @@ export function Pages({ pages } : {pages: IPageCollection[]}){
     };
     const handleCloseRemovePage = () => setOpenRemovePage(false);
 
-    console.log(page)
-
     return(
         <PageContainer className="flex">
             {pages && pages.map((collection: IPageCollection) => (

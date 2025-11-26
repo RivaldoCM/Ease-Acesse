@@ -14,7 +14,6 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import { getPages } from "../../../services/apiManageONU/getPages";
 import { handleIconMenu } from "../../../config/menu";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import AddIcon from '@mui/icons-material/Add';
@@ -23,6 +22,7 @@ import { EditUser } from "./modals/editUser";
 import { IPageCollection } from "../../../interfaces/IPages";
 import { IUsers } from "../../../interfaces/IUsers";
 import { Pages } from "../../../components/Pages";
+import { getPages } from "../../../services/apiManageONU/pages";
 
 export function AccessControl(){
     const [departments, setDepartments] = useState<IDepartments[]>([]);
@@ -147,7 +147,12 @@ export function AccessControl(){
                 </header>
                 <div className="flex">
                     {departments && departments.map((department: IDepartments, index) => (
-                        <CardDepartment className="flex" isSelected={index + 1 === department.id} isExpanded={accordions.includes(index)}>
+                        <CardDepartment 
+                            className="flex" 
+                            isSelected={index + 1 === department.id} 
+                            isExpanded={accordions.includes(index)}
+                            key={index}
+                        >
                             <div className="header flex">
                                 <div className="flex">
                                     <div>
@@ -341,6 +346,7 @@ export function AccessControl(){
                     <AddPage 
                         open={openAddPage}
                         pages={pages as IPageCollection[]}
+                        departmentId={department?.id}
                         handleClose={handleCloseAddPage}
                     />
                 )

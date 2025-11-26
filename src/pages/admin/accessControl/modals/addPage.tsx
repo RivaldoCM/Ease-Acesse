@@ -6,7 +6,6 @@ import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import { AccordionContent, AddPageModal } from '../style';
 import React, { useEffect, useState } from 'react';
-import { getPages } from '../../../../services/apiManageONU/getPages';
 import { Box, Checkbox, checkboxClasses, IconButton } from '@mui/joy';
 import { getRules } from '../../../../services/apiManageONU/getRules';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
@@ -14,10 +13,12 @@ import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutl
 import { IPageCollection } from '../../../../interfaces/IPages';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import { getPages } from '../../../../services/apiManageONU/pages';
 
 type AddPagePropsLocal = {
     open: boolean;
     pages: IPageCollection[];
+    departmentId: number | undefined;
     handleClose: () => void;
 }
 
@@ -26,7 +27,7 @@ export function AddPage(props: AddPagePropsLocal){
     const [rules, setRules] = useState<IRules[]>([]);
     const [openPage, setOpenPage] = useState<number | null>(null);
 
-    const [newPages, setNewPages] = useState<{pageId: number, ruleId: number}[]>([]);
+    const [newPages, setNewPages] = useState<{page_id: number, rule_id: number}[]>([]);
 
     useEffect(() => {
         async function getData(){
@@ -50,24 +51,25 @@ export function AddPage(props: AddPagePropsLocal){
     const handleCheckboxClick = ({pageId, ruleId}:{pageId?: number, ruleId?: number}) => {
         if(pageId && ruleId){
             //CLICK NA CHECKBOX DE RULES E VERIFICA SE JA TEM OS DADOS ADICIONADA
-            if(newPages.find(item => item.pageId === pageId && item.ruleId === ruleId)){
+            if(newPages.find(item => item.page_id === pageId && item.rule_id === ruleId)){
                 //SE TIVER, REMOVE
-                setNewPages(newPages.filter(item => !(item.pageId === pageId && item.ruleId === ruleId)));
+                setNewPages(newPages.filter(item => !(item.page_id === pageId && item.rule_id === ruleId)));
             } else {
                 //SE NAO TIVER, ADICIONA
-                setNewPages([...newPages,{pageId: pageId, ruleId: ruleId}]);
+                setNewPages([...newPages,{page_id: pageId, rule_id: ruleId, department_id: props.departmentId}]);
             }
         } else {
             //CLICK NA CHECKBOX DE PAGES
-            if(newPages.find(item => item.pageId === pageId)){
+            if(newPages.find(item => item.page_id === pageId)){
                 //SE TIVER, REMOVE TODOS OS ITENS COM ESSE PAGEID
-                setNewPages(newPages.filter(item => !(item.pageId === pageId)));
+                setNewPages(newPages.filter(item => !(item.page_id === pageId)));
             }
         }
     }
 
-    const handleSubmit = () => {
-
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        console.log(newPages)
     }
 
     return (
@@ -92,7 +94,12 @@ export function AddPage(props: AddPagePropsLocal){
                                 <div key={page.id}>
                                     <div onClick={() => setOpenPage(openPage === page.id ? null : page.id)}>
                                         <label>
-                                            <input type="checkbox" onClick={() =>  handleCheckboxClick({pageId: page.id})} checked={newPages.some((item) => item.pageId === page.id)}/> {page.name}
+                                            <input 
+                                                type="checkbox" 
+                                                onClick={() =>  handleCheckboxClick({pageId: page.id})} 
+                                                checked={newPages.some((item) => item.page_id === page.id)}
+                                            /> 
+                                                {page.name}
                                         </label>
                                         <div>
                                             {openPage === page.id ? <KeyboardArrowUpOutlinedIcon /> : <KeyboardArrowDownOutlinedIcon />}
@@ -104,7 +111,7 @@ export function AddPage(props: AddPagePropsLocal){
                                                 <input 
                                                     type="checkbox" 
                                                     onClick={() => handleCheckboxClick({pageId: page.id,ruleId: rule.id})} 
-                                                    checked={newPages.some((item) => item.pageId === page.id && item.ruleId === rule.id)} 
+                                                    checked={newPages.some((item) => item.page_id === page.id && item.rule_id === rule.id)} 
                                                 /> 
                                                 {rule.name}
                                             </label>
