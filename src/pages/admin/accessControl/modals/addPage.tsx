@@ -13,7 +13,7 @@ import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutl
 import { IPageCollection } from '../../../../interfaces/IPages';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import { getPages } from '../../../../services/apiManageONU/pages';
+import { getPages, setPages } from '../../../../services/apiManageONU/pages';
 
 type AddPagePropsLocal = {
     open: boolean;
@@ -67,9 +67,19 @@ export function AddPage(props: AddPagePropsLocal){
         }
     }
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(newPages)
+
+        if(newPages.length > 0){
+            const response = await setPages({
+                departmentId: props.departmentId,
+                newPages: newPages,
+            });
+
+            if(response && response.success){
+                props.handleClose();
+            }
+        }
     }
 
     return (

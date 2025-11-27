@@ -23,12 +23,23 @@ import { IPageCollection } from "../../../interfaces/IPages";
 import { IUsers } from "../../../interfaces/IUsers";
 import { Pages } from "../../../components/Pages";
 import { getPages } from "../../../services/apiManageONU/pages";
+import { useSocket } from "../../../hooks/useSocket";
+import { useAuth } from "../../../hooks/useAuth";
 
 export function AccessControl(){
+    const { user } = useAuth();
+    const { socket } = useSocket();
+
     const [departments, setDepartments] = useState<IDepartments[]>([]);
-    const [department, setDepartment] = useState<IDepartments | null>(null);
-    const [accordions, setAccordions] = useState<number[]>([]);
+    const [department, setDepartment] = useState<IDepartments | null>(null); //DEPARTAMENTO ATUAL EM TELA
     const [usersByDepartment, setUsersBydeparment] = useState<IUsers[]>([]);
+    const [lastDepartmentId, setLastDepartmentId] = useState<number | null>(null); // PARA O SOCKET SAIR DA SALA QUANDO TROCAR
+
+    const [role, setRole] = useState(null);
+    const [lastRoleId, setLastRoleId] = useState(null);
+
+    const [accordions, setAccordions] = useState<number[]>([]);
+
     const [filteredTable, setFilteredTable] = useState<IUsers[]>([]);
     const [userSelected, setUserSelected] = useState<IUsers | null>(null);
     const [pages, setPages] = useState([]);
@@ -57,7 +68,17 @@ export function AccessControl(){
     }, []);
 
     useEffect(() => {
-        if(department){
+        if(department && department.id !== lastDepartmentId){
+            //SAINDO DA SALA ANTIGA
+            if(lastDepartmentId){
+                //EVITANDO PRIMEIRO VALOR NULO DO lastDepartmentId.
+                socket.emit('leave_room', {
+                    uid: user?.uid,
+                    room: `events-department-${lastDepartmentId}`
+                });
+            }
+            setLastDepartmentId(department.id);
+
             async function getData(){
                 const getPagesByDepartment = getPages({departmentId: department?.id});
                 const getUsersByDepartment = getUsers({departmentId: department?.id});
@@ -79,8 +100,29 @@ export function AccessControl(){
                 }
             }
             getData();
+
+            socket.emit('select_room', {
+                uid: user?.uid,
+                room: `/events-department-${department.id}`
+            });
+        } else if (role && role.id !== lastRoleId){
+            //SÓ FILTRO
         }
     }, [department]);
+
+    useEffect(() => {
+        if(role){
+            console.log('aq')
+        }
+    }, [role]);
+
+    if(socket){
+        socket.on('update', data => {
+            if(data.flag === 'pages'){
+                setPages(data.pages);
+            }
+        });
+    }
 
     const handleExpandAccordion = (index: number) => {
         if(accordions.includes(index)){
@@ -88,11 +130,15 @@ export function AccessControl(){
         } else {
             setAccordions([...accordions, index]);
         }
-    };
+    }
 
     const handleSelectDepartment = (id: number) => {
         const selectedDepartment = departments.find((department) => department.id === id);
         selectedDepartment ? setDepartment(selectedDepartment) : setDepartment(null);
+    }
+
+    const handleSelectRole = (id: number) => {
+        console.log(id)
     }
 
     const handleSearchValueChange = (value: string) => {
@@ -172,11 +218,11 @@ export function AccessControl(){
                                 </div>
                             </div>
                             <div className="accordion">
-                                {department.Roles.map((role, i) => (
-                                    <div key={i} className="node">
+                                {department.Roles.map((role, idx) => (
+                                    <div key={idx} className="node" onClick={() => {handleSelectRole(role.id)}}>
                                         <div className="line-vertical" />
                                         <div className="box">{role.name}</div>
-                                        {i < department.Roles.length - 1 && <div className="line-down" />}
+                                        {idx < department.Roles.length - 1 && <div className="line-down" />}
                                     </div>
                                 ))}
                             </div>
@@ -242,9 +288,7 @@ export function AccessControl(){
                                             '& tr > *:nth-child(n+3)': { textAlign: 'center' },
                                         }}
                                     >
-                                        <EnhancedTableHead
-
-                                        />
+                                        <EnhancedTableHead />
                                         <tbody>
                                         {[...filteredTable]
                                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

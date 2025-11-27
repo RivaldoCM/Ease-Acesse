@@ -114,7 +114,7 @@ export function AppRoutes() {
                     />
                     <Route
                         path=":id"
-                        element={<PrivateRoute element={<EditOlt />} />}
+                        element={<PrivateRoute element={<EditOlt />} path="/olts:id"/>}
                     />
                     <Route
                         path="new_olt"
@@ -234,14 +234,14 @@ export function AppRoutes() {
                 <Route
                     path="/client_location"
                     element={
-                        <PrivateRoute element={matches ? <ClientLocationByFiberNetwork /> : <ClientFiberNetworkData />} />
+                        <PrivateRoute element={matches ? <ClientLocationByFiberNetwork /> : <ClientFiberNetworkData />} path="/client_location"/>
                     }
                 />
                 <Route path="helpdesk">
                     <Route 
                         path="dashboard"
                         element={
-                            <PrivateRoute element={<Dashboard />} />
+                            <PrivateRoute element={<Dashboard />} path="/helpdesk/dashboard"/>
                         }
                     />
                     <Route

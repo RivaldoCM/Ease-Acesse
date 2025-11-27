@@ -10,6 +10,7 @@ import DialogActions from '@mui/joy/DialogActions';
 import ModalDialog from '@mui/joy/ModalDialog';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import { IPageCollection } from '../../../interfaces/IPages';
+import { removePages } from '../../../services/apiManageONU/pages';
 
 type AddPagePropsLocal = {
     open: boolean;
@@ -18,6 +19,13 @@ type AddPagePropsLocal = {
 }
 
 export function RemovePage(props: AddPagePropsLocal){
+    console.log(props)
+
+    const handleRemovePage = async (e: any) => {
+        e.preventDefault();
+
+    }
+
     return (
         <React.Fragment>
             <Modal open={props.open}>
@@ -28,7 +36,7 @@ export function RemovePage(props: AddPagePropsLocal){
                     </DialogTitle>
                     <Divider />
                     <DialogContent>
-                        Tem certeza que deseja remover a página "{props.page.name}"?
+                        Tem certeza que deseja remover a página <strong>"{props.page.name}"?</strong>
                     </DialogContent>
                     <DialogActions>
                         <Button variant="solid" color="danger" >

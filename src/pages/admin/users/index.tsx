@@ -94,7 +94,7 @@ export function Users(){
 
     useEffect(() => {
         async function users(){
-            const response = await getUsers();
+            const response = await getUsers({});
             if(response){
                 if(response.success){
                     setUsers(response.responses.response);
