@@ -16,6 +16,5 @@ export async function getDepartments(): Promise<IResponseData | IResponseError>{
         return null;
     });
 
-    console.log(res);
     return res;
 }
