@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "../../config/breakpoints";
 
 interface Teste {
     action: string
@@ -18,6 +19,8 @@ export const PageContainer = styled.div`
         border: 2px solid #d9d9d9;
         border-radius: .4rem;
 
+        @media ${device.laptop}{ width: 248px; }
+
         > div:first-of-type{
             flex-direction: column;
             justify-content: space-around;
@@ -26,6 +29,11 @@ export const PageContainer = styled.div`
             padding: .2rem 0;
 
             p{font-family: 'Itim', cursive !important;}
+
+            >div:last-of-type{
+                flex-wrap: wrap;
+                gap: 0.2rem 0;
+            }
         }
 
         //BOTÕES DE AÇÃO

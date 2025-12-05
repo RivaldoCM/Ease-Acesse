@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@mui/joy/Button';
 import Modal from '@mui/joy/Modal';
-import ModalClose from '@mui/joy/ModalClose';
-import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import { IUsers } from '../../../../interfaces/IUsers';
 import { EditUserModal } from '../style';
@@ -10,14 +8,11 @@ import { FormControl, FormLabel, IconButton, Input, Option, Select } from '@mui/
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 import { getCities } from '../../../../services/apiManageONU/getCities';
-import { getDepartments } from '../../../../services/apiManageONU/getDepartments';
 import { ICities } from '../../../../interfaces/ICities';
 import { getUsers } from '../../../../services/apiManageONU/getUsers';
 import { IPageCollection } from '../../../../interfaces/IPages';
-import { handleIconMenu } from '../../../../config/menu';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { Pages } from '../../../../components/Pages';
+import AddIcon from '@mui/icons-material/Add';
 
 type EditUserPropsLocal = {
     open: boolean;
@@ -42,8 +37,6 @@ export function EditUser(props: EditUserPropsLocal){
         }
     });
 
-    console.log(overrideRules)
-
     useEffect(() => {
         async function fetchData() {
             const getCity = getCities();
@@ -67,6 +60,8 @@ export function EditUser(props: EditUserPropsLocal){
             [e.target.name]: e.target.value
         })
     }
+
+    console.log(overrideRules.length > 0)
 
     return (
         <React.Fragment>
@@ -146,10 +141,18 @@ export function EditUser(props: EditUserPropsLocal){
                                 </FormControl>
                             </div>
                             <div>
-                                <p>REGRAS PERSONALIZADAS</p>
-                                <div className="flex">
-                                    <Pages pages={overrideRules} />
+                                <div className='flex'>
+                                    <p>REGRAS PERSONALIZADAS</p>
+                                    <IconButton variant="soft" color="success">
+                                        <AddIcon />
+                                    </IconButton>
                                 </div>
+                                {
+                                    overrideRules.length > 0 &&
+                                    <div className="flex override">
+                                        <Pages pages={overrideRules} />
+                                    </div>
+                                }
                             </div>
                             <div>
                                 <Button endDecorator={<CheckIcon />} variant='solid' color="success" size='sm'>

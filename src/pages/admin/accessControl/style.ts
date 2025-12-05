@@ -132,10 +132,8 @@ export const View = styled.section`
 
 /* ---------------- CARD DEPARTMENT ---------------- */
 export const CardDepartment = styled.div<isSelected>`
-    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     width: 100%;
     background: ${({ isSelected }) => (isSelected ? "#fff2eb" : "#ffffff")};
     border: 2px solid ${({ isSelected }) => (isSelected ? "#ff9f68" : "#d9d9d9")};
@@ -152,7 +150,7 @@ export const CardDepartment = styled.div<isSelected>`
         box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 10px;
     }
 
-    .header {
+    > div:first-of-type {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -160,10 +158,10 @@ export const CardDepartment = styled.div<isSelected>`
         min-height: 60px;
         padding: 0.6rem 1rem;
         border-radius: ${({ isExpanded }) =>
-        isExpanded ? "0.8rem 0.8rem 0 0" : "0.8rem"};
+            isExpanded ? "0.8rem 0.8rem 0 0" : "0.8rem"};
         background: ${({ isSelected }) => (isSelected ? "#fffaf5" : "#fefefe")};
         border-bottom: ${({ isExpanded }) =>
-        isExpanded ? "1px solid #ddd" : "none"};
+            isExpanded ? "1px solid #ddd" : "none"};
         transition: background 0.25s ease;
 
         > div:nth-of-type(1) {
@@ -291,22 +289,45 @@ export const Status = styled.span<Status>`
 /* ---------------- MODALS ---------------- */
 export const EditUserModal = styled.div`
     width: 650px;
-    > div:first-child {
+    > div:first-of-type {
         width: inherit;
         text-align: end;
     }
 
-    div:nth-child(2) {
+    div:nth-of-type(2){
         > div{
             justify-content: space-between;
             width: 100%;
+            height: 100%;
             margin-bottom: .2rem;
         }
 
-        > div:nth-child(4){
-            padding: .5rem;
+        > div:nth-of-type(4){
+            margin: .5rem 0;
+            padding: .5rem 1rem;
             border-radius: 12px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+
+            > div:first-of-type{
+                height: 20%;
+                justify-content: space-between;
+                padding: 0 .5rem;
+                
+                p{ font-family: "Itim", cursive !important; }
+            }
+
+            > .override{
+                //SÓ CRIEI CLASSE PRA ISSO PQ SE NÃO SEMPRE IRIA
+                //RENDEIZAR SENDO FIRST E LAST-OF-TYPE
+                height: 200px;
+                overflow: auto;
+                padding: 0 .5rem;
+            }
+        }
+
+        > div:nth-of-type(5){
+            text-align: center;
+            padding-top: .5rem;
         }
     }
 `

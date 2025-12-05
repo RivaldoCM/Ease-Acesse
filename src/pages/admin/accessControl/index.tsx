@@ -213,13 +213,13 @@ export function AccessControl(){
                 </header>
                 <div className="flex">
                     {departments && departments.map((department: IDepartments, index) => (
-                        <CardDepartment 
+                        <CardDepartment
                             className="flex" 
                             isSelected={index + 1 === department.id} 
                             isExpanded={accordions.includes(index)}
                             key={index}
                         >
-                            <div className="header flex">
+                            <div className="flex">
                                 <div className="flex">
                                     <div>
                                         <p>{department.name}</p>
