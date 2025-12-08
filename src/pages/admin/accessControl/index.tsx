@@ -69,7 +69,7 @@ export function AccessControl(){
     }, []);
 
     useEffect(() => {
-        if(department && department.id !== lastDepartmentId){
+        if(department){
             //SAINDO DA SALA ANTIGA
             if(lastDepartmentId){
                 //EVITANDO PRIMEIRO VALOR NULO DO lastDepartmentId.
@@ -104,15 +104,22 @@ export function AccessControl(){
     }, [department]);
 
     useEffect(() => {
-        if(roleId && roleId !== lastRoleId){
+        if(roleId){
             async function getData(){
-                const getRoles = await getRoleById({id: roleId}); 
+                console.log(usersByDepartment)
+                const getRoles = await getRoleById({id: roleId});
                 const getPagesByDepartment = getPages({roleId: roleId});
                 const getUsersByRole = getUsers({roleId: roleId});
                 const [pages, users, role] = await Promise.all([getPagesByDepartment, getUsersByRole, getRoles]);
 
                 if(role && role.success){
-                    setRole(role.responses.response)
+                    setRole(role.responses.response);
+                    if(lastDepartmentId && lastDepartmentId === role.responses.response.department_Id){
+                        console.log('aq')
+                        //COLOCA ALGUNS CLIENTES COM ALGUMA ROLE PRA TESTAR ESSE FILTRO Q VAI FAZER
+                        //LEMBRANDO Q VAI APAGAR O DEPARTAMENTO, MAS OS USERS VAO CONTINUAR, AI SE FOR 
+                        //O MESMO DEPARTAMENTO AINDA, DA PRA FILTRAR AO INVES DE FAZER OUTRA BUSCA NO DB
+                    }
                 }
 
                 if(pages && pages.success){
@@ -146,19 +153,16 @@ export function AccessControl(){
 
     const handleSelectDepartment = (id: number) => {
         const selectedDepartment = departments.find((department) => department.id === id);
-
         if(selectedDepartment){
-            setDepartment(selectedDepartment) 
-            setRoleId(null)
+            setRoleId(null);
+            setDepartment(selectedDepartment);
         } 
     }
 
-    const handleSelectRole = (deparmentid: number, roleId: number) => {
-        if(roleId !== lastRoleId){
-            setLastDepartmentId(null);
-            setDepartment(null)
-            setRoleId(roleId)
-        }
+    const handleSelectRole = (departmentId: number, roleId: number) => {
+        setDepartment(null);
+        setRoleId(roleId);
+
     }
 
     const handleSearchValueChange = (value: string) => {
