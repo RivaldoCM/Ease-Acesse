@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import Button from '@mui/joy/Button';
-import Modal from '@mui/joy/Modal';
-import Sheet from '@mui/joy/Sheet';
-import { IUsers } from '../../../../interfaces/IUsers';
-import { EditUserModal } from '../style';
-import { FormControl, FormLabel, IconButton, Input, Option, Select } from '@mui/joy';
-import CloseIcon from '@mui/icons-material/Close';
-import CheckIcon from '@mui/icons-material/Check';
+
+import { Pages } from '../../../../components/Pages';
+
 import { getCities } from '../../../../services/apiManageONU/getCities';
 import { ICities } from '../../../../interfaces/ICities';
 import { getUsers } from '../../../../services/apiManageONU/getUsers';
+
+import { IUsers } from '../../../../interfaces/IUsers';
 import { IPageCollection } from '../../../../interfaces/IPages';
-import { Pages } from '../../../../components/Pages';
+
+import { EditUserModal } from '../style';
+import CloseIcon from '@mui/icons-material/Close';
+import CheckIcon from '@mui/icons-material/Check';
+import { FormControl, FormLabel, IconButton, Input, Option, Select } from '@mui/joy';
 import AddIcon from '@mui/icons-material/Add';
+import Button from '@mui/joy/Button';
+import Modal from '@mui/joy/Modal';
+import Sheet from '@mui/joy/Sheet';
 
 type EditUserPropsLocal = {
     open: boolean;
@@ -61,8 +65,6 @@ export function EditUser(props: EditUserPropsLocal){
         })
     }
 
-    console.log(overrideRules.length > 0)
-
     return (
         <React.Fragment>
             <Modal
@@ -98,8 +100,8 @@ export function EditUser(props: EditUserPropsLocal){
                                     </FormLabel>
                                     <Select value={props.user.department_id}>
                                         {
-                                            props.departments.map((department) => (
-                                                <Option value={department.id}>{department.name}</Option>
+                                            props.departments.map((department, index) => (
+                                                <Option value={department.id} key={index}>{department.name}</Option>
                                             ))
                                         }
                                     </Select>
@@ -110,8 +112,8 @@ export function EditUser(props: EditUserPropsLocal){
                                     </FormLabel>
                                     <Select value={props.user.Role.id}>
                                         {
-                                            props.departments.find(department => department.id === props.user.department_id)!.Roles.map((role) => (
-                                                <Option value={role.id}>{role.name}</Option>
+                                            props.departments.find(department => department.id === props.user.department_id)!.Roles.map((role, index) => (
+                                                <Option value={role.id} key={index}>{role.name}</Option>
                                             ))
                                         }
                                     </Select>
@@ -124,8 +126,8 @@ export function EditUser(props: EditUserPropsLocal){
                                     </FormLabel>
                                     <Select value={true}>
                                         {
-                                            cities.map((city) => (
-                                                <Option value={city.id}>{city.name}</Option>
+                                            cities.map((city, index) => (
+                                                <Option value={city.id} key={index}>{city.name}</Option>
                                             ))
                                         }
                                     </Select>

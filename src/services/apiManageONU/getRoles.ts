@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IResponseData, IResponseError } from "../../interfaces/IDefaultResponse";
 
-export async function getRoleById({id}: {id: number}):Promise<IResponseData|IResponseError>{
+export async function getRoleById({id}: {id: number | null}):Promise<IResponseData|IResponseError>{
     const res = await axios({
         method: 'get',
         url: `${import.meta.env.VITE_BASEURL_MANAGE_ONU}/roles`,

@@ -1,30 +1,31 @@
 import { useEffect, useState } from "react";
-import { CardDepartment, Container, Header, Nav, Status, View } from "./style";
-import { getDepartments } from "../../../services/apiManageONU/getDepartments";
-import { Box, FormControl, FormLabel, IconButton, Input, Option, Select, Sheet, Table, Typography } from "@mui/joy";
 
+import { useSocket } from "../../../hooks/useSocket";
+import { useAuth } from "../../../hooks/useAuth";
+
+import { Role } from "./role";
+import { Department } from "./department";
+import { AddPage } from "./modals/addPage";
+import { EditUser } from "./modals/editUser";
+import { EnhancedTableHead, EnhancedTableToolbar, labelDisplayedRows } from "./table";
+
+import { getUsers } from "../../../services/apiManageONU/getUsers";
+import { getRoleById } from "../../../services/apiManageONU/getRoles";
+import { getPages } from "../../../services/apiManageONU/pages";
+import { getDepartments } from "../../../services/apiManageONU/getDepartments";
+
+import { IUsers } from "../../../interfaces/IUsers";
+import { IPageCollection } from "../../../interfaces/IPages";
+
+import { CardDepartment, Container, Header, Nav, Status, View } from "./style";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-
-import { getUsers } from "../../../services/apiManageONU/getUsers";
-import { EnhancedTableHead, EnhancedTableToolbar, labelDisplayedRows } from "./table";
-
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import AddIcon from '@mui/icons-material/Add';
-import { AddPage } from "./modals/addPage";
-import { EditUser } from "./modals/editUser";
-import { IPageCollection } from "../../../interfaces/IPages";
-import { IUsers } from "../../../interfaces/IUsers";
-import { getPages } from "../../../services/apiManageONU/pages";
-import { useSocket } from "../../../hooks/useSocket";
-import { useAuth } from "../../../hooks/useAuth";
-import { Department } from "./department";
-import { Role } from "./role";
-import { getRoleById } from "../../../services/apiManageONU/getRoles";
+import { Box, FormControl, IconButton, Option, Select, Sheet, Table, Typography } from "@mui/joy";
+
 
 export function AccessControl(){
     const { user } = useAuth();
@@ -36,7 +37,7 @@ export function AccessControl(){
     const [lastDepartmentId, setLastDepartmentId] = useState<number | null>(null); // PARA O SOCKET SAIR DA SALA QUANDO TROCAR
 
     const [role, setRole] = useState(null);
-    const [roleId, setRoleId] = useState(null);
+    const [roleId, setRoleId] = useState<number | null>(null);
     const [lastRoleId, setLastRoleId] = useState(null);
 
     const [accordions, setAccordions] = useState<number[]>([]);
@@ -244,7 +245,7 @@ export function AccessControl(){
                             <div className="accordion">
                                 {department.Roles.map((role, idx) => (
                                     <div key={idx} className="node" onClick={() => {handleSelectRole(department.id,role.id)}}>
-                                        <div className="line-vertical" />
+                                        <div className="line-vertical"/>
                                         <div className="box">{role.name}</div>
                                         {idx < department.Roles.length - 1 && <div className="line-down" />}
                                     </div>

@@ -9,10 +9,6 @@ interface Status{
     color: string
 }
 
-interface Teste {
-    action: string
-}
-
 interface AccordionProps {
     open: boolean;
 }
@@ -91,7 +87,7 @@ export const View = styled.section`
     border-radius: .8rem;
     overflow: auto;
 
-    > div:nth-child(1){
+    > div:nth-of-type(1){
         grid-area: config;
 
         h3{
@@ -106,7 +102,7 @@ export const View = styled.section`
         }
     }
     
-    > div:nth-child(2){
+    > div:nth-of-type(2){
         grid-area: pages;
         width: 100%;
 
@@ -121,7 +117,7 @@ export const View = styled.section`
         }
     }
     
-    > div:nth-child(3){
+    > div:nth-of-type(3){
         grid-area: table;
         
         > div:last-of-type{
@@ -337,13 +333,13 @@ export const AddPageModal = styled.form`
     height: 600px;
     font-family: Arial, sans-serif;
 
-    > div:nth-child(1), > div:nth-child(3){ height: 10%; }
-    > div:nth-child(1){
+    > div:nth-of-type(1), > div:nth-of-type(3){ height: 10%; }
+    > div:nth-of-type(1){
         justify-content: end;
     }
 
     //CADA ITEM
-    > div:nth-child(2) {
+    > div:nth-of-type(2) {
         height: 80%;
         overflow: auto;
         > div{

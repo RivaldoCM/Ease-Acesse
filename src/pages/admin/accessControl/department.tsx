@@ -1,18 +1,15 @@
+import React from "react";
 
-import { Box, FormControl, FormLabel, IconButton, Input, Option, Select, Sheet, Table, Typography } from "@mui/joy";
-
-
-import AddIcon from '@mui/icons-material/Add';
+import { Pages } from "../../../components/Pages";
 
 import { IPageCollection } from "../../../interfaces/IPages";
 
-import { Pages } from "../../../components/Pages";
-import { getPages } from "../../../services/apiManageONU/pages";
-
+import AddIcon from '@mui/icons-material/Add';
+import { FormControl, FormLabel, IconButton, Input, Option, Select} from "@mui/joy";
 
 export function Department(props: any){
     return (
-        <>
+        <React.Fragment>
             <div className="config">
                 <h3>Departamento {props.department.name}</h3>
                 <div>
@@ -42,6 +39,6 @@ export function Department(props: any){
                 </div>
                 <Pages pages={props.pages as IPageCollection[]} />
             </div>
-        </>
+        </React.Fragment>
     )
 }

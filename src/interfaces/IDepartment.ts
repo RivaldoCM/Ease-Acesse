@@ -3,7 +3,7 @@ type IDepartments = {
     name: string;
     status: boolean;
     Roles: [{
-        id: string;
+        id: number;
         name: string
     }];
 }
