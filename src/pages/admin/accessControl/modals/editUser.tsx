@@ -137,8 +137,8 @@ export function EditUser(props: EditUserPropsLocal){
                                         Status
                                     </FormLabel>
                                     <Select value={user.is_disabled} name="is_disabled" onChange={handleUserChange}>
-                                        <Option value={true}>Ativo</Option>
-                                        <Option value={false}>Inativo</Option>
+                                        <Option value={true}>Inativo</Option>
+                                        <Option value={false}>Ativo</Option>
                                     </Select>
                                 </FormControl>
                             </div>
