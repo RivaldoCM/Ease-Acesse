@@ -7,16 +7,24 @@ import { PageContainer, Rules } from "./style";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { RemovePage } from "./modals/removePage";
+import { EditPageRules } from "../../pages/admin/accessControl/modals/editPageRules";
 
 export function Pages({ pages } : {pages: IPageCollection[]}){
     const [page, setPage] = useState<IPageCollection["pages"][number] | null>(null);
     const [openRemovePage, setOpenRemovePage] = useState(false);
+    const [openEditPageRules, setOpenEditPageRules] = useState(false);
 
     const handleOpenRemovePage = (page: IPageCollection["pages"][number]) => {
         setPage(page);
         setOpenRemovePage(true);
     };
+    const handleOpenEditPageRules = (page: any) => { 
+        setPage(page);
+        setOpenEditPageRules(true);
+    }
+
     const handleCloseRemovePage = () => setOpenRemovePage(false);
+    const handleCloseEditPageRules = () => setOpenEditPageRules(false);
 
     return(
         <PageContainer className="flex">
@@ -34,7 +42,7 @@ export function Pages({ pages } : {pages: IPageCollection[]}){
                             </div>
                         </div>
                         <div className="flex">
-                            <IconButton variant="soft" color="primary">
+                            <IconButton variant="soft" color="primary" onClick={() => {handleOpenEditPageRules(page)}}>
                                 <EditOutlinedIcon />
                             </IconButton>
                             <IconButton variant="soft" color="danger" onClick={() => {handleOpenRemovePage(page)}}>
@@ -50,6 +58,15 @@ export function Pages({ pages } : {pages: IPageCollection[]}){
                         open={openRemovePage}
                         page={page!}
                         handleClose={handleCloseRemovePage}
+                    />
+                )
+            }
+            {
+                openEditPageRules && (
+                    <EditPageRules
+                        open={openEditPageRules}
+                        page={page!}
+                        handleClose={handleCloseEditPageRules}
                     />
                 )
             }

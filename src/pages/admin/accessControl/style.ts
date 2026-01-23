@@ -328,6 +328,52 @@ export const EditUserModal = styled.div`
     }
 `
 
+export const EditPageModal = styled.form`
+    width: 400px;
+    height: 350px;
+    > div:nth-of-type(1), > div:nth-of-type(3){ height: 10%; }
+    > div:nth-of-type(1){
+        justify-content: end;
+    }
+
+    > div:nth-of-type(2) {
+        height: 80%;
+        overflow: auto;
+        > div{
+            width: 98%;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+
+            > div:first-child {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: #ffffff;
+                padding: 14px 18px;
+                cursor: pointer;
+                font-weight: 600;
+                color: #333;
+
+                &:hover {
+                    background: #f9f9f9;
+                }
+
+                > label {
+                    color: #666;
+                    > input {
+                        margin-right: 10px;
+                    }
+                }
+
+            }
+        }
+    }
+`;
+
 export const AddPageModal = styled.form`
     width: 400px;
     height: 600px;
@@ -365,12 +411,13 @@ export const AddPageModal = styled.form`
                     background: #f9f9f9;
                 }
 
-                > div {
-                    display: flex;
-                    align-items: center;
-                    font-size: 20px;
+                > label {
                     color: #666;
+                    > input {
+                        margin-right: 10px;
+                    }
                 }
+
             }
         }
     }
@@ -383,13 +430,14 @@ export const AccordionContent = styled.div<AccordionProps>`
     transition: max-height 0.35s ease, padding 0.35s ease;
     padding: ${({ open }) => (open ? "12px 18px" : "0 18px")};
     background: #fafafa;
-
+    
     > label {
         display: flex;
         align-items: center;
         margin: 8px 0;
         font-size: 14px;
         color: #444;
+        cursor: pointer;
 
         input {
             margin-right: 10px;
