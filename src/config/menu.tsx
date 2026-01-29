@@ -136,7 +136,7 @@ export const handleShowPageByRule = (rule?: number) => {
         case 1:
         case 2: 
             let withoutDashboardBreak = cloneDeep(handlePages);
-            withoutDashboardBreak[0].pages.splice(0,3);
+
             withoutDashboardBreak.splice(1,2);
             withoutDashboardBreak[2].pages.splice(0,1);
             withoutDashboardBreak.splice(3,2);
