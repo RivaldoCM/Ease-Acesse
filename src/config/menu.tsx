@@ -124,6 +124,10 @@ export const handleShowPageByRule = (rule?: number) => {
         case 14:
         case 15:
         case 16:
+            let teste = cloneDeep(handlePages);
+            teste.splice(1,2);
+            teste.splice(2,1);
+        return handleDynamicPagesByRule = teste;
         case 17:
             let allPages = cloneDeep(handlePages);
         return handleDynamicPagesByRule = allPages;
