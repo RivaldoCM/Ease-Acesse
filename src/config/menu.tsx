@@ -125,13 +125,10 @@ export const handleShowPageByRule = (rule?: number) => {
         case 15:
         case 16:
             let teste = cloneDeep(handlePages);
-            teste.splice(1,2);
-            teste.splice(2,1);
+            teste.splice(1,1);
         return handleDynamicPagesByRule = teste;
         case 17:
             let allPages = cloneDeep(handlePages);
-            allPages.splice(1,1);
-
         return handleDynamicPagesByRule = allPages;
         case 10: 
             let onusMassive = cloneDeep(handlePages);
@@ -149,8 +146,7 @@ export const handleShowPageByRule = (rule?: number) => {
         case 2: 
             let withoutDashboardBreak = cloneDeep(handlePages);
             withoutDashboardBreak.splice(1,1);
-            withoutDashboardBreak[2].pages.splice(0,1);
-            withoutDashboardBreak.splice(3,2);
+            withoutDashboardBreak.splice(4,2);
         return handleDynamicPagesByRule = withoutDashboardBreak;
         case 6:
             let massiveAndExitLag = cloneDeep(handlePages);
